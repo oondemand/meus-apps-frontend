@@ -1,4 +1,4 @@
-name: Deploy frontend
+name: Deploy central oondemand frontend
 
 on:
   pull_request:
