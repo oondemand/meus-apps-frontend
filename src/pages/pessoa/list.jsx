@@ -6,7 +6,6 @@ import { DataGrid } from "../../components/dataGrid";
 import { makeDynamicColumns } from "./columns";
 import { queryClient } from "../../config/react-query";
 import { PessoasDialog } from "./dialog";
-import { formatDateToDDMMYYYY } from "../../utils/formatting";
 import { useNavigate } from "react-router-dom";
 import { useDataGrid } from "../../hooks/useDataGrid";
 import { useUpdatePessoa } from "../../hooks/api/pessoa/useUpdatePessoa";
