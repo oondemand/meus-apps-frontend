@@ -89,55 +89,58 @@ export const DataGrid = ({
           </Button>
           {Form && <Form />}
 
-          <MenuRoot>
-            <MenuTrigger
-              color="brand.500"
-              focusRing="none"
-              cursor="pointer"
-              alignItems="baseline"
-            >
-              <Button
-                size="sm"
-                variant="subtle"
-                fontWeight="semibold"
-                color="brand.500"
-                _hover={{ backgroundColor: "gray.50" }}
-              >
-                Excel
-              </Button>
-            </MenuTrigger>
-
-            <MenuContent cursor="pointer">
-              {importDataFn && (
-                <MenuItem
+          {importDataFn ||
+            (exportDataFn && (
+              <MenuRoot>
+                <MenuTrigger
+                  color="brand.500"
+                  focusRing="none"
                   cursor="pointer"
-                  value="importar-planilha"
-                  onClick={importDataFn}
+                  alignItems="baseline"
                 >
-                  Importar planilha
-                </MenuItem>
-              )}
+                  <Button
+                    size="sm"
+                    variant="subtle"
+                    fontWeight="semibold"
+                    color="brand.500"
+                    _hover={{ backgroundColor: "gray.50" }}
+                  >
+                    Excel
+                  </Button>
+                </MenuTrigger>
 
-              {exportDataFn && (
-                <>
-                  <MenuItem
-                    cursor="pointer"
-                    onClick={() => handleExportData(() => exportDataFn())}
-                    value="exportar"
-                  >
-                    Exportar
-                  </MenuItem>
-                  <MenuItem
-                    cursor="pointer"
-                    onClick={() => handleExportData(() => exportDataFn(1))}
-                    value="exportar-modelo"
-                  >
-                    Exportar modelo
-                  </MenuItem>
-                </>
-              )}
-            </MenuContent>
-          </MenuRoot>
+                <MenuContent cursor="pointer">
+                  {importDataFn && (
+                    <MenuItem
+                      cursor="pointer"
+                      value="importar-planilha"
+                      onClick={importDataFn}
+                    >
+                      Importar planilha
+                    </MenuItem>
+                  )}
+
+                  {exportDataFn && (
+                    <>
+                      <MenuItem
+                        cursor="pointer"
+                        onClick={() => handleExportData(() => exportDataFn())}
+                        value="exportar"
+                      >
+                        Exportar
+                      </MenuItem>
+                      <MenuItem
+                        cursor="pointer"
+                        onClick={() => handleExportData(() => exportDataFn(1))}
+                        value="exportar-modelo"
+                      >
+                        Exportar modelo
+                      </MenuItem>
+                    </>
+                  )}
+                </MenuContent>
+              </MenuRoot>
+            ))}
 
           <VisibilityControlDialog
             fields={tableProps?.columns.map((e) => ({
