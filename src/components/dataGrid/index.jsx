@@ -133,17 +133,17 @@ export const DataGrid = ({
                   <>
                     <MenuItem
                       cursor="pointer"
-                      onClick={() => handleExportData(() => exportDataFn())}
-                      value="exportar"
-                    >
-                      Exportar
-                    </MenuItem>
-                    <MenuItem
-                      cursor="pointer"
                       onClick={() => handleExportData(() => exportDataFn(1))}
                       value="exportar-modelo"
                     >
                       Exportar modelo
+                    </MenuItem>
+                    <MenuItem
+                      cursor="pointer"
+                      onClick={() => handleExportData(() => exportDataFn())}
+                      value="exportar"
+                    >
+                      Exportar datagrid
                     </MenuItem>
                   </>
                 )}

@@ -30,8 +30,14 @@ export const TableHeader = ({ table, filters, onFilterChange }) => {
                 bg="brand.350"
               >
                 <Flex flexDir="column" p="0.5" gap="0.5">
-                  <Flex onClick={header.column.getToggleSortingHandler()}>
-                    <Flex alignItems="center" gap="2" cursor="pointer">
+                  <Flex
+                  // onClick={header.column.getToggleSortingHandler()}
+                  >
+                    <Flex
+                      alignItems="center"
+                      gap="2"
+                      // cursor="pointer"
+                    >
                       <Text
                         fontWeight="semibold"
                         textWrap="nowrap"
@@ -45,11 +51,11 @@ export const TableHeader = ({ table, filters, onFilterChange }) => {
                               header.getContext()
                             )}
                       </Text>
-                      <Box rounded="full" p="0.5" bg="zinc.400" color="white">
+                      {/* <Box rounded="full" p="0.5" bg="zinc.400" color="white">
                         {header.column.getCanSort() &&
                           (sortingIconsMap[header.column.getIsSorted()] ??
                             null)}
-                      </Box>
+                      </Box> */}
                     </Flex>
                   </Flex>
 
