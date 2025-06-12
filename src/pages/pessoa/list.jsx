@@ -49,7 +49,7 @@ export const PessoasList = () => {
       },
     });
 
-    return response.data.json;
+    return response.data.buffer;
   };
 
   return (
