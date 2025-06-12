@@ -50,6 +50,10 @@ export const menuItems = [
         href: "/sistema",
       },
       {
+        title: "Assistentes",
+        href: "/assistentes",
+      },
+      {
         title: "Doc",
         href: "/doc",
       },
