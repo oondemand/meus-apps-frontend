@@ -4,7 +4,7 @@ import { currency } from "../../utils/currency";
 
 export const ServicesCard = ({ servicos = [] }) => {
   const formattedServices = useMemo(() => {
-    return servicos.map((item) => ({
+    return servicos?.map((item) => ({
       ...item,
       valorFormatado: currency.format(item.valor),
     }));

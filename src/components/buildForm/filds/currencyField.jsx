@@ -26,7 +26,7 @@ export const CurrencyField = ({ ...props }) => {
           placeholder="R$ 0,00"
           style={{
             outline: "none",
-            padding: "4px",
+            padding: "7px",
             backgroundColor: "transparent",
             cursor: props.disabled ? "not-allowed" : "inherit",
           }}

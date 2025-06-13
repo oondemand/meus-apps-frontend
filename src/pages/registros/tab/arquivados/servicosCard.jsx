@@ -45,7 +45,7 @@ export const ServicosCard = ({ servicos }) => {
         </Text>
       </Grid>
 
-      {servicos.map((item, index) => (
+      {servicos?.map((item, index) => (
         <Grid
           key={index}
           templateColumns="repeat(13, 1fr)"

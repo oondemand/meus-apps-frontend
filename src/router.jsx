@@ -8,7 +8,6 @@ import { ServicosTomados } from "./pages/servicosTomados";
 import { Dashboard } from "./pages/dashboard";
 import { Doc } from "./pages/doc";
 // import { PlanejamentoMensal } from "./pages/planejamentoMensal";
-// import { ImportServicosPage } from "./pages/servicos/importacao";
 import { ImportPessoasPage } from "./pages/pessoa/importacao";
 import { UsuariosPage } from "./pages/usuarios/index";
 import { AlterarSenha } from "./pages/alterarSenha";
@@ -19,10 +18,12 @@ import { SistemaPage } from "./pages/sistema";
 // import { EtapasPage } from "./pages/etapas";
 // import { DocumentosFiscaisList } from "./pages/documentoFiscal";
 // import { ImportDocumentosFiscaisPage } from "./pages/documentoFiscal/importacao";
-// import { AssistenteConfigPage } from "./pages/assistant";
+import { AssistenteConfigPage } from "./pages/assistant";
 // import { DocumentosCadastraisList } from "./pages/documentoCadastral";
 // import { ImportDocumentosCadastraisPage } from "./pages/documentoCadastral/importacao";
 import { Ativacao } from "./pages/ativacao";
+import { ServicosList } from "./pages/servicos";
+import { ImportServicosPage } from "./pages/servicos/importacao";
 
 export const router = createBrowserRouter([
   {
@@ -37,8 +38,8 @@ export const router = createBrowserRouter([
       // { path: "/planejamento", element: <PlanejamentoMensal /> },
       { path: "/pessoas", element: <PessoasList /> },
       { path: "/pessoas/importacao", element: <ImportPessoasPage /> },
-      // { path: "/servicos/todos", element: <ServicosList /> },
-      // { path: "/servicos/importacao", element: <ImportServicosPage /> },
+      { path: "/servicos", element: <ServicosList /> },
+      { path: "/servicos/importacao", element: <ImportServicosPage /> },
       // { path: "/documentos-fiscais", element: <DocumentosFiscaisList /> },
       // { path: "/documentos-cadastrais", element: <DocumentosCadastraisList /> },
       // {
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
       { path: "/doc", element: <Doc /> },
       // { path: "/pagos", element: <TicketsPagosPage /> },
       // { path: "/etapas", element: <EtapasPage /> },
-      // { path: "/assistentes", element: <AssistenteConfigPage /> },
+      { path: "/assistentes", element: <AssistenteConfigPage /> },
     ],
   },
 

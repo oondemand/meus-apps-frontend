@@ -1,36 +1,36 @@
 import React, { useMemo } from "react";
 import { Flex, Box, Text } from "@chakra-ui/react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { PessoaService } from "../../service/pessoa";
+import { ServicoService } from "../../service/servico";
 import { DataGrid } from "../../components/dataGrid";
 import { makeDynamicColumns } from "./columns";
 import { queryClient } from "../../config/react-query";
-import { PessoasDialog } from "./dialog";
+import { ServicosDialog } from "./dialog";
 import { useNavigate } from "react-router-dom";
 import { useDataGrid } from "../../hooks/useDataGrid";
-import { useUpdatePessoa } from "../../hooks/api/pessoa/useUpdatePessoa";
+import { useUpdateServico } from "../../hooks/api/servico/useUpdateServico";
 import { ORIGENS } from "../../constants/origens";
 
-export const PessoasList = () => {
+export const ServicosList = () => {
   const navigate = useNavigate();
   const columns = useMemo(() => makeDynamicColumns(), []);
-  const { filters, table } = useDataGrid({ columns, key: "PESSOAS" });
+  const { filters, table } = useDataGrid({ columns, key: "SERVICOS" });
 
   const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["listar-pessoas", { filters }],
-    queryFn: async () => await PessoaService.listarPessoas({ filters }),
+    queryKey: ["listar-servicos", { filters }],
+    queryFn: async () => await ServicoService.listarServicos({ filters }),
     placeholderData: keepPreviousData,
   });
 
-  const updatePessoa = useUpdatePessoa({
+  const updateServico = useUpdateServico({
     origem: ORIGENS.DATAGRID,
     onSuccess: () => {
-      queryClient.refetchQueries(["listar-pessoas", { filters }]);
+      queryClient.refetchQueries(["listar-servicos", { filters }]);
     },
   });
 
-  const getAllPessoasWithFilters = async (pageSize) => {
-    const response = await PessoaService.exportarPessoas({
+  const getAllServicosWithFilters = async (pageSize) => {
+    const response = await ServicoService.exportarServicos({
       filters: {
         ...filters,
         pageSize: pageSize ? pageSize : data?.pagination?.totalItems,
@@ -55,19 +55,19 @@ export const PessoasList = () => {
       >
         <Box>
           <Text fontSize="lg" color="gray.700" fontWeight="semibold">
-            Clientes e prestadores
+            Servicos
           </Text>
           <Box mt="4" bg="white" py="6" px="4" rounded="lg" shadow="xs">
             <DataGrid
-              form={PessoasDialog}
-              exportDataFn={getAllPessoasWithFilters}
-              importDataFn={() => navigate("/pessoas/importacao")}
+              form={ServicosDialog}
+              exportDataFn={getAllServicosWithFilters}
+              importDataFn={() => navigate("/servicos/importacao")}
               table={table}
               data={data?.results || []}
               rowCount={data?.pagination?.totalItems}
               isDataLoading={isLoading || isFetching}
               onUpdateData={async (values) => {
-                await updatePessoa.mutateAsync({
+                await updateServico.mutateAsync({
                   id: values.id,
                   body: values.data,
                 });

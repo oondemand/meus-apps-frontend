@@ -4,7 +4,6 @@ import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import { useMemo } from "react";
 import { DebouncedInput } from "../DebouncedInput";
 import { VisibilityControlDialog } from "../vibilityControlDialog";
-import { handleExportData } from "./exportData";
 import { MemoizedTableBody } from "./memoizedTableBody";
 import { Pagination } from "./pagination";
 import { TableHeader } from "./tableHeader";
@@ -43,6 +42,17 @@ export const DataGrid = ({
     }
     return colSizes;
   }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
+
+  const handleExportData = async (callback) => {
+    const buffer = await callback();
+
+    const byteArray = new Uint8Array(buffer?.data);
+    const blob = new Blob([byteArray], {
+      type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    });
+
+    saveAs(blob, "exported");
+  };
 
   return (
     <>
@@ -89,55 +99,57 @@ export const DataGrid = ({
           </Button>
           {Form && <Form />}
 
-          <MenuRoot>
-            <MenuTrigger
-              color="brand.500"
-              focusRing="none"
-              cursor="pointer"
-              alignItems="baseline"
-            >
-              <Button
-                size="sm"
-                variant="subtle"
-                fontWeight="semibold"
+          {(importDataFn || exportDataFn) && (
+            <MenuRoot>
+              <MenuTrigger
                 color="brand.500"
-                _hover={{ backgroundColor: "gray.50" }}
+                focusRing="none"
+                cursor="pointer"
+                alignItems="baseline"
               >
-                Excel
-              </Button>
-            </MenuTrigger>
-
-            <MenuContent cursor="pointer">
-              {importDataFn && (
-                <MenuItem
-                  cursor="pointer"
-                  value="importar-planilha"
-                  onClick={importDataFn}
+                <Button
+                  size="sm"
+                  variant="subtle"
+                  fontWeight="semibold"
+                  color="brand.500"
+                  _hover={{ backgroundColor: "gray.50" }}
                 >
-                  Importar planilha
-                </MenuItem>
-              )}
+                  Excel
+                </Button>
+              </MenuTrigger>
 
-              {exportDataFn && (
-                <>
+              <MenuContent cursor="pointer">
+                {importDataFn && (
                   <MenuItem
                     cursor="pointer"
-                    onClick={() => handleExportData(() => exportDataFn())}
-                    value="exportar"
+                    value="importar-planilha"
+                    onClick={importDataFn}
                   >
-                    Exportar
+                    Importar planilha
                   </MenuItem>
-                  <MenuItem
-                    cursor="pointer"
-                    onClick={() => handleExportData(() => exportDataFn(1))}
-                    value="exportar-modelo"
-                  >
-                    Exportar modelo
-                  </MenuItem>
-                </>
-              )}
-            </MenuContent>
-          </MenuRoot>
+                )}
+
+                {exportDataFn && (
+                  <>
+                    <MenuItem
+                      cursor="pointer"
+                      onClick={() => handleExportData(() => exportDataFn(1))}
+                      value="exportar-modelo"
+                    >
+                      Exportar modelo
+                    </MenuItem>
+                    <MenuItem
+                      cursor="pointer"
+                      onClick={() => handleExportData(() => exportDataFn())}
+                      value="exportar"
+                    >
+                      Exportar datagrid
+                    </MenuItem>
+                  </>
+                )}
+              </MenuContent>
+            </MenuRoot>
+          )}
 
           <VisibilityControlDialog
             fields={tableProps?.columns.map((e) => ({

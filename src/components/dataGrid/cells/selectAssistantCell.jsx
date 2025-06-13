@@ -18,7 +18,7 @@ export const SelectAssistantCell = ({
 
   const options = useMemo(
     () =>
-      data?.lista?.map((e) => {
+      data?.map((e) => {
         return { value: e?._id, label: e?.nome };
       }),
     [data]

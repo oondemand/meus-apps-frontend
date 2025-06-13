@@ -25,7 +25,12 @@ export const menuItems = [
     href: "/servicos-tomados",
   },
   {
-    title: "Pessoas",
+    title: "Serviços",
+    icon: ListChecks,
+    href: "/servicos",
+  },
+  {
+    title: "Clientes e prestadores",
     icon: Users,
     href: "/pessoas",
   },
@@ -48,6 +53,10 @@ export const menuItems = [
       {
         title: "Sistema",
         href: "/sistema",
+      },
+      {
+        title: "Assistentes",
+        href: "/assistentes",
       },
       {
         title: "Doc",

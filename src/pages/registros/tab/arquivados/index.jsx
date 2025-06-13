@@ -21,6 +21,7 @@ export const ArquivadosTab = () => {
       await TicketService.listarTicketsArquivados({ filters }),
     placeholderData: keepPreviousData,
   });
+
   return (
     <>
       <Box bg="white" py="6" px="4" rounded="lg" shadow="xs">
