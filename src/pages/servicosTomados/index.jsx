@@ -47,8 +47,6 @@ export const ServicosTomados = () => {
     onSuccess: (data) => setTickets(data),
   });
 
-  console.log(etapasResponseData, data);
-
   const filteredTickets =
     searchTerm?.toLowerCase()?.trim()?.length > 2
       ? data?.tickets?.filter((ticket) => {
