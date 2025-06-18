@@ -14,6 +14,7 @@ import { ORIGENS } from "../../constants/origens";
 export const EtapasDialog = ({
   defaultValues = null,
   label = "Criar etapa",
+  esteira = null,
 }) => {
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
@@ -29,7 +30,7 @@ export const EtapasDialog = ({
   const onSubmit = async (values) => {
     const body = {
       ...values,
-      email: values?.email === "" ? null : values?.email,
+      ...(esteira ? { esteira } : {}),
     };
 
     if (!data) {

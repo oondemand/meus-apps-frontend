@@ -1,7 +1,7 @@
 import { Checkbox, Flex } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster";
 import { useMutation } from "@tanstack/react-query";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { queryClient } from "../../../config/react-query";
 import { useConfirmation } from "../../../hooks/useConfirmation";
 import { useUpdateServico } from "../../../hooks/api/servico/useUpdateServico";
@@ -22,7 +22,7 @@ export const CheckActionCell = ({ ...props }) => {
 
   const { mutateAsync: deleteServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.removerServico({
+      await ServicoTomadoTicketService.removerServico({
         servicoId,
         origem: ORIGENS.PLANEJAMENTO,
       }),

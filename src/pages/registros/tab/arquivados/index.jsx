@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { DataGrid } from "../../../../components/dataGrid";
 import { makeTicketsArquivadosDynamicColumns } from "./columns";
-import { TicketService } from "../../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../../service/servicoTomadoTicket";
 import { MemoizedTableBody } from "./tableBody";
 import { useDataGrid } from "../../../../hooks/useDataGrid";
 
@@ -18,7 +18,7 @@ export const ArquivadosTab = () => {
   const { data, isLoading, isFetching } = useQuery({
     queryKey: ["listar-tickets-arquivados", { filters }],
     queryFn: async () =>
-      await TicketService.listarTicketsArquivados({ filters }),
+      await ServicoTomadoTicketService.listarTicketsArquivados({ filters }),
     placeholderData: keepPreviousData,
   });
 

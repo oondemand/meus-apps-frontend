@@ -4,7 +4,8 @@ import { EtapaService } from "../../../service/etapa";
 
 export const useCreateEtapa = ({ onSuccess, origem }) =>
   useMutation({
-    mutationFn: async ({ body }) => await EtapaService.adicionarEtapa({ body, origem }),
+    mutationFn: async ({ body }) =>
+      await EtapaService.adicionarEtapa({ body, origem }),
     onSuccess(data) {
       onSuccess?.(data);
       toaster.create({

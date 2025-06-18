@@ -11,7 +11,7 @@ import { Flex, Spinner, Heading } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { EtapaService } from "../../service/etapa";
 import { Etapa } from "../../components/etapaCard";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 import { Filter } from "lucide-react";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import { useStateWithStorage } from "../../hooks/useStateStorage";
@@ -30,7 +30,10 @@ export const ServicosTomados = () => {
     isLoading: isEtapasLoading,
   } = useQuery({
     queryKey: ["listar-etapas"],
-    queryFn: EtapaService.listarEtapasAtivas,
+    queryFn: () =>
+      EtapaService.listarEtapasAtivasPorEsteira({
+        esteira: "servicos-tomados",
+      }),
     staleTime: 1000 * 60 * 10, // 10 minutos
   });
 
@@ -41,7 +44,7 @@ export const ServicosTomados = () => {
     isFetching: isTicketFetching,
   } = useQuery({
     queryKey: ["listar-tickets"],
-    queryFn: async () => TicketService.listarTickets(),
+    queryFn: async () => ServicoTomadoTicketService.listarTickets(),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 1, // 1 minuto
     onSuccess: (data) => setTickets(data),

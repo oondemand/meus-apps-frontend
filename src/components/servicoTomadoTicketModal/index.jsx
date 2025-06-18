@@ -15,7 +15,7 @@ import { Oondemand } from "../svg/oondemand";
 import { PrestadorForm } from "./form/prestador";
 
 import { useMutation } from "@tanstack/react-query";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 
 import { toaster } from "../ui/toaster";
 
@@ -27,7 +27,6 @@ import { InformacoesAdicionaisForm } from "./form/informacoes-adicionais";
 import { DocumentoFiscalForm } from "./form/documentoFiscal";
 import { useIaChat } from "../../hooks/useIaChat";
 import { useQuery } from "@tanstack/react-query";
-import { AssistantConfigService } from "../../service/assistant-config";
 import { DocumentosCadastraisService } from "../../service/documentos-cadastrais";
 import { ORIGENS } from "../../constants/origens";
 import { useLoadAssistant } from "../../hooks/api/assistant-config/useLoadAssistant";
@@ -38,7 +37,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { mutateAsync: createTicketMutation } = useMutation({
     mutationFn: async ({ body }) =>
-      await TicketService.adicionarTicket({
+      await ServicoTomadoTicketService.adicionarTicket({
         body,
         origem: ORIGENS.ESTEIRA,
       }),
@@ -54,7 +53,11 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { mutateAsync: updateTicketMutation } = useMutation({
     mutationFn: async ({ id, body }) =>
-      await TicketService.alterarTicket({ id, body, origem: ORIGENS.ESTEIRA }),
+      await ServicoTomadoTicketService.alterarTicket({
+        id,
+        body,
+        origem: ORIGENS.ESTEIRA,
+      }),
     onSuccess: (data) => {
       toaster.create({
         title: "Ticket atualizado com sucesso!",
@@ -86,7 +89,8 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { data } = useQuery({
     queryKey: ["ticket", { ticketId: ticket?._id }],
-    queryFn: async () => await TicketService.carregarTicket(ticket?._id),
+    queryFn: async () =>
+      await ServicoTomadoTicketService.carregarTicket(ticket?._id),
     staleTime: 1000 * 60 * 1, // 1 minute
     enabled: open,
   });
@@ -105,7 +109,13 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
     enabled: open,
   });
 
-  const { assistant } = useLoadAssistant(data?.ticket?.etapa ?? "ticket");
+  console.log("RODOU", data?.ticket);
+
+  const { assistant } = useLoadAssistant(
+    data?.ticket?.etapa
+      ? `servicos-tomados.${data?.ticket?.etapa}`
+      : "geral.servicos-tomados"
+  );
 
   return (
     <DialogRoot

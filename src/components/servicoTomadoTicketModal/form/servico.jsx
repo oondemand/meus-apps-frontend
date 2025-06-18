@@ -15,7 +15,7 @@ import { ServicoService } from "../../../service/servico";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toaster } from "../../ui/toaster";
 import { useConfirmation } from "../../../hooks/useConfirmation";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { Select } from "chakra-react-select";
 import { chakraStyles } from "./select-chakra-styles";
 import { formatDateToDDMMYYYY } from "../../../utils/formatting";
@@ -55,7 +55,7 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
 
   const { mutateAsync: deleteServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.removerServico({
+      await ServicoTomadoTicketService.removerServico({
         servicoId,
         origem: ORIGENS.ESTEIRA,
       }),
@@ -76,7 +76,7 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
 
   const { mutateAsync: addServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.adicionarServico({
+      await ServicoTomadoTicketService.adicionarServico({
         ticketId: ticket?._id,
         servicoId,
         origem: ORIGENS.ESTEIRA,

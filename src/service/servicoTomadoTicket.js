@@ -163,7 +163,7 @@ const listarTicketsPagos = async ({ filters }) => {
   return data;
 };
 
-export const TicketService = {
+export const ServicoTomadoTicketService = {
   listarTickets,
   adicionarTicket,
   alterarTicket,

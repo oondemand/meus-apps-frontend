@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { DocumentosFiscaisService } from "../../service/documentos-fiscais";
 import { useConfirmation } from "../../hooks/useConfirmation";
 import { toaster } from "../ui/toaster";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 
 export const DocumentosFiscaisDetailsCard = ({ documentosFiscais }) => {
   const { requestConfirmation } = useConfirmation();
@@ -48,7 +48,7 @@ export const DocumentosFiscaisDetailsCard = ({ documentosFiscais }) => {
 
   const handleDownloadFile = async ({ id }) => {
     try {
-      const { data } = await TicketService.getFile({ id });
+      const { data } = await ServicoTomadoTicketService.getFile({ id });
 
       if (data) {
         const byteArray = new Uint8Array(data?.buffer?.data);

@@ -1,13 +1,13 @@
 import React, { memo, useState } from "react";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { TicketCard } from "../ticketCard";
+import { TicketCard } from "../servicoTomadoTicketCard";
 
 import { useRef, useMemo } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import "./custom-scrollbar.css";
 
 import { SquarePlus } from "lucide-react";
-import { TicketModal } from "../ticketModal";
+import { TicketModal } from "../servicoTomadoTicketModal";
 import { Tooltip } from "../ui/tooltip";
 
 const _Etapa = ({ etapa, tickets }) => {

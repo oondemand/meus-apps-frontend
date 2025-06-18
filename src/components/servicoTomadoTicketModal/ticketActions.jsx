@@ -2,7 +2,7 @@ import { Flex, Button, useDialogContext } from "@chakra-ui/react";
 import { Check, Trash, X } from "lucide-react";
 
 import { toaster } from "../ui/toaster";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 import { useMutation } from "@tanstack/react-query";
 import { useConfirmation } from "../../hooks/useConfirmation";
 import { queryClient } from "../../config/react-query";
@@ -15,7 +15,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
   const { mutateAsync: arquiveTicketMutation, isPending: isArquivePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.arquivarTicket({
+        await ServicoTomadoTicketService.arquivarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),
@@ -33,7 +33,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
   const { mutateAsync: aproveTicketMutation, isPending: isAprovePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.aprovarTicket({
+        await ServicoTomadoTicketService.aprovarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),
@@ -52,7 +52,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
   const { mutateAsync: reproveTicketMutation, isPending: isReprovePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.reprovarTicket({
+        await ServicoTomadoTicketService.reprovarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),

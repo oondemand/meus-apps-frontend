@@ -3,13 +3,13 @@ import React, { memo, useState } from "react";
 
 import { ptBR } from "date-fns/locale";
 import { LucideListCheck, Paperclip, File } from "lucide-react";
-import { Tooltip } from "../../components/ui/tooltip";
+import { Tooltip } from "../ui/tooltip";
 
 import { ServicesCard } from "./servicesCard";
 import { AnexosCard } from "./arquivosCard";
 import { currency } from "../../utils/currency";
 
-import { TicketModal } from "../ticketModal";
+import { TicketModal } from "../servicoTomadoTicketModal";
 import { format } from "date-fns";
 import { DocumentosFiscaisCard } from "./documentosFiscaisCard";
 

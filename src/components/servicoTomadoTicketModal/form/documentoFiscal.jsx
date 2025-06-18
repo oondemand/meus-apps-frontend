@@ -15,7 +15,7 @@ import { DocumentosFiscaisService } from "../../../service/documentos-fiscais";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toaster } from "../../ui/toaster";
 import { useConfirmation } from "../../../hooks/useConfirmation";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { Select } from "chakra-react-select";
 import { chakraStyles } from "./select-chakra-styles";
 import { ORIGENS } from "../../../constants/origens";
@@ -49,7 +49,7 @@ export const DocumentoFiscalForm = ({ ticket, onlyReading }) => {
 
   const { mutateAsync: deleteDocumentoFiscalMutation } = useMutation({
     mutationFn: async ({ documentoFiscalId }) =>
-      await TicketService.removerDocumentoFiscal({
+      await ServicoTomadoTicketService.removerDocumentoFiscal({
         documentoFiscalId,
         origem: ORIGENS.ESTEIRA,
       }),
@@ -70,7 +70,7 @@ export const DocumentoFiscalForm = ({ ticket, onlyReading }) => {
 
   const { mutateAsync: addDocumentoFiscalMutation } = useMutation({
     mutationFn: async ({ documentoFiscalId }) =>
-      await TicketService.adicionarDocumentoFiscal({
+      await ServicoTomadoTicketService.adicionarDocumentoFiscal({
         ticketId: ticket?._id,
         documentoFiscalId,
         origem: ORIGENS.ESTEIRA,
@@ -111,7 +111,7 @@ export const DocumentoFiscalForm = ({ ticket, onlyReading }) => {
 
   const handleDownloadFile = async ({ id }) => {
     try {
-      const { data } = await TicketService.getFile({ id });
+      const { data } = await ServicoTomadoTicketService.getFile({ id });
 
       if (data) {
         const byteArray = new Uint8Array(data?.buffer?.data);
