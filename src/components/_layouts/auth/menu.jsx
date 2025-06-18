@@ -9,7 +9,6 @@ import {
   NotepadTextDashed,
   Notebook,
 } from "lucide-react";
-
 import { Chart } from "../../svg/chart";
 import { invertedChart } from "../../svg/invertedChart";
 
@@ -53,6 +52,10 @@ export const menuItems = [
       {
         title: "Sistema",
         href: "/sistema",
+      },
+      {
+        title: "Etapas",
+        href: "/etapas",
       },
       {
         title: "Assistentes",

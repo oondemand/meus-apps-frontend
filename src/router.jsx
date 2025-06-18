@@ -15,7 +15,7 @@ import { RegistrosPage } from "./pages/registros";
 import { Listas } from "./pages/listas";
 import { SistemaPage } from "./pages/sistema";
 // import { TicketsPagosPage } from "./pages/ticketsPagos";
-// import { EtapasPage } from "./pages/etapas";
+import { EtapasPage } from "./pages/etapas";
 // import { DocumentosFiscaisList } from "./pages/documentoFiscal";
 // import { ImportDocumentosFiscaisPage } from "./pages/documentoFiscal/importacao";
 import { AssistenteConfigPage } from "./pages/assistant";
@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
       { path: "/sistema", element: <SistemaPage /> },
       { path: "/doc", element: <Doc /> },
       // { path: "/pagos", element: <TicketsPagosPage /> },
-      // { path: "/etapas", element: <EtapasPage /> },
+      { path: "/etapas", element: <EtapasPage /> },
       { path: "/assistentes", element: <AssistenteConfigPage /> },
     ],
   },

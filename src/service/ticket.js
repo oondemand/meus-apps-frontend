@@ -1,7 +1,7 @@
 import { api } from "../config/api";
 
 const adicionarTicket = async ({ body, origem }) => {
-  const response = await api.post("tickets", body, {
+  const response = await api.post("/servico-tomado/tickets", body, {
     headers: {
       "x-origem": origem,
     },
@@ -10,7 +10,7 @@ const adicionarTicket = async ({ body, origem }) => {
 };
 
 const alterarTicket = async ({ id, body, origem }) => {
-  const response = await api.patch(`tickets/${id}`, body, {
+  const response = await api.patch(`/servico-tomado/tickets/${id}`, body, {
     headers: {
       "x-origem": origem,
     },
@@ -19,12 +19,12 @@ const alterarTicket = async ({ id, body, origem }) => {
 };
 
 const carregarTicket = async (id) => {
-  const response = await api.get(`tickets/${id}`);
+  const response = await api.get(`/servico-tomado/tickets/${id}`);
   return response.data;
 };
 
 const listarTickets = async (filtro) => {
-  const { data } = await api.get("/tickets", { params: filtro });
+  const { data } = await api.get("/servico-tomado/tickets", { params: filtro });
   return data;
 };
 
@@ -60,20 +60,24 @@ const uploadFiles = async ({ ticketId, files }) => {
     formData.append("arquivos", file);
   }
 
-  return await api.post(`/tickets/${ticketId}/upload`, formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+  return await api.post(
+    `/servico-tomado/tickets/${ticketId}/upload`,
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 };
 
 const deleteFile = async ({ id, ticketId }) => {
-  return await api.delete(`/tickets/arquivo/${ticketId}/${id}`);
+  return await api.delete(`/servico-tomado/tickets/arquivo/${ticketId}/${id}`);
 };
 
 const arquivarTicket = async ({ id, origem }) => {
   return await api.post(
-    `/tickets/arquivar/${id}`,
+    `/servico-tomado/tickets/arquivar/${id}`,
     {},
     {
       headers: {
@@ -84,12 +88,12 @@ const arquivarTicket = async ({ id, origem }) => {
 };
 
 const getFile = async ({ id }) => {
-  return await api.get(`/tickets/arquivo/${id}`);
+  return await api.get(`/servico-tomado/tickets/arquivo/${id}`);
 };
 
 const adicionarServico = async ({ ticketId, servicoId, origem }) => {
   const { data } = await api.post(
-    `/tickets/adicionar-servico/${ticketId}/${servicoId}`,
+    `/servico-tomado/tickets/adicionar-servico/${ticketId}/${servicoId}`,
     {},
     {
       headers: {
@@ -103,7 +107,7 @@ const adicionarServico = async ({ ticketId, servicoId, origem }) => {
 
 const removerServico = async ({ servicoId, origem }) => {
   const { data } = await api.post(
-    `/tickets/remover-servico/${servicoId}`,
+    `/servico-tomado/tickets/remover-servico/${servicoId}`,
     {},
     {
       headers: {
@@ -120,7 +124,7 @@ const adicionarDocumentoFiscal = async ({
   origem,
 }) => {
   const { data } = await api.post(
-    `/tickets/adicionar-documento-fiscal/${ticketId}/${documentoFiscalId}`,
+    `/servico-tomado/tickets/adicionar-documento-fiscal/${ticketId}/${documentoFiscalId}`,
     {},
     {
       headers: {
@@ -134,7 +138,7 @@ const adicionarDocumentoFiscal = async ({
 
 const removerDocumentoFiscal = async ({ documentoFiscalId, origem }) => {
   const { data } = await api.post(
-    `/tickets/remover-documento-fiscal/${documentoFiscalId}`,
+    `/servico-tomado/tickets/remover-documento-fiscal/${documentoFiscalId}`,
     {},
     {
       headers: {
@@ -146,12 +150,16 @@ const removerDocumentoFiscal = async ({ documentoFiscalId, origem }) => {
 };
 
 const listarTicketsArquivados = async ({ filters }) => {
-  const { data } = await api.get("tickets/arquivados", { params: filters });
+  const { data } = await api.get("/servico-tomado/tickets/arquivados", {
+    params: filters,
+  });
   return data;
 };
 
 const listarTicketsPagos = async ({ filters }) => {
-  const { data } = await api.get("tickets/pagos", { params: filters });
+  const { data } = await api.get("/servico-tomado/tickets/pagos", {
+    params: filters,
+  });
   return data;
 };
 
