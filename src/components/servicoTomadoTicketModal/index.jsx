@@ -95,19 +95,19 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
     enabled: open,
   });
 
-  const { data: documentosCadastrais } = useQuery({
-    queryKey: [
-      "documentos-cadastrais",
-      { prestadorId: ticket?.prestador?._id },
-    ],
-    queryFn: async () =>
-      await DocumentosCadastraisService.listarDocumentosCadastraisPorPrestador({
-        prestadorId: ticket?.prestador?._id,
-        dataRegistro: "",
-      }),
-    staleTime: 1000 * 60 * 1, // 1 minute
-    enabled: open,
-  });
+  // const { data: documentosCadastrais } = useQuery({
+  //   queryKey: [
+  //     "documentos-cadastrais",
+  //     { prestadorId: ticket?.prestador?._id },
+  //   ],
+  //   queryFn: async () =>
+  //     await DocumentosCadastraisService.listarDocumentosCadastraisPorPrestador({
+  //       prestadorId: ticket?.prestador?._id,
+  //       dataRegistro: "",
+  //     }),
+  //   staleTime: 1000 * 60 * 1, // 1 minute
+  //   enabled: open,
+  // });
 
   const { assistant } = useLoadAssistant(
     data?.ticket?.etapa
@@ -143,9 +143,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
               aria-label="Abrir IA"
               cursor="pointer"
               variant="unstyled"
-              onClick={() =>
-                onOpen({ ...data, documentosCadastrais }, assistant)
-              }
+              onClick={() => onOpen({ ...data }, assistant)}
             >
               <Oondemand />
             </Box>
@@ -214,11 +212,11 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
             updateTicketMutation={updateTicketMutation}
           />
 
-          <DocumentoFiscalForm
+          {/* <DocumentoFiscalForm
             onlyReading={onlyReading}
             ticket={ticket}
             updateTicketMutation={updateTicketMutation}
-          />
+          /> */}
 
           <InformacoesAdicionaisForm
             ticket={ticket}
