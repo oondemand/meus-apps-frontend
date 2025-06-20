@@ -16,10 +16,10 @@ import { useUpdatePessoa } from "../../../hooks/api/pessoa/useUpdatePessoa";
 import { ORIGENS } from "../../../constants/origens";
 
 export const fetchOptions = async (inputValue) => {
-  return await api.get(`/prestadores?searchTerm=${inputValue}`);
+  return await api.get(`/pessoas?searchTerm=${inputValue}`);
 };
 
-const obterPrestadores = async (inputValue) => {
+const obterPessoas = async (inputValue) => {
   const {
     data: { results },
   } = await fetchOptions(inputValue);
@@ -35,39 +35,31 @@ const obterPrestadores = async (inputValue) => {
   });
 };
 
-export const PrestadorForm = ({
-  ticket,
-  updateTicketMutation,
-  onlyReading,
-}) => {
-  const defaultSelectedPrestador = ticket?.prestador
-    ? ticket.prestador.nome
-    : "";
+export const PessoaForm = ({ ticket, updateTicketMutation, onlyReading }) => {
+  const defaultSelectedPessoa = ticket?.pessoa ? ticket.pessoa.nome : "";
 
   const { inputsVisibility, setInputsVisibility } = useVisibleInputForm({
-    key: "PRESTADORES_TICKET_MODAL_FORM",
+    key: "PESSOAS_TICKET_MODAL_FORM",
   });
 
-  const [prestador, setPrestador] = useState(ticket?.prestador);
-  const [selectedPrestador, setSelectPrestador] = useState(
-    defaultSelectedPrestador
-  );
+  const [pessoa, setPessoa] = useState(ticket?.pessoa);
+  const [selectedPessoa, setSelectPessoa] = useState(defaultSelectedPessoa);
 
-  const createPrestador = useCreatePessoa({
+  const createPessoa = useCreatePessoa({
     onSuccess: (data) => {
-      setPrestador((prev) => data);
+      setPessoa((prev) => data);
     },
     origem: ORIGENS.FORM,
   });
 
-  const updatePrestador = useUpdatePessoa({
+  const updatePessoa = useUpdatePessoa({
     onSuccess: (data) => {
-      setPrestador((prev) => data);
+      setPessoa((prev) => data);
     },
     origem: ORIGENS.FORM,
   });
 
-  const onSubmitPrestador = async (values) => {
+  const onSubmitPessoa = async (values) => {
     // const {
     //   endereco: { pais, ...rest },
     // } = values;
@@ -78,30 +70,33 @@ export const PrestadorForm = ({
     //   endereco: { ...rest, ...(pais.cod ? { pais } : {}) },
     // };
 
-    if (!ticket?.prestador) {
-      const { prestador } = await createPrestador.mutateAsync({ body: values });
+    if (!ticket?.pessoa) {
+      const { pessoa } = await createPessoa.mutateAsync({ body: values });
 
       await updateTicketMutation({
         id: ticket._id,
         body: {
-          prestador: prestador?._id,
+          pessoa: pessoa?._id,
         },
       });
     }
 
-    return await updatePrestador.mutateAsync({
-      id: ticket?.prestador._id,
+    return await updatePessoa.mutateAsync({
+      id: ticket?.pessoa._id,
       body: values,
     });
   };
 
-  const handlePrestadorChange = async (e) => {
-    setSelectPrestador(e);
-    if (e && e.value !== ticket?.prestador?._id) {
+  const handlePessoaChange = async (e) => {
+    setSelectPessoa(e);
+
+    console.log("E", e);
+
+    if (e && e.value !== ticket?.pessoa?._id) {
       return await updateTicketMutation({
         id: ticket?._id,
         body: {
-          prestador: e.value,
+          pessoa: e.value,
         },
       });
     }
@@ -110,7 +105,7 @@ export const PrestadorForm = ({
   const fields = useMemo(() => createDynamicFormFields(), []);
 
   useEffect(() => {
-    setPrestador(ticket?.prestador);
+    setPessoa(ticket?.pessoa);
   }, [ticket]);
 
   return (
@@ -142,9 +137,9 @@ export const PrestadorForm = ({
               <Flex gap="4">
                 <AsyncSelectAutocomplete
                   disabled={!ticket}
-                  queryFn={obterPrestadores}
-                  value={selectedPrestador}
-                  setValue={handlePrestadorChange}
+                  queryFn={obterPessoas}
+                  value={selectedPessoa}
+                  setValue={handlePessoaChange}
                   placeholder="Digite para buscar..."
                 />
               </Flex>
@@ -153,7 +148,7 @@ export const PrestadorForm = ({
 
           {!onlyReading && (
             <Text fontSize="sm" color="gray.500" mt="6">
-              {prestador ? "Detalhes do prestador" : "Adicionar novo"}
+              {pessoa ? "Detalhes da pessoa" : "Adicionar"}
             </Text>
           )}
 
@@ -175,17 +170,17 @@ export const PrestadorForm = ({
             disabled={!ticket || onlyReading}
             fields={fields}
             data={{
-              ...prestador,
+              ...pessoa,
               pessoaFisica: {
-                ...prestador?.pessoaFisica,
+                ...pessoa?.pessoaFisica,
                 dataNascimento: formatDateToDDMMYYYY(
-                  prestador?.pessoaFisica?.dataNascimento
+                  pessoa?.pessoaFisica?.dataNascimento
                 ),
               },
             }}
             shouldUseFormValues={true}
             visibleState={inputsVisibility}
-            onSubmit={onSubmitPrestador}
+            onSubmit={onSubmitPessoa}
             gridColumns={2}
             gap={4}
           />

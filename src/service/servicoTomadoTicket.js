@@ -1,7 +1,7 @@
 import { api } from "../config/api";
 
 const adicionarTicket = async ({ body, origem }) => {
-  const response = await api.post("/servico-tomado/tickets", body, {
+  const response = await api.post("/servicos-tomados/tickets", body, {
     headers: {
       "x-origem": origem,
     },
@@ -10,7 +10,7 @@ const adicionarTicket = async ({ body, origem }) => {
 };
 
 const alterarTicket = async ({ id, body, origem }) => {
-  const response = await api.patch(`/servico-tomado/tickets/${id}`, body, {
+  const response = await api.patch(`/servicos-tomados/tickets/${id}`, body, {
     headers: {
       "x-origem": origem,
     },
@@ -19,12 +19,14 @@ const alterarTicket = async ({ id, body, origem }) => {
 };
 
 const carregarTicket = async (id) => {
-  const response = await api.get(`/servico-tomado/tickets/${id}`);
+  const response = await api.get(`/servicos-tomados/tickets/${id}`);
   return response.data;
 };
 
 const listarTickets = async (filtro) => {
-  const { data } = await api.get("/servico-tomado/tickets", { params: filtro });
+  const { data } = await api.get("/servicos-tomados/tickets", {
+    params: filtro,
+  });
   return data;
 };
 
@@ -61,7 +63,7 @@ const uploadFiles = async ({ ticketId, files }) => {
   }
 
   return await api.post(
-    `/servico-tomado/tickets/${ticketId}/upload`,
+    `/servicos-tomados/tickets/${ticketId}/upload`,
     formData,
     {
       headers: {
@@ -72,12 +74,14 @@ const uploadFiles = async ({ ticketId, files }) => {
 };
 
 const deleteFile = async ({ id, ticketId }) => {
-  return await api.delete(`/servico-tomado/tickets/arquivo/${ticketId}/${id}`);
+  return await api.delete(
+    `/servicos-tomados/tickets/arquivo/${ticketId}/${id}`
+  );
 };
 
 const arquivarTicket = async ({ id, origem }) => {
   return await api.post(
-    `/servico-tomado/tickets/arquivar/${id}`,
+    `/servicos-tomados/tickets/arquivar/${id}`,
     {},
     {
       headers: {
@@ -88,12 +92,12 @@ const arquivarTicket = async ({ id, origem }) => {
 };
 
 const getFile = async ({ id }) => {
-  return await api.get(`/servico-tomado/tickets/arquivo/${id}`);
+  return await api.get(`/servicos-tomados/tickets/arquivo/${id}`);
 };
 
 const adicionarServico = async ({ ticketId, servicoId, origem }) => {
   const { data } = await api.post(
-    `/servico-tomado/tickets/adicionar-servico/${ticketId}/${servicoId}`,
+    `/servicos-tomados/tickets/adicionar-servico/${ticketId}/${servicoId}`,
     {},
     {
       headers: {
@@ -107,7 +111,7 @@ const adicionarServico = async ({ ticketId, servicoId, origem }) => {
 
 const removerServico = async ({ servicoId, origem }) => {
   const { data } = await api.post(
-    `/servico-tomado/tickets/remover-servico/${servicoId}`,
+    `/servicos-tomados/tickets/remover-servico/${servicoId}`,
     {},
     {
       headers: {
@@ -124,7 +128,7 @@ const adicionarDocumentoFiscal = async ({
   origem,
 }) => {
   const { data } = await api.post(
-    `/servico-tomado/tickets/adicionar-documento-fiscal/${ticketId}/${documentoFiscalId}`,
+    `/servicos-tomados/tickets/adicionar-documento-fiscal/${ticketId}/${documentoFiscalId}`,
     {},
     {
       headers: {
@@ -138,7 +142,7 @@ const adicionarDocumentoFiscal = async ({
 
 const removerDocumentoFiscal = async ({ documentoFiscalId, origem }) => {
   const { data } = await api.post(
-    `/servico-tomado/tickets/remover-documento-fiscal/${documentoFiscalId}`,
+    `/servicos-tomados/tickets/remover-documento-fiscal/${documentoFiscalId}`,
     {},
     {
       headers: {
@@ -150,14 +154,14 @@ const removerDocumentoFiscal = async ({ documentoFiscalId, origem }) => {
 };
 
 const listarTicketsArquivados = async ({ filters }) => {
-  const { data } = await api.get("/servico-tomado/tickets/arquivados", {
+  const { data } = await api.get("/servicos-tomados/tickets/arquivados", {
     params: filters,
   });
   return data;
 };
 
 const listarTicketsPagos = async ({ filters }) => {
-  const { data } = await api.get("/servico-tomado/tickets/pagos", {
+  const { data } = await api.get("/servicos-tomados/tickets/pagos", {
     params: filters,
   });
   return data;

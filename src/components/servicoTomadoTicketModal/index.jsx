@@ -12,7 +12,7 @@ import {
 import { queryClient } from "../../config/react-query";
 
 import { Oondemand } from "../svg/oondemand";
-import { PrestadorForm } from "./form/prestador";
+import { PessoaForm } from "./form/pessoa";
 
 import { useMutation } from "@tanstack/react-query";
 import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
@@ -109,8 +109,6 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
     enabled: open,
   });
 
-  console.log("RODOU", data?.ticket);
-
   const { assistant } = useLoadAssistant(
     data?.ticket?.etapa
       ? `servicos-tomados.${data?.ticket?.etapa}`
@@ -204,7 +202,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
             mt="3"
           />
 
-          <PrestadorForm
+          <PessoaForm
             onlyReading={onlyReading}
             ticket={ticket}
             updateTicketMutation={updateTicketMutation}
