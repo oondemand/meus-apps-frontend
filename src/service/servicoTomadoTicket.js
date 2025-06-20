@@ -32,7 +32,7 @@ const listarTickets = async (filtro) => {
 
 const aprovarTicket = async ({ id, origem }) => {
   const response = await api.post(
-    `/aprovacoes/${id}/aprovar`,
+    `/servicos-tomados/tickets/${id}/aprovar`,
     {},
     {
       headers: {
@@ -45,7 +45,7 @@ const aprovarTicket = async ({ id, origem }) => {
 
 const reprovarTicket = async ({ id, origem }) => {
   const response = await api.post(
-    `/aprovacoes/${id}/recusar`,
+    `/servicos-tomados/tickets/${id}/reprovar`,
     {},
     {
       headers: {
