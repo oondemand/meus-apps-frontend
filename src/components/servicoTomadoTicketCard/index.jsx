@@ -12,6 +12,7 @@ import { currency } from "../../utils/currency";
 import { TicketModal } from "../servicoTomadoTicketModal";
 import { format } from "date-fns";
 import { DocumentosFiscaisCard } from "./documentosFiscaisCard";
+import { useListEtapas } from "../../hooks/api/etapas/useListEtapas";
 
 const BADGE_MAP = {
   pago: { color: "green", title: "Pago em" },
@@ -38,6 +39,9 @@ const _TicketCard = ({ ticket }) => {
     acc = acc + (curr?.valor ?? 0);
     return acc;
   }, 0);
+
+  const { etapas } = useListEtapas();
+  const ultimaEtapa = etapas?.[etapas?.length - 1]?.codigo;
 
   return (
     <Box>
@@ -233,7 +237,7 @@ const _TicketCard = ({ ticket }) => {
           defaultValue={ticket}
           open={open}
           setOpen={setOpen}
-          onlyReading={ticket?.etapa === "integracao-omie"}
+          onlyReading={ticket?.etapa === ultimaEtapa}
         />
       )}
     </Box>
