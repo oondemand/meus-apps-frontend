@@ -24,7 +24,7 @@ import { ORIGENS } from "../../constants/origens";
 
 export const DocumentoCadastralDialog = ({
   defaultValues = null,
-  label = "Criar documento cadastral",
+  label = "Adicionar",
 }) => {
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
@@ -102,11 +102,7 @@ export const DocumentoCadastralDialog = ({
   return (
     <Box>
       <Box onClick={() => setOpen(true)} asChild>
-        {defaultValues ? (
-          <IconTrigger />
-        ) : (
-          <DefaultTrigger title="Criar documento cadastral" />
-        )}
+        {defaultValues ? <IconTrigger /> : <DefaultTrigger title="Adicionar" />}
       </Box>
       <FormDialog
         data={data}

@@ -53,7 +53,7 @@ export const ImportDocumentosCadastraisPage = () => {
     },
     placeholderData: keepPreviousData,
     refetchInterval: ({ state }) => {
-      const hasPendingImports = state?.data?.importacoes?.some((importacao) => {
+      const hasPendingImports = state?.data?.results?.some((importacao) => {
         return !importacao?.detalhes;
       });
 
@@ -62,6 +62,8 @@ export const ImportDocumentosCadastraisPage = () => {
       return hasPendingImports ? pollingTime : false;
     },
   });
+
+  console.log("->", importDocumentosCadastraisMutation?.data, data);
 
   const handleDownloadFile = async ({ buffer, name, type }) => {
     try {
@@ -119,9 +121,9 @@ export const ImportDocumentosCadastraisPage = () => {
         </Box>
       </Flex>
 
-      {data?.importacoes &&
-        data?.importacoes?.length > 0 &&
-        data?.importacoes.map((importacao, index) => {
+      {data?.results &&
+        data?.results?.length > 0 &&
+        data?.results.map((importacao, index) => {
           return (
             <Flex w="full" bg="white" p="6" rounded="lg" gap="16">
               <Accordion.Root

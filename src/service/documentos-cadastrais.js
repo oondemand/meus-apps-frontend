@@ -6,10 +6,10 @@ const listarDocumentosCadastrais = async ({ filters }) => {
 };
 
 const exportarDocumentosCadastrais = async ({ filters }) => {
-  const { data } = await api.get("/documentos-cadastrais/exportar", {
+  const response = await api.get("/documentos-cadastrais/exportar", {
     params: filters,
   });
-  return data;
+  return response;
 };
 
 const listarDocumentosCadastraisPorPrestador = async ({

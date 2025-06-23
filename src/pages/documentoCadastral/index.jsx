@@ -18,24 +18,10 @@ import { Container } from "../../components/container";
 export const DocumentosCadastraisList = () => {
   const navigate = useNavigate();
   const columns = useMemo(() => makeDocumentoCadastralDynamicColumns({}), []);
-  // const modeloDeExportacao = [
-  //   {
-  //     accessorKey: "prestador.nome",
-  //     header: "Nome Prestador",
-  //   },
-  //   {
-  //     accessorKey: "prestador.documento",
-  //     header: "Documento Prestador",
-  //   },
-  //   ...columns
-  //     .filter((e) => e.accessorKey !== "prestador")
-  //     .map((e) => ({ accessorKey: e.accessorKey, header: e.header })),
-  // ];
 
   const { filters, table } = useDataGrid({
     key: "DOCUMENTOS_CADASTRAIS",
     columns,
-    // exportModel: modeloDeExportacao,
   });
 
   const { data, error, isLoading, isFetching } = useQuery({
@@ -55,7 +41,7 @@ export const DocumentosCadastraisList = () => {
   });
 
   const getAllDocumentoscadastraisWithFilters = async (pageSize) => {
-    const { results } =
+    const response =
       await DocumentosCadastraisService.exportarDocumentosCadastrais({
         filters: {
           ...filters,
@@ -64,7 +50,7 @@ export const DocumentosCadastraisList = () => {
         },
       });
 
-    return results;
+    return response.data.buffer;
   };
 
   return (
