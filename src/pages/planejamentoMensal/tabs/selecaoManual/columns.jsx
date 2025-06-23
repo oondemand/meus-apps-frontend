@@ -110,20 +110,6 @@ export const makeServicoDynamicColumns = () => {
       },
     },
     {
-      accessorKey: "dataRegistro",
-      header: "Data Registro",
-      enableSorting: false,
-      cell: (props) => (
-        <Flex minH="8">
-          <Text alignSelf="center" fontSize="sm" truncate>
-            {formatDateToDDMMYYYY(props.getValue())}
-          </Text>
-        </Flex>
-      ),
-      enableColumnFilter: true,
-      meta: { filterKey: "dataRegistro" },
-    },
-    {
       accessorKey: "status",
       header: "Status",
       enableSorting: false,
