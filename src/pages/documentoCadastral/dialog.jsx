@@ -63,8 +63,6 @@ export const DocumentoCadastralDialog = ({
       pessoa: values?.pessoa?.value,
     };
 
-    console.log("BODY:", body);
-
     if (!data) return await createDocumentoCadastral.mutateAsync({ body });
     return await updateDocumentoCadastral.mutateAsync({
       id: data._id,
