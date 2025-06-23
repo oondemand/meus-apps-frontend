@@ -29,6 +29,17 @@ export const menuItems = [
     href: "/servicos",
   },
   {
+    title: "Documentos Cadastrais",
+    href: "/documentos-cadastrais",
+    icon: Notebook,
+    rules: ["admin", "tomador"],
+  },
+  {
+    title: "Planejamento",
+    href: "/planejamento",
+    icon: CalendarSync,
+  },
+  {
     title: "Clientes e prestadores",
     icon: Users,
     href: "/pessoas",
