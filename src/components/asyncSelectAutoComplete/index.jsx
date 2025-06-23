@@ -18,7 +18,6 @@ export const AsyncSelectAutocomplete = ({
   queryFn,
   ...rest
 }) => {
-  console.log("query fn", queryFn);
 
   const mutation = useMutation({
     mutationFn: queryFn,

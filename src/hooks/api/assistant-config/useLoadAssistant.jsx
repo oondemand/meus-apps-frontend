@@ -10,7 +10,6 @@ export const useLoadAssistant = (modulo) => {
   });
 
   const assistant = useMemo(() => {
-    console.log("->", modulo);
 
     if (!data) return null;
     return data?.assistentes?.find((e) => {

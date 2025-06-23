@@ -92,7 +92,7 @@ const arquivarTicket = async ({ id, origem }) => {
 };
 
 const getFile = async ({ id }) => {
-  return await api.get(`/servicos-tomados/tickets/arquivo/${id}`);
+  return await api.get(`/arquivos/${id}`);
 };
 
 const adicionarServico = async ({ ticketId, servicoId, origem }) => {
