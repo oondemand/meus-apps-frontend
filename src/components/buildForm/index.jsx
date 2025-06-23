@@ -83,6 +83,8 @@ export const BuildForm = ({
     handleSubmit,
   } = methods;
 
+  console.log("🆘 [ERROR]", errors);
+
   return (
     <FormProvider {...methods}>
       <form onBlur={handleSubmit(onSubmit)}>

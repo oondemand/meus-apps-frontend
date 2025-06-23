@@ -120,7 +120,7 @@ export const DocumentoCadastralDialog = ({
           setData(defaultValues);
         }}
         open={open}
-        key="DOCUMENTOS_CADASTRAIS"
+        stateKey="DOCUMENTOS_CADASTRAIS"
       >
         {data && !data?.arquivo && (
           <Box mt="8">

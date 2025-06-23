@@ -24,9 +24,9 @@ export const makeDocumentoCadastralDynamicColumns = () => {
             label="Documento Cadastral"
             defaultValues={{
               ...props.row.original,
-              prestador: {
-                label: `${props.row.original?.prestador?.nome}-${props.row.original?.prestador?.documento}`,
-                value: props.row.original?.prestador?._id,
+              pessoa: {
+                label: `${props.row.original?.pessoa?.nome}-${props.row.original?.pessoa?.documento}`,
+                value: props.row.original?.pessoa?._id,
               },
             }}
           />
@@ -37,16 +37,15 @@ export const makeDocumentoCadastralDynamicColumns = () => {
         </TableActionsCell>
       ),
     },
-
     {
-      accessorKey: "prestador",
-      header: "Prestador",
+      accessorKey: "pessoa",
+      header: "Cliente ou prestador",
       enableSorting: false,
       cell: SelectPrestadorCell,
       enableColumnFilter: true,
       meta: {
         filterVariant: "selectPrestador",
-        filterKey: "prestador",
+        filterKey: "pessoa",
       },
     },
     {
