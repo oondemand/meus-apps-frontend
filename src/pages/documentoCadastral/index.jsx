@@ -56,7 +56,7 @@ export const DocumentosCadastraisList = () => {
 
   const getAllDocumentoscadastraisWithFilters = async (pageSize) => {
     const { results } =
-      await DocumentosCadastraisService.listarDocumentosCadastrais({
+      await DocumentosCadastraisService.exportarDocumentosCadastrais({
         filters: {
           ...filters,
           pageSize: pageSize ? pageSize : data?.pagination?.totalItems,

@@ -5,6 +5,13 @@ const listarDocumentosCadastrais = async ({ filters }) => {
   return data;
 };
 
+const exportarDocumentosCadastrais = async ({ filters }) => {
+  const { data } = await api.get("/documentos-cadastrais/exportar", {
+    params: filters,
+  });
+  return data;
+};
+
 const listarDocumentosCadastraisPorPrestador = async ({
   prestadorId,
   dataRegistro,
@@ -123,4 +130,5 @@ export const DocumentosCadastraisService = {
   importarDocumentosCadastrais,
   aprovarDocumentoCadastral,
   reprovarDocumentoCadastral,
+  exportarDocumentosCadastrais,
 };

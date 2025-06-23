@@ -55,7 +55,6 @@ const importarServicos = async ({ files }) => {
 
 const exportarServicos = async ({ filters }) => {
   const response = await api.get("/servicos/exportar", { params: filters });
-
   return response;
 };
 

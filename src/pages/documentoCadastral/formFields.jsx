@@ -48,15 +48,15 @@ export const createDynamicFormFields = () => {
       validation: z.string().optional(),
       colSpan: 4,
     },
+    // {
+    //   accessorKey: "observacaoPrestador",
+    //   label: "Observação Prestador",
+    //   render: DefaultField,
+    //   validation: z.string().optional(),
+    //   colSpan: 4,
+    // },
     {
-      accessorKey: "observacaoPrestador",
-      label: "Observação Prestador",
-      render: DefaultField,
-      validation: z.string().optional(),
-      colSpan: 4,
-    },
-    {
-      accessorKey: "observacaoInterna",
+      accessorKey: "observacao",
       label: "Observação",
       render: DefaultField,
       validation: z.string().optional(),
