@@ -4,18 +4,20 @@ import { SelectListaField } from "../../components/buildForm/filds/selectListaFi
 import { CurrencyField } from "../../components/buildForm/filds/currencyField";
 import { currencyValidation, dateValidation } from "../../utils/zodHelpers";
 import { DateField } from "../../components/buildForm/filds/dateField";
+import { SelectPrestadorField } from "../../components/buildForm/filds/selectPrestadorField";
 
 export const createDynamicFormFields = () => {
   return [
-    // {
-    //   accessorKey: "nome",
-    //   label: "Nome Completo",
-    //   render: DefaultField,
-    //   validation: z.coerce
-    //     .string()
-    //     .min(3, { message: "Nome precisa ter pelo menos 3 caracteres" }),
-    //   colSpan: 2,
-    // },
+    {
+      accessorKey: "pessoa",
+      label: "Cliente ou prestador",
+      render: SelectPrestadorField,
+      validation: z.object(
+        { label: z.string(), value: z.string() },
+        { message: "Prestador é obrigatório" }
+      ),
+      colSpan: 2,
+    },
     {
       accessorKey: "tipoServicoTomado",
       label: "Tipo de servico tomado",

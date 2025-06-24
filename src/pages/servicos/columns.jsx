@@ -8,6 +8,7 @@ import { DateCell } from "../../components/dataGrid/cells/dateCell";
 import { ServicosDialog } from "./dialog";
 import { DeleteServicoAction } from "../../components/dataGrid/actions/deleteServicoButton";
 import { formatDateToDDMMYYYY } from "../../utils/formatting";
+import { SelectPrestadorCell } from "../../components/dataGrid/cells/selectPrestador";
 
 export const makeDynamicColumns = () => {
   return [
@@ -31,6 +32,17 @@ export const makeDynamicColumns = () => {
           />
         </TableActionsCell>
       ),
+    },
+    {
+      accessorKey: "pessoa",
+      header: "Cliente ou prestador",
+      enableSorting: false,
+      cell: SelectPrestadorCell,
+      enableColumnFilter: true,
+      meta: {
+        filterVariant: "selectPrestador",
+        filterKey: "pessoa",
+      },
     },
     {
       accessorKey: "tipoServicoTomado",
