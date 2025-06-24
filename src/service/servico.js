@@ -5,10 +5,8 @@ const listarServicos = async ({ filters }) => {
   return data;
 };
 
-const listarServicosPorPrestador = async ({ prestadorId, dataRegistro }) => {
-  const { data } = await api.get(
-    `/servicos/prestador/${prestadorId}?dataRegistro=${dataRegistro}`
-  );
+const listarServicosPorPessoa = async ({ pessoaId }) => {
+  const { data } = await api.get(`/servicos/pessoa/${pessoaId}`);
   return data;
 };
 
@@ -59,6 +57,6 @@ export const ServicoService = {
   atualizarServico,
   importarServicos,
   deletarServico,
-  listarServicosPorPrestador,
+  listarServicosPorPessoa,
   exportarServicos,
 };

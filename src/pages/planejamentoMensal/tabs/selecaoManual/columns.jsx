@@ -72,22 +72,22 @@ export const makeServicoDynamicColumns = () => {
       },
     },
     {
-      accessorKey: "tipoDocumentoFiscal",
-      header: "Documento fiscal",
+      accessorKey: "tipoServicoTomado",
+      header: "Tipo de serviço",
       enableSorting: false,
       cell: (props) => (
         <Flex minH="8">
           <Text alignSelf="center" fontSize="sm" truncate>
-            {props.getValue()?.toUpperCase()}
+            {props.getValue()}
           </Text>
         </Flex>
       ),
       size: 120,
       enableColumnFilter: true,
       meta: {
-        filterKey: "tipoDocumentoFiscal",
+        filterKey: "tipoServicoTomado",
         filterVariant: "selectLista",
-        cod: "tipo-documento-fiscal",
+        cod: "tipo-servico-tomado",
       },
     },
     // {
@@ -124,6 +124,32 @@ export const makeServicoDynamicColumns = () => {
     //     ],
     //   },
     // },
+    {
+      accessorKey: "dataContratacao",
+      header: "Data contratação",
+      cell: (props) => (
+        <Flex minH="8">
+          <Text alignSelf="center" fontSize="sm" truncate>
+            {formatDateToDDMMYYYY(props.getValue())}
+          </Text>
+        </Flex>
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "dataContratacao" },
+    },
+    {
+      accessorKey: "dataConclusao",
+      header: "Data Conclusão",
+      cell: (props) => (
+        <Flex minH="8">
+          <Text alignSelf="center" fontSize="sm" truncate>
+            {formatDateToDDMMYYYY(props.getValue())}
+          </Text>
+        </Flex>
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "dataConclusao" },
+    },
     {
       accessorKey: "valor",
       header: "Valor total",

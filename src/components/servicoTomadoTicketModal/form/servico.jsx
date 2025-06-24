@@ -16,17 +16,14 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
   const { requestConfirmation } = useConfirmation();
 
   const { data, refetch } = useQuery({
-    queryKey: [
-      "listar-servicos-prestador",
-      {
-        prestadorId: ticket?.prestador?._id,
-        dataRegistro: ticket?.dataRegistro,
-      },
-    ],
-    queryFn: async () => await ServicoService.listarServicos({ filters: {} }),
+    queryKey: ["listar-servicos-pessoa", { pessoaId: ticket?.pessoa?._id }],
+    queryFn: async () =>
+      await ServicoService.listarServicosPorPessoa({
+        pessoaId: ticket?.pessoa?._id,
+      }),
   });
 
-  const options = data?.results?.map((e) => ({
+  const options = data?.servicos?.map((e) => ({
     label: `${e?.tipoServicoTomado ?? ""} ${
       e?.descricao ?? ""
     } ${currency.format(e?.valor ?? 0)}`,

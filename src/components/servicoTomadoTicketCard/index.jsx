@@ -135,7 +135,7 @@ const _TicketCard = ({ ticket }) => {
               <Flex alignItems="center" gap="2">
                 <Badge>
                   <Text fontSize="xs">
-                    {ticketTypeCarMap[ticket?.prestador?.tipo]}
+                    {ticketTypeCarMap[ticket?.pessoa?.tipo]}
                   </Text>
                 </Badge>
                 <Tooltip
@@ -188,7 +188,7 @@ const _TicketCard = ({ ticket }) => {
                     </Text>
                   </Flex>
                 </Tooltip>
-                <Tooltip
+                {/* <Tooltip
                   showArrow
                   content={
                     <DocumentosFiscaisCard
@@ -216,7 +216,7 @@ const _TicketCard = ({ ticket }) => {
                       {ticket?.documentosFiscais?.length ?? 0}
                     </Text>
                   </Flex>
-                </Tooltip>
+                </Tooltip> */}
               </Flex>
               <Text
                 h="15px"
