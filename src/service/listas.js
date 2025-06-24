@@ -10,7 +10,13 @@ const getListas = async () => {
   return data;
 };
 
+const getCodigos = async () => {
+  const { data } = await api.get(`/listas/codigos`);
+  return data?.codigos;
+};
+
 export const ListaService = {
-  getListByCode,
   getListas,
+  getCodigos,
+  getListByCode,
 };
