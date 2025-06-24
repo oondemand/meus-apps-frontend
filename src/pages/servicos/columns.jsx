@@ -22,12 +22,10 @@ export const makeDynamicColumns = () => {
             label="Serviço"
             defaultValues={{
               ...props.row.original,
-              dataContratacao: formatDateToDDMMYYYY(
-                props.row.original?.dataContratacao
-              ),
-              dataConclusao: formatDateToDDMMYYYY(
-                props.row.original?.dataConclusao
-              ),
+              pessoa: {
+                label: `${props.row.original?.pessoa?.nome}-${props.row.original?.pessoa?.documento}`,
+                value: props.row.original?.pessoa?._id,
+              },
             }}
           />
         </TableActionsCell>

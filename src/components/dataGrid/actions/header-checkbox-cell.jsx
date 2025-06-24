@@ -1,22 +1,27 @@
 import { Checkbox, Flex } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster";
 import { useMutation } from "@tanstack/react-query";
-import { ServicoService } from "../../../service/servico";
+import { PlanejamentoService } from "../../../service/planejamento";
 import { queryClient } from "../../../config/react-query";
 
 export const HeaderCheckActionCell = ({ ...props }) => {
   const data = props.table.options?.data;
 
   const checked = !data?.some(
-    (servico) => !["pendente", "processando"].includes(servico?.status)
+    (servico) =>
+      !["pendente", "processando"].includes(servico?.statusProcessamento)
   );
 
   const { mutateAsync: updateServicesStatus, isPending } = useMutation({
-    mutationFn: async ({ ids, status }) =>
-      await ServicoService.atualizarStatus({ ids, status }),
+    mutationFn: async ({ ids, statusProcessamento }) =>
+      await PlanejamentoService.processarMultiplosServicos({
+        ids,
+        statusProcessamento,
+      }),
     onError: (error) => {
       toaster.create({
         title: "Ouve um erro inesperado ao realizar operação!",
+        description: error?.response?.data?.message,
         type: "error",
       });
     },
@@ -25,20 +30,23 @@ export const HeaderCheckActionCell = ({ ...props }) => {
   const handleCheckChange = async (e) => {
     if (checked) {
       const servicesToUpdate = data.filter(
-        (servico) => servico?.status === "pendente"
-      );
-
-      await updateServicesStatus({ ids: servicesToUpdate, status: "aberto" });
-    }
-
-    if (!checked) {
-      const servicesToUpdate = data.filter(
-        (servico) => servico?.status === "aberto"
+        (servico) => servico?.statusProcessamento === "pendente"
       );
 
       await updateServicesStatus({
         ids: servicesToUpdate,
-        status: "pendente",
+        statusProcessamento: "aberto",
+      });
+    }
+
+    if (!checked) {
+      const servicesToUpdate = data.filter(
+        (servico) => servico?.statusProcessamento === "aberto"
+      );
+
+      await updateServicesStatus({
+        ids: servicesToUpdate,
+        statusProcessamento: "pendente",
       });
     }
 

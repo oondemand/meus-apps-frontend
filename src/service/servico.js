@@ -26,11 +26,6 @@ const atualizarServico = async ({ id, body, origem }) => {
   return data;
 };
 
-const atualizarStatus = async ({ ids, status }) => {
-  const { data } = await api.patch(`servicos`, { ids, status });
-  return data;
-};
-
 const deletarServico = async ({ id, origem }) => {
   const { data } = await api.delete(`servicos/${id}`, {
     headers: { "x-origem": origem },
@@ -65,6 +60,5 @@ export const ServicoService = {
   importarServicos,
   deletarServico,
   listarServicosPorPrestador,
-  atualizarStatus,
   exportarServicos,
 };

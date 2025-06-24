@@ -16,7 +16,7 @@ export const makeServicoDynamicColumns = () => {
       cell: (props) => <CheckActionCell {...props} />,
     },
     {
-      accessorKey: "prestador.nome",
+      accessorKey: "pessoa.nome",
       header: "Nome",
       enableSorting: false,
       cell: (props) => (
@@ -29,12 +29,11 @@ export const makeServicoDynamicColumns = () => {
       size: 400,
       enableColumnFilter: true,
       meta: {
-        filterKey: "prestador.nome",
+        filterKey: "pessoa.nome",
       },
     },
-
     {
-      accessorKey: "prestador.documento",
+      accessorKey: "pessoa.documento",
       header: "Documento",
       enableSorting: false,
       cell: (props) => (
@@ -46,11 +45,11 @@ export const makeServicoDynamicColumns = () => {
       ),
       enableColumnFilter: true,
       meta: {
-        filterKey: "prestador.documento",
+        filterKey: "pessoa.documento",
       },
     },
     {
-      accessorKey: "prestador.tipo",
+      accessorKey: "pessoa.tipo",
       header: "Tipo",
       enableSorting: false,
       cell: (props) => (
@@ -63,7 +62,7 @@ export const makeServicoDynamicColumns = () => {
       size: 120,
       enableColumnFilter: true,
       meta: {
-        filterKey: "prestador.tipo",
+        filterKey: "pessoa.tipo",
         filterVariant: "select",
         filterOptions: [
           { label: "PJ", value: "pj" },
@@ -91,40 +90,40 @@ export const makeServicoDynamicColumns = () => {
         cod: "tipo-documento-fiscal",
       },
     },
-    {
-      accessorKey: "competencia",
-      header: "Competência",
-      enableSorting: false,
-      cell: (props) => (
-        <Flex minH="8">
-          <Text alignSelf="center" fontSize="sm" truncate>
-            {props.getValue()?.mes?.toString()?.padStart(2, "0")}/
-            {props.getValue()?.ano}
-          </Text>
-        </Flex>
-      ),
-      enableColumnFilter: true,
-      meta: {
-        filterKey: "competencia",
-        filterVariant: "competencia",
-      },
-    },
-    {
-      accessorKey: "status",
-      header: "Status",
-      enableSorting: false,
-      cell: DefaultCell,
-      enableColumnFilter: true,
-      meta: {
-        filterKey: "status",
-        filterVariant: "select",
-        filterOptions: [
-          { label: "Em aberto", value: "aberto" },
-          { label: "Pendente", value: "pendente" },
-          { label: "Processando", value: "processando" },
-        ],
-      },
-    },
+    // {
+    //   accessorKey: "competencia",
+    //   header: "Competência",
+    //   enableSorting: false,
+    //   cell: (props) => (
+    //     <Flex minH="8">
+    //       <Text alignSelf="center" fontSize="sm" truncate>
+    //         {props.getValue()?.mes?.toString()?.padStart(2, "0")}/
+    //         {props.getValue()?.ano}
+    //       </Text>
+    //     </Flex>
+    //   ),
+    //   enableColumnFilter: true,
+    //   meta: {
+    //     filterKey: "competencia",
+    //     filterVariant: "competencia",
+    //   },
+    // },
+    // {
+    //   accessorKey: "status",
+    //   header: "Status",
+    //   enableSorting: false,
+    //   cell: DefaultCell,
+    //   enableColumnFilter: true,
+    //   meta: {
+    //     filterKey: "status",
+    //     filterVariant: "select",
+    //     filterOptions: [
+    //       { label: "Em aberto", value: "aberto" },
+    //       { label: "Pendente", value: "pendente" },
+    //       { label: "Processando", value: "processando" },
+    //     ],
+    //   },
+    // },
     {
       accessorKey: "valor",
       header: "Valor total",

@@ -19,8 +19,27 @@ const estatisticas = async () => {
   return data;
 };
 
+const processarMultiplosServicos = async ({ ids, statusProcessamento }) => {
+  const { data } = await api.post(`/planejamento/processar-servicos`, {
+    ids,
+    statusProcessamento,
+  });
+  return data;
+};
+
+const processarServico = async ({ id, body }) => {
+  const { data } = await api.post(
+    `/planejamento/processar-servico/${id}`,
+    body
+  );
+
+  return data;
+};
+
 export const PlanejamentoService = {
   sincronizarEsteira,
   listarServicos,
   estatisticas,
+  processarMultiplosServicos,
+  processarServico,
 };

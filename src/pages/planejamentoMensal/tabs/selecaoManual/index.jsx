@@ -36,7 +36,7 @@ export const SelecaoManualTab = () => {
       >
         <DataGrid
           title="Serviços"
-          data={data?.servicos || []}
+          data={data?.results || []}
           striped={false}
           table={table}
           rowCount={data?.pagination?.totalItems}
