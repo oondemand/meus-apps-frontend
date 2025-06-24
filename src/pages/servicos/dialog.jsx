@@ -15,7 +15,7 @@ import { ORIGENS } from "../../constants/origens";
 
 export const ServicosDialog = ({
   defaultValues = null,
-  label = "Adicionar",
+  label = "Adicionar servico",
 }) => {
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
@@ -49,7 +49,11 @@ export const ServicosDialog = ({
   return (
     <Box>
       <Box onClick={() => setOpen(true)} asChild>
-        {defaultValues ? <IconTrigger /> : <DefaultTrigger title="Adicionar" />}
+        {defaultValues ? (
+          <IconTrigger />
+        ) : (
+          <DefaultTrigger title="Adicionar servico" />
+        )}
       </Box>
       <FormDialog
         data={data}
