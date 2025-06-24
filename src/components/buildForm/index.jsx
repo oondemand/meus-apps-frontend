@@ -140,12 +140,18 @@ export const BuildForm = ({
                   <Box
                     border="1px dashed"
                     borderColor="gray.200"
-                    borderRadius="md"
-                    py="6"
+                    borderRadius="lg"
+                    pt="5"
+                    pb="6"
                     px="6"
                   >
                     {fieldOrGroup.label && (
-                      <Text fontWeight="bold" mb={4}>
+                      <Text
+                        fontWeight="semibold"
+                        fontSize="md"
+                        color="gray.600"
+                        mb="6"
+                      >
                         {fieldOrGroup.label}
                       </Text>
                     )}

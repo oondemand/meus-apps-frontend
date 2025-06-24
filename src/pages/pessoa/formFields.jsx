@@ -12,8 +12,7 @@ import { Break } from "../../components/buildForm/components/break";
 export const createDynamicFormFields = () => {
   return [
     {
-      label: "Pessoa",
-      wrapperComponent: Break,
+      label: "Detalhes do cliente/prestador",
       group: [
         {
           accessorKey: "nome",
@@ -32,26 +31,25 @@ export const createDynamicFormFields = () => {
           colSpan: 2,
           options: TIPO_PESSOA_OPTIONS,
         },
+        {
+          accessorKey: "documento",
+          label: "Documento",
+          render: CpfCnpjField,
+          validation: z
+            .string({ message: "Documento é um campo obrigatório" })
+            .nonempty({ message: "Documento é um campo obrigatório" })
+            .transform((value) => value.replace(/\D/g, "")),
+          colSpan: 1,
+        },
+        {
+          accessorKey: "grupo",
+          label: "Grupo",
+          render: SelectListaField,
+          cod: "grupo",
+          validation: z.string().optional(),
+          colSpan: 1,
+        },
       ],
-    },
-
-    {
-      accessorKey: "documento",
-      label: "Documento",
-      render: CpfCnpjField,
-      validation: z
-        .string({ message: "Documento é um campo obrigatório" })
-        .nonempty({ message: "Documento é um campo obrigatório" })
-        .transform((value) => value.replace(/\D/g, "")),
-      colSpan: 1,
-    },
-    {
-      accessorKey: "grupo",
-      label: "Grupo",
-      render: SelectListaField,
-      cod: "grupo",
-      validation: z.string().optional(),
-      colSpan: 1,
     },
   ];
 };

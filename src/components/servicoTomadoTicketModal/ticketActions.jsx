@@ -91,7 +91,6 @@ export const TicketActions = ({ ticketId, etapa }) => {
     }
   };
 
-  const ultimaEtapa = etapas[etapas.length - 1]?.codigo;
   const primeiraEtapa = etapas[0]?.codigo;
 
   return (
@@ -102,7 +101,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
             await aproveTicketMutation();
             setOpen(false);
           }}
-          disabled={etapa === ultimaEtapa || isAprovePending}
+          disabled={isAprovePending}
           variant="surface"
           shadow="xs"
           colorPalette="green"
@@ -111,9 +110,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
           <Check /> Aprovar
         </Button>
         <Button
-          disabled={
-            etapa === primeiraEtapa || etapa == ultimaEtapa || isReprovePending
-          }
+          disabled={etapa === primeiraEtapa || isReprovePending}
           onClick={async (e) => {
             await reproveTicketMutation();
             setOpen(false);

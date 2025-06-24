@@ -9,50 +9,60 @@ import { SelectPrestadorField } from "../../components/buildForm/filds/selectPre
 export const createDynamicFormFields = () => {
   return [
     {
-      accessorKey: "pessoa",
-      label: "Cliente ou prestador",
-      render: SelectPrestadorField,
-      validation: z.object(
-        { label: z.string(), value: z.string() },
-        { message: "Prestador é obrigatório" }
-      ),
-      colSpan: 2,
+      label: "Detalhes do serviço",
+      group: [
+        {
+          accessorKey: "pessoa",
+          label: "Cliente ou prestador",
+          render: SelectPrestadorField,
+          validation: z.object(
+            { label: z.string(), value: z.string() },
+            { message: "Prestador é obrigatório" }
+          ),
+          colSpan: 2,
+        },
+        {
+          accessorKey: "tipoServicoTomado",
+          label: "Tipo de servico tomado",
+          render: SelectListaField,
+          cod: "tipo-servico-tomado",
+          validation: z.string().optional(),
+          colSpan: 1,
+        },
+        {
+          accessorKey: "valor",
+          label: "Valor",
+          render: CurrencyField,
+          validation: currencyValidation,
+          colSpan: 1,
+        },
+      ],
     },
     {
-      accessorKey: "tipoServicoTomado",
-      label: "Tipo de servico tomado",
-      render: SelectListaField,
-      cod: "tipo-servico-tomado",
-      validation: z.string().optional(),
-      colSpan: 1,
-    },
-    {
-      accessorKey: "valor",
-      label: "Valor",
-      render: CurrencyField,
-      validation: currencyValidation,
-      colSpan: 1,
-    },
-    {
-      accessorKey: "dataContratacao",
-      label: "Data contratação",
-      render: DateField,
-      validation: dateValidation,
-      colSpan: 1,
-    },
-    {
-      accessorKey: "dataConclusao",
-      label: "Data Conclusão",
-      render: DateField,
-      validation: dateValidation,
-      colSpan: 1,
-    },
-    {
-      accessorKey: "descricao",
-      label: "Descrição",
-      render: DefaultField,
-      validation: z.string().optional(),
-      colSpan: 4,
+      label: "Informações adicionais",
+      group: [
+        {
+          accessorKey: "dataContratacao",
+          label: "Data contratação",
+          render: DateField,
+          validation: dateValidation,
+          colSpan: 1,
+        },
+        {
+          accessorKey: "dataConclusao",
+          label: "Data Conclusão",
+          render: DateField,
+          validation: dateValidation,
+          colSpan: 1,
+        },
+        {
+          accessorKey: "descricao",
+          label: "Descrição",
+          render: DefaultField,
+          validation: z.string().optional(),
+          colSpan: 2,
+        },
+      ],
     },
   ];
 };

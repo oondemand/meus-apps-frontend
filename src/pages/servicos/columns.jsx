@@ -19,7 +19,7 @@ export const makeDynamicColumns = () => {
         <TableActionsCell>
           <DeleteServicoAction id={props.row.original?._id} />
           <ServicosDialog
-            label="Servico"
+            label="Serviço"
             defaultValues={{
               ...props.row.original,
               dataContratacao: formatDateToDDMMYYYY(

@@ -38,8 +38,13 @@ export const ServicosDialog = ({
   });
 
   const onSubmit = async (values) => {
-    if (!data) return await createServico.mutateAsync({ body: values });
-    return await updateServico.mutateAsync({ body: values, id: data._id });
+    const body = {
+      ...values,
+      pessoa: values?.pessoa?.value,
+    };
+
+    if (!data) return await createServico.mutateAsync({ body });
+    return await updateServico.mutateAsync({ body, id: data._id });
   };
 
   useEffect(() => {
@@ -49,11 +54,7 @@ export const ServicosDialog = ({
   return (
     <Box>
       <Box onClick={() => setOpen(true)} asChild>
-        {defaultValues ? (
-          <IconTrigger />
-        ) : (
-          <DefaultTrigger title="Adicionar servico" />
-        )}
+        {defaultValues ? <IconTrigger /> : <DefaultTrigger />}
       </Box>
       <FormDialog
         data={data}

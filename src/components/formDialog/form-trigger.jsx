@@ -27,7 +27,7 @@ export const DefaultTrigger = forwardRef(({ title, ...rest }, ref) => {
       _hover={{ backgroundColor: "gray.50" }}
       {...rest}
     >
-      {title}
+      {title ?? "Adicionar"}
     </Button>
   );
 });
