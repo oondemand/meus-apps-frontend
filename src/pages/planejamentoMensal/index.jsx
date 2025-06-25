@@ -54,10 +54,11 @@ export function PlanejamentoMensal() {
                 </Text>
                 <Text fontWeight="semibold" fontSize="3xl" color="brand.500">
                   {currency.format(
-                    (data?.estatisticas?.find((e) => e.status === "pendente")
-                      ?.total ?? 0) +
+                    (data?.estatisticas?.find(
+                      (e) => e.statusProcessamento === "pendente"
+                    )?.total ?? 0) +
                       (data?.estatisticas?.find(
-                        (e) => e.status === "processando"
+                        (e) => e.statusProcessamento === "processando"
                       )?.total ?? 0)
                   )}
                 </Text>
@@ -69,8 +70,9 @@ export function PlanejamentoMensal() {
                 </Text>
                 <Text fontWeight="semibold" fontSize="3xl" color="brand.500">
                   {currency.format(
-                    data?.estatisticas?.find((e) => e.status === "pendente")
-                      ?.total ?? 0
+                    data?.estatisticas?.find(
+                      (e) => e.statusProcessamento === "pendente"
+                    )?.total ?? 0
                   )}
                 </Text>
               </Box>
@@ -92,10 +94,12 @@ export function PlanejamentoMensal() {
                 Quantidade de Serviços
               </Text>
               <Text fontWeight="semibold" fontSize="3xl" color="brand.500">
-                {(data?.estatisticas?.find((e) => e.status === "pendente")
-                  ?.count ?? 0) +
-                  (data?.estatisticas?.find((e) => e.status === "processando")
-                    ?.count ?? 0)}
+                {(data?.estatisticas?.find(
+                  (e) => e.statusProcessamento === "pendente"
+                )?.count ?? 0) +
+                  (data?.estatisticas?.find(
+                    (e) => e.statusProcessamento === "processando"
+                  )?.count ?? 0)}
               </Text>
             </Box>
 
@@ -104,8 +108,9 @@ export function PlanejamentoMensal() {
                 Serviços pendentes
               </Text>
               <Text fontWeight="semibold" fontSize="3xl" color="brand.500">
-                {data?.estatisticas?.find((e) => e.status === "pendente")
-                  ?.count ?? 0}
+                {data?.estatisticas?.find(
+                  (e) => e.statusProcessamento === "pendente"
+                )?.count ?? 0}
               </Text>
             </Box>
 
@@ -114,10 +119,12 @@ export function PlanejamentoMensal() {
                 Quantidade de Prestadores
               </Text>
               <Text fontWeight="semibold" fontSize="3xl" color="brand.500">
-                {(data?.estatisticas?.find((e) => e.status === "pendente")
-                  ?.pessoasCount ?? 0) +
-                  (data?.estatisticas?.find((e) => e.status === "processando")
-                    ?.pessoasCount ?? 0)}
+                {(data?.estatisticas?.find(
+                  (e) => e.statusProcessamento === "pendente"
+                )?.pessoasCount ?? 0) +
+                  (data?.estatisticas?.find(
+                    (e) => e.statusProcessamento === "processando"
+                  )?.pessoasCount ?? 0)}
               </Text>
             </Box>
           </Flex>
