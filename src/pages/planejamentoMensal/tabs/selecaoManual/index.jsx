@@ -11,7 +11,6 @@ export const SelecaoManualTab = () => {
   const { filters, table } = useDataGrid({
     columns,
     key: "PLANEJAMENTO_MENSAL",
-    enableColumnResizing: false,
     globalFilter: false,
   });
 

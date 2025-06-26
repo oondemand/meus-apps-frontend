@@ -16,59 +16,20 @@ export const makeServicoDynamicColumns = () => {
       cell: (props) => <CheckActionCell {...props} />,
     },
     {
-      accessorKey: "pessoa.nome",
-      header: "Nome",
+      accessorKey: "pessoa",
+      header: "Cliente ou prestador",
       enableSorting: false,
       cell: (props) => (
         <Flex minH="8">
           <Text alignSelf="center" fontSize="sm" truncate>
-            {props.getValue()}
-          </Text>
-        </Flex>
-      ),
-      size: 400,
-      enableColumnFilter: true,
-      meta: {
-        filterKey: "pessoa.nome",
-      },
-    },
-    {
-      accessorKey: "pessoa.documento",
-      header: "Documento",
-      enableSorting: false,
-      cell: (props) => (
-        <Flex minH="8">
-          <Text alignSelf="center" fontSize="sm" truncate>
-            {props.getValue()}
+            {props.getValue()?.nome} - {props.getValue()?.documento}
           </Text>
         </Flex>
       ),
       enableColumnFilter: true,
       meta: {
-        filterKey: "pessoa.documento",
-      },
-    },
-    {
-      accessorKey: "pessoa.tipo",
-      header: "Tipo",
-      enableSorting: false,
-      cell: (props) => (
-        <Flex minH="8">
-          <Text alignSelf="center" fontSize="sm" truncate>
-            {props.getValue()?.toUpperCase()}
-          </Text>
-        </Flex>
-      ),
-      size: 120,
-      enableColumnFilter: true,
-      meta: {
-        filterKey: "pessoa.tipo",
-        filterVariant: "select",
-        filterOptions: [
-          { label: "PJ", value: "pj" },
-          { label: "PF", value: "pf" },
-          { label: "EXT", value: "ext" },
-        ],
+        filterVariant: "selectPrestador",
+        filterKey: "pessoa",
       },
     },
     {
@@ -82,7 +43,6 @@ export const makeServicoDynamicColumns = () => {
           </Text>
         </Flex>
       ),
-      size: 120,
       enableColumnFilter: true,
       meta: {
         filterKey: "tipoServicoTomado",
