@@ -26,11 +26,18 @@ export function Listas() {
   const { data } = useQuery({
     queryKey: ["listas"],
     queryFn: ListaService.getListas,
+    staleTime: 1000 * 60 * 10, // 10 min
+  });
+
+  const { data: codigos } = useQuery({
+    queryKey: ["listas-codigo"],
+    queryFn: ListaService.getCodigos,
+    staleTime: 1000 * 60 * 10, // 10 min
   });
 
   const { mutateAsync: onAddItemMutation } = useMutation({
-    mutationFn: async ({ id, values }) =>
-      await api.post(`listas/${id}`, values, {
+    mutationFn: async ({ codigo, values }) =>
+      await api.post(`listas/${codigo}`, values, {
         headers: {
           "x-origem": ORIGENS.FORM,
         },
@@ -51,8 +58,8 @@ export function Listas() {
   });
 
   const { mutateAsync: onDeleteItemMutation } = useMutation({
-    mutationFn: async ({ id, itemId }) =>
-      await api.delete(`listas/${id}/${itemId}`, {
+    mutationFn: async ({ codigo, itemId }) =>
+      await api.delete(`listas/${codigo}/${itemId}`, {
         headers: {
           "x-origem": ORIGENS.FORM,
         },
@@ -73,9 +80,9 @@ export function Listas() {
   });
 
   const { mutateAsync: onUpdateItemMutation } = useMutation({
-    mutationFn: async ({ id, itemId, key, value }) =>
+    mutationFn: async ({ codigo, itemId, key, value }) =>
       await api.put(
-        `listas/${id}`,
+        `listas/${codigo}`,
         {
           itemId,
           [key]: value,
@@ -101,14 +108,14 @@ export function Listas() {
     },
   });
 
-  const handleDeleteLista = async ({ id, itemId }) => {
+  const handleDeleteLista = async ({ codigo, itemId }) => {
     const { action } = await requestConfirmation({
       title: "Tem certeza que deseja remover item ?",
       description: "Essa operação não pode ser desfeita!",
     });
 
     if (action === "confirmed") {
-      await onDeleteItemMutation({ id, itemId });
+      await onDeleteItemMutation({ codigo, itemId });
     }
   };
 
@@ -127,16 +134,12 @@ export function Listas() {
           shadow="sm"
         >
           <Tabs.List>
-            {data &&
-              data?.listas?.length > 0 &&
-              data.listas.map((item) => (
-                <Tabs.Trigger
-                  color="gray.500"
-                  value={item?.codigo}
-                  key={item?.codigo}
-                >
-                  {item?.codigo.charAt(0).toUpperCase() +
-                    item?.codigo.slice(1).replace(/[-_]/g, " ")}
+            {codigos &&
+              codigos?.length > 0 &&
+              codigos.map((codigo) => (
+                <Tabs.Trigger color="gray.500" value={codigo} key={codigo}>
+                  {codigo.charAt(0).toUpperCase() +
+                    codigo.slice(1).replace(/[-_]/g, " ")}
                 </Tabs.Trigger>
               ))}
 
@@ -144,10 +147,10 @@ export function Listas() {
               Omie
             </Tabs.Trigger>
           </Tabs.List>
-          {data &&
-            data?.listas?.length > 0 &&
-            data.listas.map((lista) => (
-              <Tabs.Content key={lista?.codigo} value={lista?.codigo} p="0">
+          {codigos &&
+            codigos?.length > 0 &&
+            codigos?.map((codigo) => (
+              <Tabs.Content key={codigo} value={codigo} p="0">
                 <Box
                   px="6"
                   py="4"
@@ -158,12 +161,12 @@ export function Listas() {
                 >
                   <Flex alignItems="center" gap="4">
                     <Text fontSize="sm" fontWeight="medium" color="gray.700">
-                      {lista?.codigo.charAt(0).toUpperCase() +
-                        lista?.codigo.slice(1).replace(/[-_]/g, " ")}
+                      {codigo.charAt(0).toUpperCase() +
+                        codigo.slice(1).replace(/[-_]/g, " ")}
                     </Text>
                     <Button
                       onClick={() => {
-                        onAddItemMutation({ id: lista?._id, values: {} });
+                        onAddItemMutation({ codigo, values: {} });
                       }}
                       variant="subtle"
                       color="brand.500"
@@ -172,47 +175,51 @@ export function Listas() {
                       Adicionar item
                     </Button>
                   </Flex>
-                  {lista?.data.map((item) => (
-                    <Flex alignItems="center" gap="4" mt="2">
-                      <Input
-                        w="sm"
-                        size="sm"
-                        name="valor"
-                        color="gray.600"
-                        placeholder="Preencha o valor do item..."
-                        variant="flushed"
-                        fontSize="xs"
-                        defaultValue={item?.valor}
-                        key={item?._id}
-                        onBlur={async (ev) => {
-                          if (
-                            ev.target.value !== "" &&
-                            ev.target.defaultValue !== ev.target.value
-                          ) {
-                            await onUpdateItemMutation({
-                              itemId: item._id,
-                              id: lista._id,
-                              key: ev.target.name,
-                              value: ev.target.value,
-                            });
-                          }
-                        }}
-                      />
-                      <IconButton
-                        onClick={async () => {
-                          await handleDeleteLista({
-                            id: lista._id,
-                            itemId: item._id,
-                          });
-                        }}
-                        variant="subtle"
-                        colorPalette="red"
-                        size="2xs"
-                      >
-                        <Trash2 />
-                      </IconButton>
-                    </Flex>
-                  ))}
+
+                  {data &&
+                    data?.listas
+                      .find((e) => e?.codigo === codigo)
+                      ?.data?.map((item) => (
+                        <Flex alignItems="center" gap="4" mt="2">
+                          <Input
+                            w="sm"
+                            size="sm"
+                            name="valor"
+                            color="gray.600"
+                            placeholder="Preencha o valor do item..."
+                            variant="flushed"
+                            fontSize="xs"
+                            defaultValue={item?.valor}
+                            key={item?._id}
+                            onBlur={async (ev) => {
+                              if (
+                                ev.target.value !== "" &&
+                                ev.target.defaultValue !== ev.target.value
+                              ) {
+                                await onUpdateItemMutation({
+                                  itemId: item._id,
+                                  key: ev.target.name,
+                                  value: ev.target.value,
+                                  codigo,
+                                });
+                              }
+                            }}
+                          />
+                          <IconButton
+                            onClick={async () => {
+                              await handleDeleteLista({
+                                itemId: item._id,
+                                codigo,
+                              });
+                            }}
+                            variant="subtle"
+                            colorPalette="red"
+                            size="2xs"
+                          >
+                            <Trash2 />
+                          </IconButton>
+                        </Flex>
+                      ))}
                 </Box>
               </Tabs.Content>
             ))}

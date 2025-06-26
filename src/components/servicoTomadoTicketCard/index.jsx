@@ -3,15 +3,16 @@ import React, { memo, useState } from "react";
 
 import { ptBR } from "date-fns/locale";
 import { LucideListCheck, Paperclip, File } from "lucide-react";
-import { Tooltip } from "../../components/ui/tooltip";
+import { Tooltip } from "../ui/tooltip";
 
 import { ServicesCard } from "./servicesCard";
 import { AnexosCard } from "./arquivosCard";
 import { currency } from "../../utils/currency";
 
-import { TicketModal } from "../ticketModal";
+import { TicketModal } from "../servicoTomadoTicketModal";
 import { format } from "date-fns";
 import { DocumentosFiscaisCard } from "./documentosFiscaisCard";
+import { useListEtapas } from "../../hooks/api/etapas/useListEtapas";
 
 const BADGE_MAP = {
   pago: { color: "green", title: "Pago em" },
@@ -38,6 +39,9 @@ const _TicketCard = ({ ticket }) => {
     acc = acc + (curr?.valor ?? 0);
     return acc;
   }, 0);
+
+  const { etapas } = useListEtapas();
+  const ultimaEtapa = etapas?.[etapas?.length - 1]?.codigo;
 
   return (
     <Box>
@@ -131,7 +135,7 @@ const _TicketCard = ({ ticket }) => {
               <Flex alignItems="center" gap="2">
                 <Badge>
                   <Text fontSize="xs">
-                    {ticketTypeCarMap[ticket?.prestador?.tipo]}
+                    {ticketTypeCarMap[ticket?.pessoa?.tipo]}
                   </Text>
                 </Badge>
                 <Tooltip
@@ -184,7 +188,7 @@ const _TicketCard = ({ ticket }) => {
                     </Text>
                   </Flex>
                 </Tooltip>
-                <Tooltip
+                {/* <Tooltip
                   showArrow
                   content={
                     <DocumentosFiscaisCard
@@ -212,7 +216,7 @@ const _TicketCard = ({ ticket }) => {
                       {ticket?.documentosFiscais?.length ?? 0}
                     </Text>
                   </Flex>
-                </Tooltip>
+                </Tooltip> */}
               </Flex>
               <Text
                 h="15px"
@@ -233,7 +237,7 @@ const _TicketCard = ({ ticket }) => {
           defaultValue={ticket}
           open={open}
           setOpen={setOpen}
-          onlyReading={ticket?.etapa === "integracao-omie"}
+          onlyReading={ticket?.etapa === ultimaEtapa}
         />
       )}
     </Box>

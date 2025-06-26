@@ -6,7 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toaster } from "../../ui/toaster";
 import { CircleX, Download, Paperclip } from "lucide-react";
 import { FileUploadRoot, FileUploadTrigger } from "../../ui/file-upload";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { useConfirmation } from "../../../hooks/useConfirmation";
 import { saveAs } from "file-saver";
 
@@ -16,7 +16,7 @@ export const FilesForm = ({ onlyReading, defaultValues, ticketId }) => {
 
   const { mutateAsync: uploadFileMutation } = useMutation({
     mutationFn: async ({ files }) =>
-      await TicketService.uploadFiles({ ticketId, files }),
+      await ServicoTomadoTicketService.uploadFiles({ ticketId, files }),
     onSuccess: ({ data }) => {
       const { nomeOriginal, mimetype, size, tipo, _id } = data?.arquivos[0];
       setFiles((prev) => [
@@ -38,7 +38,7 @@ export const FilesForm = ({ onlyReading, defaultValues, ticketId }) => {
 
   const { mutateAsync: deleteFileMutation } = useMutation({
     mutationFn: async ({ id }) =>
-      await TicketService.deleteFile({ id, ticketId }),
+      await ServicoTomadoTicketService.deleteFile({ id, ticketId }),
     onSuccess: ({ data }) => {
       const filteredFiles = files.filter((e) => e?._id !== data?.arquivo?._id);
       setFiles(filteredFiles);
@@ -73,7 +73,7 @@ export const FilesForm = ({ onlyReading, defaultValues, ticketId }) => {
 
   const handleDownloadFile = async ({ id }) => {
     try {
-      const { data } = await TicketService.getFile({ id });
+      const { data } = await ServicoTomadoTicketService.getFile({ id });
 
       if (data) {
         const byteArray = new Uint8Array(data?.buffer?.data);

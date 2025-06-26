@@ -4,7 +4,7 @@ import { useColumnSizing } from "./useColumnSizing";
 import { sortByToState, stateToSortBy } from "../utils/sorting";
 
 /*Hook responsável por criar as configurações comuns do data grid */
-export const useDataGrid = ({ key, columns, exportModel, ...tableProps }) => {
+export const useDataGrid = ({ key, columns, ...tableProps }) => {
   const { filters, resetFilters, setFilters } = useFilters({ key });
   const { columnVisibility, setColumnVisibility } = useColumnVisibility({
     key,
@@ -36,7 +36,6 @@ export const useDataGrid = ({ key, columns, exportModel, ...tableProps }) => {
     setFilters,
     onFilterChange,
     columns,
-    exportModel,
     state: {
       pagination,
       sorting,

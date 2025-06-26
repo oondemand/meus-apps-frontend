@@ -1,17 +1,17 @@
 import { Checkbox, Flex } from "@chakra-ui/react";
 import { toaster } from "../../ui/toaster";
 import { useMutation } from "@tanstack/react-query";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { queryClient } from "../../../config/react-query";
 import { useConfirmation } from "../../../hooks/useConfirmation";
-import { useUpdateServico } from "../../../hooks/api/servico/useUpdateServico";
 import { ORIGENS } from "../../../constants/origens";
+import { PlanejamentoService } from "../../../service/planejamento";
 
 export const CheckActionCell = ({ ...props }) => {
   const { requestConfirmation } = useConfirmation();
 
   const checked = ["pendente", "processando"].includes(
-    props.row.original.status
+    props.row.original.statusProcessamento
   );
 
   const colorPalletMaps = {
@@ -22,28 +22,40 @@ export const CheckActionCell = ({ ...props }) => {
 
   const { mutateAsync: deleteServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.removerServico({
+      await ServicoTomadoTicketService.removerServico({
         servicoId,
         origem: ORIGENS.PLANEJAMENTO,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries(["listar-servicos"]);
     },
-    onError: ({}) => {
+    onError: (error) => {
       toaster.create({
         title: "Ouve um erro inesperado ao realizar operação!",
+        description: error?.response?.data?.message,
         type: "error",
       });
     },
   });
 
-  const updateServico = useUpdateServico({
+  const processarServico = useMutation({
+    mutationFn: async ({ id, body }) =>
+      await PlanejamentoService.processarServico({
+        id,
+        body,
+      }),
     onSuccess: () => queryClient.invalidateQueries(["listar-servicos"]),
-    origem: ORIGENS.PLANEJAMENTO,
+    onError: (error) => {
+      toaster.create({
+        title: "Ouve um erro inesperado ao realizar operação!",
+        description: error?.response?.data?.message,
+        type: "error",
+      });
+    },
   });
 
   const handleCheckChange = async (e) => {
-    if (props.row.original.status === "processando") {
+    if (props.row.original.statusProcessamento === "processando") {
       const { action } = await requestConfirmation({
         title: "Tem certeza ?",
         description: "Essa operação ira remover o serviço do ticket.",
@@ -56,17 +68,17 @@ export const CheckActionCell = ({ ...props }) => {
       }
     }
 
-    if (props.row.original.status === "aberto") {
-      return await updateServico.mutateAsync({
+    if (props.row.original.statusProcessamento === "aberto") {
+      return await processarServico.mutateAsync({
         id: props.row.original._id,
-        body: { status: "pendente" },
+        body: { statusProcessamento: "pendente" },
       });
     }
 
-    if (props.row.original.status === "pendente") {
-      return await updateServico.mutateAsync({
+    if (props.row.original.statusProcessamento === "pendente") {
+      return await processarServico.mutateAsync({
         id: props.row.original._id,
-        body: { status: "aberto" },
+        body: { statusProcessamento: "aberto" },
       });
     }
   };
@@ -74,11 +86,11 @@ export const CheckActionCell = ({ ...props }) => {
   return (
     <Flex w="full" placeContent="center">
       <Checkbox.Root
-        colorPalette={colorPalletMaps[props.row.original.status]}
+        colorPalette={colorPalletMaps[props.row.original.statusProcessamento]}
         variant="subtle"
         checked={checked}
         onChange={handleCheckChange}
-        disabled={updateServico.isPending}
+        disabled={processarServico.isPending}
         cursor="pointer"
         _disabled={{ cursor: "not-allowed" }}
       >

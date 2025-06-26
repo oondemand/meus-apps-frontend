@@ -15,7 +15,7 @@ import { ORIGENS } from "../../constants/origens";
 
 export const PessoasDialog = ({
   defaultValues = null,
-  label = "Adicionar",
+  label = "Adicionar cliente/prestador",
 }) => {
   const [data, setData] = useState(defaultValues);
   const [open, setOpen] = useState(false);
@@ -49,7 +49,7 @@ export const PessoasDialog = ({
   return (
     <Box>
       <Box onClick={() => setOpen(true)} asChild>
-        {defaultValues ? <IconTrigger /> : <DefaultTrigger title="Adicionar" />}
+        {defaultValues ? <IconTrigger /> : <DefaultTrigger />}
       </Box>
       <FormDialog
         data={data}

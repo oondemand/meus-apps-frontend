@@ -5,10 +5,8 @@ const listarServicos = async ({ filters }) => {
   return data;
 };
 
-const listarServicosPorPrestador = async ({ prestadorId, dataRegistro }) => {
-  const { data } = await api.get(
-    `/servicos/prestador/${prestadorId}?dataRegistro=${dataRegistro}`
-  );
+const listarServicosPorPessoa = async ({ pessoaId }) => {
+  const { data } = await api.get(`/servicos/pessoa/${pessoaId}`);
   return data;
 };
 
@@ -23,11 +21,6 @@ const atualizarServico = async ({ id, body, origem }) => {
   const { data } = await api.patch(`servicos/${id}`, body, {
     headers: { "x-origem": origem },
   });
-  return data;
-};
-
-const atualizarStatus = async ({ ids, status }) => {
-  const { data } = await api.patch(`servicos`, { ids, status });
   return data;
 };
 
@@ -55,7 +48,6 @@ const importarServicos = async ({ files }) => {
 
 const exportarServicos = async ({ filters }) => {
   const response = await api.get("/servicos/exportar", { params: filters });
-
   return response;
 };
 
@@ -65,7 +57,6 @@ export const ServicoService = {
   atualizarServico,
   importarServicos,
   deletarServico,
-  listarServicosPorPrestador,
-  atualizarStatus,
+  listarServicosPorPessoa,
   exportarServicos,
 };

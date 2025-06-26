@@ -1,7 +1,7 @@
 import { api } from "../config/api";
 
-const listarEtapasAtivas = async () => {
-  const { data } = await api.get("/etapas/ativas");
+const listarEtapasAtivasPorEsteira = async ({ esteira }) => {
+  const { data } = await api.get(`/etapas/ativas/${esteira}`);
   return data;
 };
 
@@ -40,6 +40,6 @@ export const EtapaService = {
   listarEtapas,
   alterarEtapa,
   adicionarEtapa,
-  listarEtapasAtivas,
+  listarEtapasAtivasPorEsteira,
   deletarEtapa,
 };

@@ -13,12 +13,9 @@ const useDebouncedLoadOptions = (delay = 700) => {
 
     timeoutRef.current = setTimeout(async () => {
       try {
-        const { data } = await api.get(
-          `/prestadores?searchTerm=${inputValue}`,
-          {
-            signal: abortControllerRef.current.signal,
-          }
-        );
+        const { data } = await api.get(`/pessoas?searchTerm=${inputValue}`, {
+          signal: abortControllerRef.current.signal,
+        });
 
         const options = data?.results.map((item) => ({
           ...item,
@@ -31,7 +28,7 @@ const useDebouncedLoadOptions = (delay = 700) => {
         callback(options);
       } catch (error) {
         if (error.name !== "AbortError") {
-          console.error("Erro na busca de prestadores:", error);
+          console.error("Erro na busca de pessoas:", error);
           callback([]);
         }
       }

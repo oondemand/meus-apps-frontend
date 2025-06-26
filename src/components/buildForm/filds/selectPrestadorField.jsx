@@ -11,7 +11,7 @@ export const SelectPrestadorField = ({ ...props }) => {
 
   const fetchPrestadores = async (inputValue) => {
     try {
-      const { data } = await api.get(`/prestadores?searchTerm=${inputValue}`, {
+      const { data } = await api.get(`/pessoas?searchTerm=${inputValue}`, {
         signal: abortControllerRef.current.signal,
       });
 
@@ -53,7 +53,7 @@ export const SelectPrestadorField = ({ ...props }) => {
   return (
     <Box>
       <Box>
-        <Text fontSize="sm">Prestador</Text>
+        <Text fontSize="sm">Cliente ou prestador</Text>
         <Controller
           name={props.field.name}
           control={props.methods.control}

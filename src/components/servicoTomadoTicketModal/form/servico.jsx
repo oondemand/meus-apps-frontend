@@ -1,13 +1,4 @@
-import {
-  Box,
-  Text,
-  Grid,
-  GridItem,
-  Button,
-  Table,
-  Flex,
-} from "@chakra-ui/react";
-
+import { Box, Text, Grid, GridItem, Button, Table } from "@chakra-ui/react";
 import { currency } from "../../../utils/currency";
 import { useEffect, useState } from "react";
 import { CircleX } from "lucide-react";
@@ -15,10 +6,9 @@ import { ServicoService } from "../../../service/servico";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toaster } from "../../ui/toaster";
 import { useConfirmation } from "../../../hooks/useConfirmation";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { Select } from "chakra-react-select";
 import { chakraStyles } from "./select-chakra-styles";
-import { formatDateToDDMMYYYY } from "../../../utils/formatting";
 import { ORIGENS } from "../../../constants/origens";
 
 export const ServicoForm = ({ ticket, onlyReading }) => {
@@ -26,36 +16,24 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
   const { requestConfirmation } = useConfirmation();
 
   const { data, refetch } = useQuery({
-    queryKey: [
-      "listar-servicos-prestador",
-      {
-        prestadorId: ticket?.prestador?._id,
-        dataRegistro: ticket?.dataRegistro,
-      },
-    ],
+    queryKey: ["listar-servicos-pessoa", { pessoaId: ticket?.pessoa?._id }],
     queryFn: async () =>
-      await ServicoService.listarServicosPorPrestador({
-        prestadorId: ticket?.prestador?._id,
-        dataRegistro: ticket?.dataRegistro ?? "",
+      await ServicoService.listarServicosPorPessoa({
+        pessoaId: ticket?.pessoa?._id,
       }),
   });
 
   const options = data?.servicos?.map((e) => ({
-    label: `${e?.tipoDocumentoFiscal ?? ""} COMP. ${e?.competencia?.mes
-      .toString()
-      .padStart(2, "0")}/${
-      e?.competencia?.ano
-    }   REGIST. ${formatDateToDDMMYYYY(
-      e?.dataRegistro,
-      "dd/MM/yyyy"
-    )} ${currency.format(e?.valor ?? 0)}`,
+    label: `${e?.tipoServicoTomado ?? ""} ${
+      e?.descricao ?? ""
+    } ${currency.format(e?.valor ?? 0)}`,
 
     value: e?._id,
   }));
 
   const { mutateAsync: deleteServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.removerServico({
+      await ServicoTomadoTicketService.removerServico({
         servicoId,
         origem: ORIGENS.ESTEIRA,
       }),
@@ -76,7 +54,7 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
 
   const { mutateAsync: addServicoMutation } = useMutation({
     mutationFn: async ({ servicoId }) =>
-      await TicketService.adicionarServico({
+      await ServicoTomadoTicketService.adicionarServico({
         ticketId: ticket?._id,
         servicoId,
         origem: ORIGENS.ESTEIRA,
@@ -145,14 +123,9 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
         />
         {!onlyReading && (
           <Box px="1" mt="8">
-            <Flex gap="4">
-              <Text color="gray.600" fontSize="sm">
-                Adicionar Serviço
-              </Text>
-              <Text color="gray.400" fontSize="xs">
-                {formatDateToDDMMYYYY(ticket?.dataRegistro)}
-              </Text>
-            </Flex>
+            <Text color="gray.600" fontSize="sm">
+              Adicionar Serviço
+            </Text>
             <Select
               disabled={!ticket}
               options={options}
@@ -176,9 +149,6 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
                 <Table.Row>
                   <Table.ColumnHeader />
                   <Table.ColumnHeader color="gray.500" fontSize="sm">
-                    Competência
-                  </Table.ColumnHeader>
-                  <Table.ColumnHeader color="gray.500" fontSize="sm">
                     Descrição
                   </Table.ColumnHeader>
                   <Table.ColumnHeader color="gray.500" fontSize="sm">
@@ -200,12 +170,6 @@ export const ServicoForm = ({ ticket, onlyReading }) => {
                         rounded="xs"
                       >
                         {servico?.tipoDocumentoFiscal}
-                      </Text>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Text fontSize="xs" color="gray.400">
-                        {servico?.competencia?.mes.toString().padStart(2, "0")}/
-                        {servico?.competencia?.ano}
                       </Text>
                     </Table.Cell>
                     <Table.Cell>

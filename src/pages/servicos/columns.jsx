@@ -8,6 +8,8 @@ import { DateCell } from "../../components/dataGrid/cells/dateCell";
 import { ServicosDialog } from "./dialog";
 import { DeleteServicoAction } from "../../components/dataGrid/actions/deleteServicoButton";
 import { formatDateToDDMMYYYY } from "../../utils/formatting";
+import { SelectPrestadorCell } from "../../components/dataGrid/cells/selectPrestador";
+import { SelectAutoCompleteCell } from "../../components/dataGrid/cells/selectAutoComplete";
 
 export const makeDynamicColumns = () => {
   return [
@@ -18,7 +20,7 @@ export const makeDynamicColumns = () => {
         <TableActionsCell>
           <DeleteServicoAction id={props.row.original?._id} />
           <ServicosDialog
-            label="Servico"
+            label="Serviço"
             defaultValues={{
               ...props.row.original,
               dataContratacao: formatDateToDDMMYYYY(
@@ -27,10 +29,25 @@ export const makeDynamicColumns = () => {
               dataConclusao: formatDateToDDMMYYYY(
                 props.row.original?.dataConclusao
               ),
+              pessoa: {
+                label: `${props.row.original?.pessoa?.nome}-${props.row.original?.pessoa?.documento}`,
+                value: props.row.original?.pessoa?._id,
+              },
             }}
           />
         </TableActionsCell>
       ),
+    },
+    {
+      accessorKey: "pessoa",
+      header: "Cliente ou prestador",
+      enableSorting: false,
+      cell: SelectPrestadorCell,
+      enableColumnFilter: true,
+      meta: {
+        filterVariant: "selectPrestador",
+        filterKey: "pessoa",
+      },
     },
     {
       accessorKey: "tipoServicoTomado",
@@ -66,6 +83,28 @@ export const makeDynamicColumns = () => {
       cell: DateCell,
       enableColumnFilter: true,
       meta: { filterKey: "dataConclusao" },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: (props) => (
+        <SelectAutoCompleteCell
+          {...props}
+          options={[
+            { value: "ativo", label: "Ativo" },
+            { value: "inativo", label: "Inativo" },
+          ]}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: {
+        filterKey: "status",
+        filterVariant: "select",
+        filterOptions: [
+          { value: "ativo", label: "Ativo" },
+          { value: "inativo", label: "Inativo" },
+        ],
+      },
     },
   ];
 };

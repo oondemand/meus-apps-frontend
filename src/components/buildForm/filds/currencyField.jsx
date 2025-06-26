@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { NumericFormat } from "react-number-format";
 
 export const CurrencyField = ({ ...props }) => {
+  // console.log("VAL", props.initialValue);
+
   useEffect(() => {}, [props?.initialValue]);
   return (
     <Box>

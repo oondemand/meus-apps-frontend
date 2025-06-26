@@ -21,10 +21,10 @@ export const ListaOmieComponent = () => {
         type: "success",
       });
     },
-    onError: () => {
+    onError: (error) => {
       toaster.create({
         title: "Ouve um erro inesperado ao sincronizar lista.",
-        description: "Tente novamente mais tarde.",
+        description: error?.response?.data?.message,
         type: "error",
       });
     },
@@ -32,7 +32,7 @@ export const ListaOmieComponent = () => {
 
   return (
     <Box p="4">
-      {data?.lista?.map((item) => {
+      {data?.listas?.map((item) => {
         return (
           <Flex
             key={item._id}

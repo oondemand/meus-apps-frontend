@@ -1,4 +1,4 @@
-name: Deploy frontend homolog
+name: Deploy central oondemand frontend homolog
 
 on:
   push:

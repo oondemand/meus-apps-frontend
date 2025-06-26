@@ -1,7 +1,7 @@
 import { Flex, Text, Popover, Portal, Button } from "@chakra-ui/react";
 import { useConfirmation } from "../../../hooks/useConfirmation";
 import { useMutation } from "@tanstack/react-query";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { saveAs } from "file-saver";
 
 import { Paperclip, Download, CircleX, Eye } from "lucide-react";
@@ -12,7 +12,10 @@ export const FilesDetailsCell = (props) => {
 
   const { mutateAsync: deleteFileMutation } = useMutation({
     mutationFn: async ({ id }) =>
-      await TicketService.deleteFile({ id, ticketId: props.row.original?._id }),
+      await ServicoTomadoTicketService.deleteFile({
+        id,
+        ticketId: props.row.original?._id,
+      }),
     onSuccess: ({ data }) => {
       props.row.original.arquivos = props.row.original?.arquivos?.filter(
         (e) => e?._id !== data?.arquivo?._id
@@ -49,7 +52,7 @@ export const FilesDetailsCell = (props) => {
 
   const handleDownloadFile = async ({ id }) => {
     try {
-      const { data } = await TicketService.getFile({ id });
+      const { data } = await ServicoTomadoTicketService.getFile({ id });
 
       if (data) {
         const byteArray = new Uint8Array(data?.buffer?.data);

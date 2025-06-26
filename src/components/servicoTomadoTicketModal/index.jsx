@@ -12,10 +12,10 @@ import {
 import { queryClient } from "../../config/react-query";
 
 import { Oondemand } from "../svg/oondemand";
-import { PrestadorForm } from "./form/prestador";
+import { PessoaForm } from "./form/pessoa";
 
 import { useMutation } from "@tanstack/react-query";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 
 import { toaster } from "../ui/toaster";
 
@@ -27,7 +27,6 @@ import { InformacoesAdicionaisForm } from "./form/informacoes-adicionais";
 import { DocumentoFiscalForm } from "./form/documentoFiscal";
 import { useIaChat } from "../../hooks/useIaChat";
 import { useQuery } from "@tanstack/react-query";
-import { AssistantConfigService } from "../../service/assistant-config";
 import { DocumentosCadastraisService } from "../../service/documentos-cadastrais";
 import { ORIGENS } from "../../constants/origens";
 import { useLoadAssistant } from "../../hooks/api/assistant-config/useLoadAssistant";
@@ -38,7 +37,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { mutateAsync: createTicketMutation } = useMutation({
     mutationFn: async ({ body }) =>
-      await TicketService.adicionarTicket({
+      await ServicoTomadoTicketService.adicionarTicket({
         body,
         origem: ORIGENS.ESTEIRA,
       }),
@@ -54,7 +53,11 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { mutateAsync: updateTicketMutation } = useMutation({
     mutationFn: async ({ id, body }) =>
-      await TicketService.alterarTicket({ id, body, origem: ORIGENS.ESTEIRA }),
+      await ServicoTomadoTicketService.alterarTicket({
+        id,
+        body,
+        origem: ORIGENS.ESTEIRA,
+      }),
     onSuccess: (data) => {
       toaster.create({
         title: "Ticket atualizado com sucesso!",
@@ -86,26 +89,31 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
 
   const { data } = useQuery({
     queryKey: ["ticket", { ticketId: ticket?._id }],
-    queryFn: async () => await TicketService.carregarTicket(ticket?._id),
-    staleTime: 1000 * 60 * 1, // 1 minute
-    enabled: open,
-  });
-
-  const { data: documentosCadastrais } = useQuery({
-    queryKey: [
-      "documentos-cadastrais",
-      { prestadorId: ticket?.prestador?._id },
-    ],
     queryFn: async () =>
-      await DocumentosCadastraisService.listarDocumentosCadastraisPorPrestador({
-        prestadorId: ticket?.prestador?._id,
-        dataRegistro: "",
-      }),
+      await ServicoTomadoTicketService.carregarTicket(ticket?._id),
     staleTime: 1000 * 60 * 1, // 1 minute
     enabled: open,
   });
 
-  const { assistant } = useLoadAssistant(data?.ticket?.etapa ?? "ticket");
+  // const { data: documentosCadastrais } = useQuery({
+  //   queryKey: [
+  //     "documentos-cadastrais",
+  //     { prestadorId: ticket?.prestador?._id },
+  //   ],
+  //   queryFn: async () =>
+  //     await DocumentosCadastraisService.listarDocumentosCadastraisPorPrestador({
+  //       prestadorId: ticket?.prestador?._id,
+  //       dataRegistro: "",
+  //     }),
+  //   staleTime: 1000 * 60 * 1, // 1 minute
+  //   enabled: open,
+  // });
+
+  const { assistant } = useLoadAssistant(
+    data?.ticket?.etapa
+      ? `servicos-tomados.${data?.ticket?.etapa}`
+      : "geral.servicos-tomados"
+  );
 
   return (
     <DialogRoot
@@ -135,9 +143,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
               aria-label="Abrir IA"
               cursor="pointer"
               variant="unstyled"
-              onClick={() =>
-                onOpen({ ...data, documentosCadastrais }, assistant)
-              }
+              onClick={() => onOpen({ ...data }, assistant)}
             >
               <Oondemand />
             </Box>
@@ -194,7 +200,7 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
             mt="3"
           />
 
-          <PrestadorForm
+          <PessoaForm
             onlyReading={onlyReading}
             ticket={ticket}
             updateTicketMutation={updateTicketMutation}
@@ -206,11 +212,11 @@ export const TicketModal = ({ open, setOpen, defaultValue, onlyReading }) => {
             updateTicketMutation={updateTicketMutation}
           />
 
-          <DocumentoFiscalForm
+          {/* <DocumentoFiscalForm
             onlyReading={onlyReading}
             ticket={ticket}
             updateTicketMutation={updateTicketMutation}
-          />
+          /> */}
 
           <InformacoesAdicionaisForm
             ticket={ticket}

@@ -9,7 +9,6 @@ import {
   NotepadTextDashed,
   Notebook,
 } from "lucide-react";
-
 import { Chart } from "../../svg/chart";
 import { invertedChart } from "../../svg/invertedChart";
 
@@ -28,6 +27,17 @@ export const menuItems = [
     title: "Serviços",
     icon: ListChecks,
     href: "/servicos",
+  },
+  {
+    title: "Documentos Cadastrais",
+    href: "/documentos-cadastrais",
+    icon: Notebook,
+    rules: ["admin", "tomador"],
+  },
+  {
+    title: "Planejamento",
+    href: "/planejamento",
+    icon: CalendarSync,
   },
   {
     title: "Clientes e prestadores",
@@ -53,6 +63,10 @@ export const menuItems = [
       {
         title: "Sistema",
         href: "/sistema",
+      },
+      {
+        title: "Etapas",
+        href: "/etapas",
       },
       {
         title: "Assistentes",

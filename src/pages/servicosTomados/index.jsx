@@ -9,30 +9,16 @@ import "../../styles/swiper.css";
 
 import { Flex, Spinner, Heading } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
-import { EtapaService } from "../../service/etapa";
 import { Etapa } from "../../components/etapaCard";
-import { TicketService } from "../../service/ticket";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
 import { Filter } from "lucide-react";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import { useStateWithStorage } from "../../hooks/useStateStorage";
-
-const etapaIntegracaoOmie = {
-  nome: "Financeiro",
-  codigo: "integracao-omie",
-};
+import { useListEtapas } from "../../hooks/api/etapas/useListEtapas";
 
 export const ServicosTomados = () => {
   const [searchTerm, setSearchTerm] = useStateWithStorage("searchTerm");
-
-  const {
-    data: etapasResponseData,
-    error: etapasError,
-    isLoading: isEtapasLoading,
-  } = useQuery({
-    queryKey: ["listar-etapas"],
-    queryFn: EtapaService.listarEtapasAtivas,
-    staleTime: 1000 * 60 * 10, // 10 minutos
-  });
+  const { etapas, isLoading: isEtapasLoading } = useListEtapas();
 
   const {
     data,
@@ -41,7 +27,7 @@ export const ServicosTomados = () => {
     isFetching: isTicketFetching,
   } = useQuery({
     queryKey: ["listar-tickets"],
-    queryFn: async () => TicketService.listarTickets(),
+    queryFn: async () => ServicoTomadoTicketService.listarTickets(),
     placeholderData: keepPreviousData,
     staleTime: 1000 * 60 * 1, // 1 minuto
     onSuccess: (data) => setTickets(data),
@@ -53,7 +39,7 @@ export const ServicosTomados = () => {
           const term = searchTerm?.toLowerCase()?.trim();
           return (
             ticket?.titulo?.toLowerCase()?.includes(term) ||
-            ticket?.prestador?.documento
+            ticket?.pessoa?.documento
               ?.toLowerCase()
               ?.includes(term.replace(/[^a-zA-Z0-9]/g, ""))
           );
@@ -90,7 +76,7 @@ export const ServicosTomados = () => {
       <Flex flex="1" pb="2" itens="center" overflow="hidden">
         {(!isEtapasLoading || !isTicketLoading) &&
           filteredTickets &&
-          etapasResponseData?.etapas && (
+          etapas && (
             <Swiper
               style={{
                 height: "100%",
@@ -103,7 +89,7 @@ export const ServicosTomados = () => {
               modules={[FreeMode, Navigation]}
               navigation={true}
             >
-              {etapasResponseData?.etapas?.map((etapa) => (
+              {etapas?.map((etapa) => (
                 <SwiperSlide
                   key={etapa._id}
                   style={{ minWidth: "250px", maxWidth: "250px" }}
@@ -111,9 +97,6 @@ export const ServicosTomados = () => {
                   <Etapa etapa={etapa} tickets={filteredTickets} />
                 </SwiperSlide>
               ))}
-              <SwiperSlide style={{ minWidth: "250px", maxWidth: "250px" }}>
-                <Etapa etapa={etapaIntegracaoOmie} tickets={filteredTickets} />
-              </SwiperSlide>
             </Swiper>
           )}
       </Flex>

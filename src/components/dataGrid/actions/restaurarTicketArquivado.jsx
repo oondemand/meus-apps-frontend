@@ -3,7 +3,7 @@ import { ArchiveRestore } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { toaster } from "../../ui/toaster";
 import { Tooltip } from "../../ui/tooltip";
-import { TicketService } from "../../../service/ticket";
+import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { queryClient } from "../../../config/react-query";
 import { useConfirmation } from "../../../hooks/useConfirmation";
 
@@ -12,7 +12,7 @@ export const RestaurarTicketAction = ({ ticket }) => {
 
   const { mutateAsync: restaurarTicketMutation, isPending } = useMutation({
     mutationFn: async () =>
-      await TicketService.alterarTicket({
+      await ServicoTomadoTicketService.alterarTicket({
         id: ticket._id,
         body: { status: "revisao" },
       }),

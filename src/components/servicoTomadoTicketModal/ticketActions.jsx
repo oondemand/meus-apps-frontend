@@ -2,20 +2,24 @@ import { Flex, Button, useDialogContext } from "@chakra-ui/react";
 import { Check, Trash, X } from "lucide-react";
 
 import { toaster } from "../ui/toaster";
-import { TicketService } from "../../service/ticket";
-import { useMutation } from "@tanstack/react-query";
+import { ServicoTomadoTicketService } from "../../service/servicoTomadoTicket";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useConfirmation } from "../../hooks/useConfirmation";
 import { queryClient } from "../../config/react-query";
 import { ORIGENS } from "../../constants/origens";
+import { EtapaService } from "../../service/etapa";
+import { useListEtapas } from "../../hooks/api/etapas/useListEtapas";
 
 export const TicketActions = ({ ticketId, etapa }) => {
   const { setOpen } = useDialogContext();
   const { requestConfirmation } = useConfirmation();
 
+  const { etapas } = useListEtapas();
+
   const { mutateAsync: arquiveTicketMutation, isPending: isArquivePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.arquivarTicket({
+        await ServicoTomadoTicketService.arquivarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),
@@ -25,15 +29,18 @@ export const TicketActions = ({ ticketId, etapa }) => {
           type: "success",
         });
       },
-      onError: () => {
-        toaster.error({ title: "Ouve um erro ao arquivar o ticket!" });
+      onError: (error) => {
+        toaster.error({
+          title: "Ouve um erro ao arquivar o ticket!",
+          description: error?.response?.data?.message,
+        });
       },
     });
 
   const { mutateAsync: aproveTicketMutation, isPending: isAprovePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.aprovarTicket({
+        await ServicoTomadoTicketService.aprovarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),
@@ -44,21 +51,25 @@ export const TicketActions = ({ ticketId, etapa }) => {
           type: "success",
         });
       },
-      onError: () => {
-        toaster.error({ title: "Ouve um erro ao aprovar o ticket!" });
+      onError: (error) => {
+        toaster.error({
+          title: "Ouve um erro ao aprovar o ticket!",
+          description: error?.response?.data?.message,
+        });
       },
     });
 
   const { mutateAsync: reproveTicketMutation, isPending: isReprovePending } =
     useMutation({
       mutationFn: async () =>
-        await TicketService.reprovarTicket({
+        await ServicoTomadoTicketService.reprovarTicket({
           id: ticketId,
           origem: ORIGENS.ESTEIRA,
         }),
-      onSuccess: () => {
+      onSuccess: (error) => {
         queryClient.invalidateQueries(["listar-tickets"]);
         toaster.create({
+          description: error?.response?.data?.message,
           title: "Ticket reprovado com sucesso!",
           type: "success",
         });
@@ -80,6 +91,8 @@ export const TicketActions = ({ ticketId, etapa }) => {
     }
   };
 
+  const primeiraEtapa = etapas[0]?.codigo;
+
   return (
     <Flex alignItems="center" w="full" justifyContent="space-between">
       <Flex gap="2">
@@ -88,7 +101,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
             await aproveTicketMutation();
             setOpen(false);
           }}
-          disabled={etapa === "integracao-omie" || isAprovePending}
+          disabled={isAprovePending}
           variant="surface"
           shadow="xs"
           colorPalette="green"
@@ -97,11 +110,7 @@ export const TicketActions = ({ ticketId, etapa }) => {
           <Check /> Aprovar
         </Button>
         <Button
-          disabled={
-            etapa === "requisicao" ||
-            etapa === "integracao-omie" ||
-            isReprovePending
-          }
+          disabled={etapa === primeiraEtapa || isReprovePending}
           onClick={async (e) => {
             await reproveTicketMutation();
             setOpen(false);
