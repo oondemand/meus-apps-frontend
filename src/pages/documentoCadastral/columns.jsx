@@ -131,5 +131,27 @@ export const makeDocumentoCadastralDynamicColumns = () => {
         ],
       },
     },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: (props) => (
+        <SelectAutoCompleteCell
+          {...props}
+          options={[
+            { value: "ativo", label: "Ativo" },
+            { value: "inativo", label: "Inativo" },
+          ]}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: {
+        filterKey: "status",
+        filterVariant: "select",
+        filterOptions: [
+          { value: "ativo", label: "Ativo" },
+          { value: "inativo", label: "Inativo" },
+        ],
+      },
+    },
   ];
 };

@@ -9,6 +9,7 @@ import { ServicosDialog } from "./dialog";
 import { DeleteServicoAction } from "../../components/dataGrid/actions/deleteServicoButton";
 import { formatDateToDDMMYYYY } from "../../utils/formatting";
 import { SelectPrestadorCell } from "../../components/dataGrid/cells/selectPrestador";
+import { SelectAutoCompleteCell } from "../../components/dataGrid/cells/selectAutoComplete";
 
 export const makeDynamicColumns = () => {
   return [
@@ -82,6 +83,28 @@ export const makeDynamicColumns = () => {
       cell: DateCell,
       enableColumnFilter: true,
       meta: { filterKey: "dataConclusao" },
+    },
+    {
+      accessorKey: "status",
+      header: "Status",
+      cell: (props) => (
+        <SelectAutoCompleteCell
+          {...props}
+          options={[
+            { value: "ativo", label: "Ativo" },
+            { value: "inativo", label: "Inativo" },
+          ]}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: {
+        filterKey: "status",
+        filterVariant: "select",
+        filterOptions: [
+          { value: "ativo", label: "Ativo" },
+          { value: "inativo", label: "Inativo" },
+        ],
+      },
     },
   ];
 };
