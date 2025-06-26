@@ -11,7 +11,7 @@ export const useUpdateServico = ({ onSuccess, origem }) =>
         origem,
       }),
     onSuccess(data) {
-      onSuccess?.(data?.servico);
+      onSuccess?.(data);
       toaster.create({
         title: "Servico atualizado com sucesso",
         type: "success",
