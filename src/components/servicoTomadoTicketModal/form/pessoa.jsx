@@ -91,6 +91,8 @@ export const PessoaForm = ({ ticket, updateTicketMutation, onlyReading }) => {
     setSelectPessoa(e);
 
     if (e && e.value !== ticket?.pessoa?._id) {
+      console.log("Very important", ticket?._id, e.value);
+
       return await updateTicketMutation({
         id: ticket?._id,
         body: {
