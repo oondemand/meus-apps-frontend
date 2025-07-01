@@ -4,7 +4,9 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ServicoTomadoTicketService } from "../../../service/servicoTomadoTicket";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
+import { zoomPlugin } from "@react-pdf-viewer/zoom";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/zoom/lib/styles/index.css";
 import {
   DialogRoot,
   DialogBody,
@@ -53,6 +55,9 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
   const { onOpen } = useIaChat();
   const { assistant } = useLoadAssistant("analisar-documento-cadastral");
 
+  const zoomPluginInstance = zoomPlugin();
+  const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
+
   return (
     <Box>
       <Box onClick={() => setOpen(true)}>
@@ -83,8 +88,7 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
         >
           <DialogContent
             overflow="hidden"
-            w="1250px"
-            maxH="99%"
+            w="1400px"
             pt="6"
             px="2"
             rounded="lg"
@@ -116,15 +120,30 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
             </DialogHeader>
             <DialogBody overflowY="auto" className="dialog-custom-scrollbar">
               <Flex w="full">
-                <Box w="50%" ml="-4" shadow="none" boxShadow="none">
+                <Box
+                  w="700px"
+                  ml="-4"
+                  shadow="none"
+                  boxShadow="none"
+                  border="1px solid"
+                  borderColor="gray.100"
+                  rounded="2xl"
+                  p="2"
+                >
+                  <Flex gap="2" justifyItems="center">
+                    <ZoomOutButton />
+                    <ZoomPopover />
+                    <ZoomInButton />
+                  </Flex>
                   {pdfUrl && (
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-                      <Viewer fileUrl={pdfUrl} />
+                      <Viewer fileUrl={pdfUrl} plugins={[zoomPluginInstance]} />
                     </Worker>
                   )}
                 </Box>
 
                 <Flex
+                  ml="4"
                   h="full"
                   flex="1"
                   flexDir="column"
