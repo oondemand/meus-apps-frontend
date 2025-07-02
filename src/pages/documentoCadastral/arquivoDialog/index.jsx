@@ -56,7 +56,12 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
   const { assistant } = useLoadAssistant("analisar-documento-cadastral");
 
   const zoomPluginInstance = zoomPlugin();
-  const { ZoomInButton, ZoomOutButton, ZoomPopover } = zoomPluginInstance;
+  const { ZoomInButton, ZoomOutButton, ZoomPopover, zoomTo } =
+    zoomPluginInstance;
+
+  const handleDocumentLoad = () => {
+    zoomTo("PageWidth");
+  };
 
   return (
     <Box>
@@ -88,7 +93,6 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
         >
           <DialogContent
             overflow="hidden"
-            w="1400px"
             pt="6"
             px="2"
             rounded="lg"
@@ -118,32 +122,47 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
                 <DialogTitle>Analisar Documento Cadastral</DialogTitle>
               </Flex>
             </DialogHeader>
-            <DialogBody overflowY="auto" className="dialog-custom-scrollbar">
-              <Flex w="full">
+            <DialogBody>
+              <Flex w="full" mt="-2" position="relative">
                 <Box
-                  w="700px"
+                  w="50%"
                   ml="-4"
+                  position="relative"
                   shadow="none"
                   boxShadow="none"
-                  border="1px solid"
-                  borderColor="gray.100"
-                  rounded="2xl"
-                  p="2"
+                  overflowY="auto"
+                  className="dialog-custom-scrollbar"
+                  h="730px"
                 >
-                  <Flex gap="2" justifyItems="center">
+                  <Flex
+                    top="4"
+                    right="8"
+                    gap="2"
+                    justifyItems="center"
+                    zIndex="10000"
+                    position="absolute"
+                    bg="gray.50"
+                    p="1"
+                    px="2"
+                    pb="0"
+                    rounded="4xl"
+                  >
                     <ZoomOutButton />
                     <ZoomPopover />
                     <ZoomInButton />
                   </Flex>
                   {pdfUrl && (
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-                      <Viewer fileUrl={pdfUrl} plugins={[zoomPluginInstance]} />
+                      <Viewer
+                        fileUrl={pdfUrl}
+                        plugins={[zoomPluginInstance]}
+                        onDocumentLoad={handleDocumentLoad}
+                      />
                     </Worker>
                   )}
                 </Box>
 
                 <Flex
-                  ml="4"
                   h="full"
                   flex="1"
                   flexDir="column"
@@ -153,6 +172,7 @@ export const ArquivoDetailsDialog = ({ documentoCadastral }) => {
                   rounded="2xl"
                   p="4"
                   pb="6"
+                  ml="8"
                 >
                   <AprovarForm
                     prestadorId={documentoCadastral?.prestador?._id}
