@@ -35,6 +35,7 @@ export const SelectAutoCompleteCell = ({
   }, [initialValue]);
   return (
     <SelectAutocomplete
+      disabled={rest?.disabled}
       placeholder={value}
       onBlur={onBlur}
       value={value}

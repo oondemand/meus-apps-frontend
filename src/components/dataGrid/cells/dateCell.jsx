@@ -46,6 +46,7 @@ export const DateCell = ({ getValue, row, column, table, ...rest }) => {
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       ref={withMask("99/99/9999")}
+      {...rest}
     />
   );
 };

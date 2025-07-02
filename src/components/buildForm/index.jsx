@@ -3,6 +3,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Grid, GridItem, Box, Text } from "@chakra-ui/react";
 import { z } from "zod";
+import { DefaultContainer } from "./components/default";
 
 const getNestedValue = (obj, path) => {
   return path.split(".").reduce((acc, key) => acc?.[key], obj);
@@ -137,26 +138,9 @@ export const BuildForm = ({
               const Wrapper =
                 fieldOrGroup.wrapperComponent ||
                 (({ children }) => (
-                  <Box
-                    border="1px dashed"
-                    borderColor="gray.200"
-                    borderRadius="lg"
-                    pt="5"
-                    pb="6"
-                    px="6"
-                  >
-                    {fieldOrGroup.label && (
-                      <Text
-                        fontWeight="semibold"
-                        fontSize="md"
-                        color="gray.600"
-                        mb="6"
-                      >
-                        {fieldOrGroup.label}
-                      </Text>
-                    )}
+                  <DefaultContainer label={fieldOrGroup?.label}>
                     {children}
-                  </Box>
+                  </DefaultContainer>
                 ));
 
               return (

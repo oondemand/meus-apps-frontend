@@ -3,9 +3,14 @@ import { CpfCnpjCell } from "../../components/dataGrid/cells/cpfCnpjCell";
 import { SelectAutoCompleteCell } from "../../components/dataGrid/cells/selectAutoComplete";
 import { DefaultEditableCell } from "../../components/dataGrid/cells/defaultEditable";
 import { SelectListaCell } from "../../components/dataGrid/cells/selectLista";
+import { DateCell } from "../../components/dataGrid/cells/dateCell";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { PessoasDialog } from "./dialog";
-import { STATUS_PESSOA_OPTIONS, TIPO_PESSOA_OPTIONS } from "../../constants";
+import {
+  REGIME_TRIBUTARIO_OPTIONS,
+  STATUS_PESSOA_OPTIONS,
+  TIPO_PESSOA_OPTIONS,
+} from "../../constants";
 import { DeletePessoaAction } from "../../components/dataGrid/actions/deletePessoaButton";
 
 export const makeDynamicColumns = () => {
@@ -68,6 +73,64 @@ export const makeDynamicColumns = () => {
         filterVariant: "select",
         filterOptions: STATUS_PESSOA_OPTIONS,
       },
+    },
+    {
+      accessorKey: "pessoaFisica.rg",
+      header: "RG",
+      cell: (props) => (
+        <DefaultEditableCell
+          {...props}
+          disabled={props.row.original?.tipo === "pj"}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "pessoaFisica.rg" },
+    },
+    {
+      accessorKey: "pessoaFisica.dataNascimento",
+      header: "Data de nascimento",
+      cell: (props) => (
+        <DateCell {...props} disabled={props.row.original?.tipo === "pj"} />
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "pessoaFisica.dataNascimento" },
+    },
+    {
+      accessorKey: "pessoaFisica.apelido",
+      header: "Apelido",
+      cell: (props) => (
+        <DefaultEditableCell
+          {...props}
+          disabled={props.row.original?.tipo === "pj"}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "pessoaFisica.dataNascimento" },
+    },
+    {
+      accessorKey: "pessoaJuridica.nomeFantasia",
+      header: "Nome da fantasia",
+      cell: (props) => (
+        <DefaultEditableCell
+          {...props}
+          disabled={props.row.original?.tipo === "pf"}
+        />
+      ),
+      enableColumnFilter: true,
+      meta: { filterKey: "pessoaJuridica.nomeFantasia" },
+    },
+    {
+      accessorKey: "pessoaJuridica.regimeTributario",
+      header: "Regime tributário",
+      enableColumnFilter: true,
+      meta: { filterKey: "pessoaJuridica.regimeTributario" },
+      cell: (props) => (
+        <SelectAutoCompleteCell
+          {...props}
+          disabled={props.row.original?.tipo === "pf"}
+          options={REGIME_TRIBUTARIO_OPTIONS}
+        />
+      ),
     },
   ];
 };

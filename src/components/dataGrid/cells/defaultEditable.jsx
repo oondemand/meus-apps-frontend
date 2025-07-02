@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
 
-export const DefaultEditableCell = ({ getValue, row, column, table }) => {
+export const DefaultEditableCell = ({
+  getValue,
+  row,
+  column,
+  table,
+  ...rest
+}) => {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue || "");
 
@@ -35,6 +41,7 @@ export const DefaultEditableCell = ({ getValue, row, column, table }) => {
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
+      {...rest}
     />
   );
 };
