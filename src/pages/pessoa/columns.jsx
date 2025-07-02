@@ -123,7 +123,11 @@ export const makeDynamicColumns = () => {
       accessorKey: "pessoaJuridica.regimeTributario",
       header: "Regime tributário",
       enableColumnFilter: true,
-      meta: { filterKey: "pessoaJuridica.regimeTributario" },
+      meta: {
+        filterKey: "pessoaJuridica.regimeTributario",
+        filterVariant: "select",
+        filterOptions: REGIME_TRIBUTARIO_OPTIONS,
+      },
       cell: (props) => (
         <SelectAutoCompleteCell
           {...props}
