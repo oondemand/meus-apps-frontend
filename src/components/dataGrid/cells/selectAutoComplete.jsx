@@ -27,14 +27,26 @@ export const SelectAutoCompleteCell = ({
     }
   };
 
-  useEffect(() => {
+  const inicializarValue = () => {
     const value = options.find(
       (e) => e?.value?.toString() === initialValue?.toString()
     );
     setValue(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      inicializarValue();
+    }
+  };
+
+  useEffect(() => {
+    inicializarValue();
   }, [initialValue]);
   return (
     <SelectAutocomplete
+      onKeyDown={handleKeyDown}
       disabled={rest?.disabled}
       placeholder={value}
       onBlur={onBlur}

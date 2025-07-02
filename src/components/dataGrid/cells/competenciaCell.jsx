@@ -29,6 +29,13 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(formatValue ? formatValue : "");
   }, [formatValue]);
@@ -46,6 +53,7 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       ref={withMask("99/9999")}
+      onKeyDown={handleKeyDown}
     />
   );
 };

@@ -22,6 +22,13 @@ export const CpfCnpjCell = ({ getValue, row, column, table, ...rest }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
@@ -46,6 +53,7 @@ export const CpfCnpjCell = ({ getValue, row, column, table, ...rest }) => {
       onBlur={onBlur}
       placeholder=""
       ref={withMask(rowMaskMap[row.original.tipo])}
+      onKeyDown={handleKeyDown}
     />
   );
 };

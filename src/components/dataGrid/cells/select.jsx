@@ -19,6 +19,13 @@ export const SelectCell = ({ getValue, row, column, table, ...rest }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
@@ -29,6 +36,7 @@ export const SelectCell = ({ getValue, row, column, table, ...rest }) => {
       size="sm"
       border="none"
       focusRingColor="brand.500"
+      onKeyDown={handleKeyDown}
     >
       <NativeSelectField
         focusRingColor="brand.500"

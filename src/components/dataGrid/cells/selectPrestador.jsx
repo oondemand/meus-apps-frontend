@@ -92,11 +92,19 @@ export const SelectPrestadorCell = ({
     });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      initializeValue();
+    }
+  };
+
   useEffect(() => {
     initializeValue();
   }, [initialValue]);
   return (
     <AsyncSelect
+      onKeyDown={handleKeyDown}
       {...rest}
       defaultInputValue={value}
       isClearable={true}

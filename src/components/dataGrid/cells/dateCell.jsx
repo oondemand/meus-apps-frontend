@@ -29,6 +29,13 @@ export const DateCell = ({ getValue, row, column, table, ...rest }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(initialValue ? initialValue : "");
   }, [initialValue]);
@@ -46,6 +53,7 @@ export const DateCell = ({ getValue, row, column, table, ...rest }) => {
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       ref={withMask("99/99/9999")}
+      onKeyDown={handleKeyDown}
       {...rest}
     />
   );

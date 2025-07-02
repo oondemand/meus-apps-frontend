@@ -37,15 +37,27 @@ export const SelectBancoCell = ({ getValue, row, column, table, ...rest }) => {
     }
   };
 
-  useEffect(() => {
+  const inicializarValue = () => {
     const value = options?.find(
       (e) => e?.value?.toString() === initialValue?.toString()
     );
 
     setValue(value);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      inicializarValue();
+    }
+  };
+
+  useEffect(() => {
+    inicializarValue();
   }, [initialValue, data]);
   return (
     <SelectAutocomplete
+      onKeyDown={handleKeyDown}
       components={{ MenuList }}
       placeholder={value}
       onBlur={onBlur}

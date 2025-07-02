@@ -23,6 +23,13 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(initialValue ? initialValue : "");
   }, [initialValue]);
@@ -37,17 +44,6 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
       allowNegative
       prefix="R$ "
       placeholder="R$ 0,00"
-      // customInput={(props) => (
-      //   <Input
-      //     {...props}
-      //     variant="subtle"
-      //     display="flex"
-      //     fontSize="md"
-      //     size="xs"
-      //     bg="transparent"
-      //     focusRingColor="brand.500"
-      //   />
-      // )}
       style={{
         backgroundColor: "transparent",
         height: "32px",
@@ -59,6 +55,7 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
+      onKeyDown={handleKeyDown}
     />
   );
 };

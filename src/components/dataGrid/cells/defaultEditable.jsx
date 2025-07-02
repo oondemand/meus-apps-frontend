@@ -25,6 +25,13 @@ export const DefaultEditableCell = ({
     }
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
+    }
+  };
+
   useEffect(() => {
     setValue(initialValue ? initialValue : "");
   }, [initialValue]);
@@ -41,6 +48,7 @@ export const DefaultEditableCell = ({
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
+      onKeyDown={handleKeyDown}
       {...rest}
     />
   );
