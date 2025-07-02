@@ -27,6 +27,13 @@ export const SelectAutoCompleteField = ({
     setValue(value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      inicializarValue();
+    }
+  };
+
   useEffect(() => {
     inicializarValue();
   }, [props?.initialValue]);
@@ -34,6 +41,7 @@ export const SelectAutoCompleteField = ({
   return (
     <Box w={w}>
       <Select
+        onKeyDown={handleKeyDown}
         defaultInputValue={value}
         variant="subtle"
         placeholder={`Selecione um ${props.label?.toLowerCase()}`}

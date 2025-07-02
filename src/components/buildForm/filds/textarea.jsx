@@ -12,6 +12,13 @@ export const TextareaField = ({ inputStyle, w, ...props }) => {
     }
   };
 
+  // const handleKeyDown = (event) => {
+  //   if (event.key === "Escape") {
+  //     event.preventDefault();
+  //     setValue(initialValue);
+  //   }
+  // };
+
   return (
     <Box>
       <Text fontSize="sm" color="gray.700">

@@ -14,6 +14,13 @@ export const SelectEstadoField = ({ cod, ...props }) => {
 
   const options = data?.data.map((e) => ({ value: e?.sigla, label: e?.nome }));
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
   return (
     <Box>
       <Box>
@@ -25,6 +32,7 @@ export const SelectEstadoField = ({ cod, ...props }) => {
             <Select
               fontSize="sm"
               size="sm"
+              onKeyDown={handleKeyDown}
               disabled={props?.disabled}
               value={options?.find((item) => item?.value == field?.value) ?? ""}
               name={field.name}

@@ -17,6 +17,13 @@ export const SelectListaField = ({ cod, ...props }) => {
     value: e?.valor,
   }));
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
   return (
     <Box>
       <Box>
@@ -27,6 +34,7 @@ export const SelectListaField = ({ cod, ...props }) => {
           render={({ field }) => {
             return (
               <Select
+                onKeyDown={handleKeyDown}
                 fontSize="sm"
                 size="sm"
                 disabled={props?.disabled}
