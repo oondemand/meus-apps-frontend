@@ -13,6 +13,13 @@ export const CpfCnpjField = ({ ...props }) => {
     ext: null,
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
   return (
     <Box>
       <Text fontSize="sm" color="gray.700">
@@ -24,6 +31,7 @@ export const CpfCnpjField = ({ ...props }) => {
         variant="flushed"
         disabled={props.disabled}
         {...registerWithMask(props.accessorKey, rowMaskMap[tipo] ?? null)}
+        onKeyDown={handleKeyDown}
       />
       <Text mt="0.5" fontSize="xs" color="red.400">
         {props.error}

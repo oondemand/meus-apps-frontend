@@ -3,9 +3,14 @@ import { useEffect } from "react";
 import { NumericFormat } from "react-number-format";
 
 export const CurrencyField = ({ ...props }) => {
-  // console.log("VAL", props.initialValue);
-
   useEffect(() => {}, [props?.initialValue]);
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
   return (
     <Box>
       <Box borderBottom="1px solid" borderBottomColor="gray.200">
@@ -19,6 +24,7 @@ export const CurrencyField = ({ ...props }) => {
           onBlur={props.field.onBlur}
           onChange={props.field.onChange}
           getInputRef={props.field.ref}
+          onKeyDown={handleKeyDown}
           thousandSeparator="."
           decimalSeparator=","
           decimalScale={2}

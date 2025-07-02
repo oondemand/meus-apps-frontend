@@ -19,8 +19,6 @@ export const SelectBancoField = ({ cod, ...props }) => {
     [data?.data]
   );
 
-  const getValue = (value) => options?.find((item) => item.value === value);
-
   return (
     <Box>
       <Box>

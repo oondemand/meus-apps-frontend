@@ -4,6 +4,13 @@ import { useHookFormMask } from "use-mask-input";
 export const PisPasepField = ({ ...props }) => {
   const registerWithMask = useHookFormMask(props.methods.register);
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
   return (
     <Box>
       <Text fontSize="sm" color="gray.700">
@@ -15,6 +22,7 @@ export const PisPasepField = ({ ...props }) => {
         variant="flushed"
         disabled={props?.disabled}
         {...registerWithMask(props.accessorKey, "999.99999.99-9")}
+        onKeyDown={handleKeyDown}
       />
       <Text mt="0.5" fontSize="xs" color="red.400">
         {props.error}

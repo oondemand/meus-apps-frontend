@@ -22,9 +22,13 @@ export const SelectAutoCompleteField = ({
     }
   };
 
-  useEffect(() => {
+  const inicializarValue = () => {
     const value = options?.find((e) => e?.value === props?.initialValue);
     setValue(value);
+  };
+
+  useEffect(() => {
+    inicializarValue();
   }, [props?.initialValue]);
 
   return (
