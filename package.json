@@ -57,10 +57,11 @@
     "npm": {
       "publish": false
     },
-      "plugins": {
-        "@release-it/conventional-changelog": {
-          "infile": "CHANGELOG.md",
-          "preset": "conventionalcommits",
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "infile": "CHANGELOG.md",
+        "preset": {
+          "name": "conventionalcommits",
           "types": [
             { "type": "feat", "section": "✨ Features" },
             { "type": "fix", "section": "🐛 Bug Fixes" },
@@ -71,6 +72,7 @@
             { "type": "style", "section": "💅 Code Style" }
           ]
         }
+      }
     }
   }
 }
