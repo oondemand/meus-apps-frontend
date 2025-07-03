@@ -57,24 +57,20 @@
     "npm": {
       "publish": false
     },
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "infile": "CHANGELOG.md",
-        "preset": {
-          "name": "conventionalcommits",
+      "plugins": {
+        "@release-it/conventional-changelog": {
+          "infile": "CHANGELOG.md",
+          "preset": "conventionalcommits",
           "types": [
-            {
-              "type": "feat",
-              "section": "Features"
-            },
-            {
-              "type": "fix",
-              "section": "Bug Fixes"
-            },
-            {}
+            { "type": "feat", "section": "✨ Features" },
+            { "type": "fix", "section": "🐛 Bug Fixes" },
+            { "type": "docs", "section": "📝 Documentation" },
+            { "type": "refactor", "section": "🔨 Refactoring" },
+            { "type": "chore", "section": "🔧 Chores" },
+            { "type": "test", "section": "🧪 Tests" },
+            { "type": "style", "section": "💅 Code Style" }
           ]
         }
-      }
     }
   }
 }
