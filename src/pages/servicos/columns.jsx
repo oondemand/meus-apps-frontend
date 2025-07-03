@@ -4,7 +4,6 @@ import { SelectListaCell } from "../../components/dataGrid/cells/selectLista";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { CurrencyCell } from "../../components/dataGrid/cells/currencyCell";
 import { DateCell } from "../../components/dataGrid/cells/dateCell";
-
 import { ServicosDialog } from "./dialog";
 import { DeleteServicoAction } from "../../components/dataGrid/actions/deleteServicoButton";
 import { formatDateToDDMMYYYY } from "../../utils/formatting";
