@@ -24,6 +24,7 @@ import { ImportDocumentosCadastraisPage } from "./pages/documentoCadastral/impor
 import { Ativacao } from "./pages/ativacao";
 import { ServicosList } from "./pages/servicos";
 import { ImportServicosPage } from "./pages/servicos/importacao";
+import ChangelogPage from "./pages/changelog";
 
 export const router = createBrowserRouter([
   {
@@ -55,6 +56,7 @@ export const router = createBrowserRouter([
       { path: "/listas", element: <Listas /> },
       { path: "/sistema", element: <SistemaPage /> },
       { path: "/doc", element: <Doc /> },
+      { path: "/changelog", element: <ChangelogPage /> },
       // { path: "/pagos", element: <TicketsPagosPage /> },
       { path: "/etapas", element: <EtapasPage /> },
       { path: "/assistentes", element: <AssistenteConfigPage /> },
