@@ -12,6 +12,17 @@ export const DefaultEditableCell = ({
   const [value, setValue] = useState(initialValue || "");
 
   const onBlur = async () => {
+    if (column.columnDef?.confirmAction) {
+      const { action } = await requestConfirmation({
+        title: column.columnDef?.confirmAction?.title,
+        description: column.columnDef?.confirmAction?.description,
+      });
+
+      if (action === "canceled") {
+        return setValue(initialValue);
+      }
+    }
+
     if (value !== initialValue) {
       try {
         await table.options.meta?.updateData({

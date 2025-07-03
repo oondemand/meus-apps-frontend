@@ -48,6 +48,17 @@ export const SelectListaCell = ({
     if (!value || value?.value === (originalItem?.value || originalItem?.label))
       return;
 
+    if (column.columnDef?.confirmAction) {
+      const { action } = await requestConfirmation({
+        title: column.columnDef?.confirmAction?.title,
+        description: column.columnDef?.confirmAction?.description,
+      });
+
+      if (action === "canceled") {
+        return initialValue(initialValue);
+      }
+    }
+
     try {
       await table.options.meta?.updateData({
         id: row.original._id,

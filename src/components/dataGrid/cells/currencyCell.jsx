@@ -9,6 +9,17 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
 
   const onBlur = async () => {
     if (parseBRLCurrencyToNumber(value) !== initialValue) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return setValue(initialValue);
+        }
+      }
+
       try {
         await table.options.meta?.updateData({
           id: row.original._id,

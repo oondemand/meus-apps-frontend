@@ -29,6 +29,17 @@ export const SelectAssistantCell = ({
 
   const onBlur = async () => {
     if (value && value !== options.find((e) => e?.value === initialValue)) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return inicializarValue();
+        }
+      }
+
       try {
         await table.options.meta?.updateData({
           id: row.original._id,

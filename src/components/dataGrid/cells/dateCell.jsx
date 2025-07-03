@@ -10,6 +10,17 @@ export const DateCell = ({ getValue, row, column, table, ...rest }) => {
 
   const onBlur = async () => {
     if (value !== initialValue) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return setValue(initialValue);
+        }
+      }
+
       const newDate = format(
         parse(value, "dd/MM/yyyy", new Date()),
         "yyyy/MM/dd"

@@ -81,6 +81,17 @@ export const SelectPrestadorCell = ({
 
   const onBlur = async () => {
     if (shouldUpdateValue()) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return initializeValue(initialValue);
+        }
+      }
+
       await handleUpdate();
     }
   };
