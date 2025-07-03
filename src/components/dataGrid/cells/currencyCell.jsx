@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { parseBRLCurrencyToNumber } from "../../../utils/currency";
 import { Input } from "@chakra-ui/react";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (parseBRLCurrencyToNumber(value) !== initialValue) {

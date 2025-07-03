@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import { withMask } from "use-mask-input";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CpfCnpjCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue);
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value !== initialValue) {

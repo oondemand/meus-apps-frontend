@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AsyncSelect } from "chakra-react-select";
 import { api } from "../../../config/api";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectPrestadorCell = ({
   getValue,
@@ -15,6 +16,7 @@ export const SelectPrestadorCell = ({
 
   const timeoutRef = useRef(null);
   const abortControllerRef = useRef(null);
+  const { requestConfirmation } = useConfirmation();
 
   const fetchPrestadores = async (inputValue) => {
     try {

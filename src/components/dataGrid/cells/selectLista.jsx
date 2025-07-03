@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ListaService } from "../../../service/listas";
 import { SelectAutocomplete } from "../../selectAutocomplete";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectListaCell = ({
   getValue,
@@ -19,6 +20,7 @@ export const SelectListaCell = ({
 
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const options =
     data?.lista?.data?.map((item) => ({

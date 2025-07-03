@@ -3,10 +3,12 @@ import { Input } from "@chakra-ui/react";
 import { withMask } from "use-mask-input";
 import { parse, format } from "date-fns";
 import { formatDateToDDMMYYYY } from "../../../utils/formatting";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const DateCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = formatDateToDDMMYYYY(getValue());
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value !== initialValue) {

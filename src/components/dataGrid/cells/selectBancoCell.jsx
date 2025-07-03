@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "../../../config/api";
 import { SelectAutocomplete } from "../../selectAutocomplete";
 import { MenuList } from "../../menuList";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectBancoCell = ({ getValue, row, column, table, ...rest }) => {
   const { data } = useQuery({
@@ -18,6 +19,7 @@ export const SelectBancoCell = ({ getValue, row, column, table, ...rest }) => {
 
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value && value !== options.find((e) => e?.value === initialValue)) {

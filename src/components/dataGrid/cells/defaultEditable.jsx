@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const DefaultEditableCell = ({
   getValue,
@@ -10,6 +11,7 @@ export const DefaultEditableCell = ({
 }) => {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue || "");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (column.columnDef?.confirmAction) {

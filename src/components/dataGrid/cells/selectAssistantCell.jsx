@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { SelectAutocomplete } from "../../selectAutocomplete";
 import { AssistantService } from "../../../service/assistant";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectAssistantCell = ({
   getValue,
@@ -26,6 +27,7 @@ export const SelectAssistantCell = ({
 
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value && value !== options.find((e) => e?.value === initialValue)) {

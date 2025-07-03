@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import { withMask } from "use-mask-input";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = getValue();
@@ -10,6 +11,7 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
     initialValue?.ano?.toString();
 
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value.replace("/", "") !== formatValue) {

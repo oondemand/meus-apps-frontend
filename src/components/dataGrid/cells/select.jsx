@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { NativeSelectField, NativeSelectRoot } from "../../ui/native-select";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue);
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value !== initialValue) {
