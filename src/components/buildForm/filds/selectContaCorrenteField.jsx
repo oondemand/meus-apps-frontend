@@ -5,6 +5,7 @@ import { Controller } from "react-hook-form";
 import { useMemo } from "react";
 import { createChakraStyles } from "./chakraStyles";
 import { ListaOmieService } from "../../../service/lista-omie";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectContaCorrenteField = ({ ...props }) => {
   const { data } = useQuery({
@@ -30,6 +31,26 @@ export const SelectContaCorrenteField = ({ ...props }) => {
     }
   };
 
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        action === "canceled" &&
+          props?.setValue(props?.accessorKey, props.initialValue);
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
+  };
+
   return (
     <Box>
       <Box>
@@ -47,7 +68,7 @@ export const SelectContaCorrenteField = ({ ...props }) => {
               disabled={props?.disabled}
               value={options?.find((item) => item?.value == field?.value) ?? ""}
               name={field.name}
-              onBlur={field.onBlur}
+              onBlur={onBlur}
               onChange={(e) => field.onChange(e?.value ?? "")}
               cacheOptions
               isClearable

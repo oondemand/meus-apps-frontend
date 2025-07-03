@@ -1,6 +1,7 @@
 import { Box, Text } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { NumericFormat } from "react-number-format";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CurrencyField = ({ ...props }) => {
   useEffect(() => {}, [props?.initialValue]);
@@ -10,6 +11,26 @@ export const CurrencyField = ({ ...props }) => {
       event?.preventDefault();
       props?.setValue(props?.accessorKey, props.initialValue);
     }
+  };
+
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        action === "canceled" &&
+          props?.setValue(props?.accessorKey, props.initialValue);
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
   };
   return (
     <Box>
@@ -21,7 +42,7 @@ export const CurrencyField = ({ ...props }) => {
           disabled={props?.disabled}
           value={props?.initialValue}
           name={props.field.name}
-          onBlur={props.field.onBlur}
+          onBlur={onBlur}
           onChange={props.field.onChange}
           getInputRef={props.field.ref}
           onKeyDown={handleKeyDown}

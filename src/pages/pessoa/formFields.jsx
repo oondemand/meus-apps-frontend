@@ -52,6 +52,10 @@ export const createDynamicFormFields = () => {
             .nonempty({ message: "Documento é um campo obrigatório" })
             .transform((value) => value.replace(/\D/g, "")),
           colSpan: 1,
+          confirmAction: {
+            title: "Tem certeza que deseja alterar *nome*?",
+            description: "Algumas informações podem ser perdidas no processo!",
+          },
         },
         {
           accessorKey: "grupo",
