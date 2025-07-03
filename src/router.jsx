@@ -14,10 +14,10 @@ import { AlterarSenha } from "./pages/alterarSenha";
 import { RegistrosPage } from "./pages/registros";
 import { Listas } from "./pages/listas";
 import { SistemaPage } from "./pages/sistema";
-// import { TicketsPagosPage } from "./pages/ticketsPagos";
+// import { TicketsPagosPage } from "./pages/ticketsPagos"
 import { EtapasPage } from "./pages/etapas";
 // import { DocumentosFiscaisList } from "./pages/documentoFiscal";
-// import { ImportDocumentosFiscaisPage } from "./pages/documentoFiscal/importacao";
+// import { ImportDocumentosFiscaisPage } from "./pages/documentoFiscal/importacao"
 import { AssistenteConfigPage } from "./pages/assistant";
 import { DocumentosCadastraisList } from "./pages/documentoCadastral";
 import { ImportDocumentosCadastraisPage } from "./pages/documentoCadastral/importacao";
