@@ -48,6 +48,10 @@ export const makeDynamicColumns = () => {
         <SelectAutoCompleteCell {...props} options={TIPO_PESSOA_OPTIONS} />
       ),
       enableColumnFilter: true,
+      confirmAction: {
+        message: "Tem certeza que deseja alterar *tipo*?",
+        description: "Algumas informações podem ser perdidas no processo.",
+      },
       meta: {
         filterKey: "tipo",
         filterVariant: "select",

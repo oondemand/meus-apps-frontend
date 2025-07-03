@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { SelectAutocomplete } from "../../../components/selectAutocomplete";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectAutoCompleteCell = ({
   getValue,
@@ -10,11 +11,23 @@ export const SelectAutoCompleteCell = ({
   ...rest
 }) => {
   const initialValue = getValue();
-
   const [value, setValue] = useState("");
+
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value && value !== options.find((e) => e?.value === initialValue)) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.message ?? "Tem certeza?",
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return inicializarValue();
+        }
+      }
+
       try {
         await table.options.meta?.updateData({
           id: row.original._id,
