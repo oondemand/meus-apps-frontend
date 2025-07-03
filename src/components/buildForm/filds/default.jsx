@@ -1,4 +1,5 @@
 import { Input, Box, Text } from "@chakra-ui/react";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const DefaultField = ({ inputStyle, ...props }) => {
   const handleKeyDown = (event) => {
@@ -8,6 +9,26 @@ export const DefaultField = ({ inputStyle, ...props }) => {
     }
   };
 
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        action === "canceled" &&
+          props?.setValue(props?.accessorKey, props.initialValue);
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
+  };
+
   return (
     <Box>
       <Text fontSize="sm" color="gray.700">
@@ -15,6 +36,7 @@ export const DefaultField = ({ inputStyle, ...props }) => {
       </Text>
       <Input
         {...props.field}
+        onBlur={onBlur}
         disabled={props?.disabled}
         size="sm"
         fontSize="sm"

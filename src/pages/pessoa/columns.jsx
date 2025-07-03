@@ -49,7 +49,7 @@ export const makeDynamicColumns = () => {
       ),
       enableColumnFilter: true,
       confirmAction: {
-        message: "Tem certeza que deseja alterar *tipo*?",
+        title: "Tem certeza que deseja alterar *tipo*?",
         description: "Algumas informações podem ser perdidas no processo.",
       },
       meta: {

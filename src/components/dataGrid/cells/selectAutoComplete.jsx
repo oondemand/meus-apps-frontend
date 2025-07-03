@@ -19,7 +19,7 @@ export const SelectAutoCompleteCell = ({
     if (value && value !== options.find((e) => e?.value === initialValue)) {
       if (column.columnDef?.confirmAction) {
         const { action } = await requestConfirmation({
-          title: column.columnDef?.confirmAction?.message ?? "Tem certeza?",
+          title: column.columnDef?.confirmAction?.title,
           description: column.columnDef?.confirmAction?.description,
         });
 

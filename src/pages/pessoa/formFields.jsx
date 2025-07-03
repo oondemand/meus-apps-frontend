@@ -30,6 +30,10 @@ export const createDynamicFormFields = () => {
             .string()
             .min(3, { message: "Nome precisa ter pelo menos 3 caracteres" }),
           colSpan: 3,
+          confirmAction: {
+            title: "Tem certeza que deseja alterar *nome*?",
+            description: "Algumas informações podem ser perdidas no processo!",
+          },
         },
         {
           accessorKey: "tipo",
