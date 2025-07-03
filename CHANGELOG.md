@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.13 (2025-07-03)
+
+### 🔧 Chores
+
+* release v0.1.12 ([6bf71af](https://github.com/oondemand/central-oondemand-frontend/commit/6bf71af9e59302e646a882f28e8ed7a9b7d2a96c))
+
 ## [0.1.12](https://github.com/oondemand/central-oondemand-frontend/compare/0.1.11...0.1.12) (2025-07-03)
 
 ### 🔨 Refactoring
