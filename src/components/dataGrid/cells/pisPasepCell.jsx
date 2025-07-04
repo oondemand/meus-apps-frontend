@@ -1,13 +1,26 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import { withMask } from "use-mask-input";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const PisPasepCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = getValue();
   const [value, setValue] = useState(initialValue);
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value !== initialValue) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return setValue(initialValue);
+        }
+      }
+
       try {
         await table.options.meta?.updateData({
           id: row.original._id,
@@ -19,6 +32,13 @@ export const PisPasepCell = ({ getValue, row, column, table, ...rest }) => {
         console.log(error);
         setValue(initialValue);
       }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
     }
   };
 
@@ -40,6 +60,7 @@ export const PisPasepCell = ({ getValue, row, column, table, ...rest }) => {
       onBlur={onBlur}
       placeholder=""
       ref={withMask("999.99999.99-9")}
+      onKeyDown={handleKeyDown}
     />
   );
 };

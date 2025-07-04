@@ -1,6 +1,5 @@
 import React from "react";
 import { SelectAutoCompleteCell } from "../../components/dataGrid/cells/selectAutoComplete";
-
 import { DefaultEditableCell } from "../../components/dataGrid/cells/defaultEditable";
 import { UsuariosDialog } from "./dialog";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";

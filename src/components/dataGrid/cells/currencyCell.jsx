@@ -2,13 +2,26 @@ import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { parseBRLCurrencyToNumber } from "../../../utils/currency";
 import { Input } from "@chakra-ui/react";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (parseBRLCurrencyToNumber(value) !== initialValue) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return setValue(initialValue);
+        }
+      }
+
       try {
         await table.options.meta?.updateData({
           id: row.original._id,
@@ -20,6 +33,13 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
         console.log(error);
         setValue(initialValue);
       }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
     }
   };
 
@@ -37,17 +57,6 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
       allowNegative
       prefix="R$ "
       placeholder="R$ 0,00"
-      // customInput={(props) => (
-      //   <Input
-      //     {...props}
-      //     variant="subtle"
-      //     display="flex"
-      //     fontSize="md"
-      //     size="xs"
-      //     bg="transparent"
-      //     focusRingColor="brand.500"
-      //   />
-      // )}
       style={{
         backgroundColor: "transparent",
         height: "32px",
@@ -59,6 +68,7 @@ export const CurrencyCell = ({ getValue, row, column, table, ...props }) => {
       value={value}
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
+      onKeyDown={handleKeyDown}
     />
   );
 };

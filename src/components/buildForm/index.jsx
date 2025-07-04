@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Grid, GridItem, Box, Text } from "@chakra-ui/react";
 import { z } from "zod";
+import { DefaultContainer } from "./components/default";
 
 const getNestedValue = (obj, path) => {
   return path.split(".").reduce((acc, key) => acc?.[key], obj);
@@ -88,6 +89,7 @@ export const BuildForm = ({
   }
 
   const methods = useForm(formConfig);
+  const confirmationRefFn = useRef(null);
 
   const {
     register,
@@ -114,6 +116,7 @@ export const BuildForm = ({
           initialValue: getNestedValue(data, field.accessorKey),
           field: register(field.accessorKey),
           error: getNestedValue(errors, field.accessorKey)?.message,
+          confirmationRefFn,
           methods,
           disabled,
           ...rest,
@@ -126,7 +129,18 @@ export const BuildForm = ({
 
   return (
     <FormProvider {...methods}>
-      <form onBlur={handleSubmit(onSubmit)}>
+      <form
+        onBlur={handleSubmit(async (values) => {
+          // const isChanged = Object.keys(dirtyFields).length > 0;
+          if (typeof confirmationRefFn.current === "function") {
+            const action = await confirmationRefFn?.current();
+            action === "confirmed" && onSubmit(values);
+            return (confirmationRefFn.current = null);
+          }
+
+          onSubmit(values);
+        })}
+      >
         <Grid
           alignItems="baseline"
           templateColumns={`repeat(${gridColumns}, 1fr)`}
@@ -137,26 +151,9 @@ export const BuildForm = ({
               const Wrapper =
                 fieldOrGroup.wrapperComponent ||
                 (({ children }) => (
-                  <Box
-                    border="1px dashed"
-                    borderColor="gray.200"
-                    borderRadius="lg"
-                    pt="5"
-                    pb="6"
-                    px="6"
-                  >
-                    {fieldOrGroup.label && (
-                      <Text
-                        fontWeight="semibold"
-                        fontSize="md"
-                        color="gray.600"
-                        mb="6"
-                      >
-                        {fieldOrGroup.label}
-                      </Text>
-                    )}
+                  <DefaultContainer label={fieldOrGroup?.label}>
                     {children}
-                  </Box>
+                  </DefaultContainer>
                 ));
 
               return (

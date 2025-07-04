@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ListaService } from "../../../service/listas";
 import { SelectAutocomplete } from "../../selectAutocomplete";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectListaCell = ({
   getValue,
@@ -19,6 +20,7 @@ export const SelectListaCell = ({
 
   const initialValue = getValue();
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const options =
     data?.lista?.data?.map((item) => ({
@@ -48,6 +50,17 @@ export const SelectListaCell = ({
     if (!value || value?.value === (originalItem?.value || originalItem?.label))
       return;
 
+    if (column.columnDef?.confirmAction) {
+      const { action } = await requestConfirmation({
+        title: column.columnDef?.confirmAction?.title,
+        description: column.columnDef?.confirmAction?.description,
+      });
+
+      if (action === "canceled") {
+        return initialValue(initialValue);
+      }
+    }
+
     try {
       await table.options.meta?.updateData({
         id: row.original._id,
@@ -64,11 +77,19 @@ export const SelectListaCell = ({
     setValue(initialOption);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      initializeValue();
+    }
+  };
+
   useEffect(() => {
     initializeValue();
   }, [initialValue, data]);
   return (
     <SelectAutocomplete
+      onKeyDown={handleKeyDown}
       placeholder={value}
       onBlur={handleBlur}
       value={value}

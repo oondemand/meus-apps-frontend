@@ -5,6 +5,7 @@ import { Controller } from "react-hook-form";
 import { useMemo } from "react";
 import { createChakraStyles } from "./chakraStyles";
 import { ListaOmieService } from "../../../service/lista-omie";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectCategoriaField = ({ ...props }) => {
   const { data } = useQuery({
@@ -23,6 +24,33 @@ export const SelectCategoriaField = ({ ...props }) => {
     [data]
   );
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        action === "canceled" &&
+          props?.setValue(props?.accessorKey, props.initialValue);
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
+  };
+
   return (
     <Box>
       <Box>
@@ -34,12 +62,13 @@ export const SelectCategoriaField = ({ ...props }) => {
           control={props.methods.control}
           render={({ field }) => (
             <Select
+              onKeyDown={handleKeyDown}
               fontSize="sm"
               size="sm"
               disabled={props?.disabled}
               value={options?.find((item) => item?.value == field?.value) ?? ""}
               name={field.name}
-              onBlur={field.onBlur}
+              onBlur={onBlur}
               onChange={(e) => field.onChange(e?.value ?? "")}
               cacheOptions
               isClearable

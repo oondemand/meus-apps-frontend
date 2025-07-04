@@ -76,6 +76,10 @@ export const menuItems = [
         title: "Doc",
         href: "/doc",
       },
+      {
+        title: "Log de mudanças",
+        href: "/changelog",
+      },
     ],
   },
 ];

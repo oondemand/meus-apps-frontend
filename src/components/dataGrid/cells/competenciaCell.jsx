@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import { withMask } from "use-mask-input";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
   const initialValue = getValue();
@@ -10,9 +11,21 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
     initialValue?.ano?.toString();
 
   const [value, setValue] = useState("");
+  const { requestConfirmation } = useConfirmation();
 
   const onBlur = async () => {
     if (value.replace("/", "") !== formatValue) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return setValue(initialValue);
+        }
+      }
+
       try {
         const competencia = value.split("/");
         await table.options.meta?.updateData({
@@ -26,6 +39,13 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
         console.log(error);
         setValue(formatValue);
       }
+    }
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      setValue(initialValue);
     }
   };
 
@@ -46,6 +66,7 @@ export const CompetenciaCell = ({ getValue, row, column, table, ...rest }) => {
       onChange={(e) => setValue(e.target.value)}
       onBlur={onBlur}
       ref={withMask("99/9999")}
+      onKeyDown={handleKeyDown}
     />
   );
 };

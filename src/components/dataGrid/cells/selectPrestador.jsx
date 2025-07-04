@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { AsyncSelect } from "chakra-react-select";
 import { api } from "../../../config/api";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectPrestadorCell = ({
   getValue,
@@ -15,6 +16,7 @@ export const SelectPrestadorCell = ({
 
   const timeoutRef = useRef(null);
   const abortControllerRef = useRef(null);
+  const { requestConfirmation } = useConfirmation();
 
   const fetchPrestadores = async (inputValue) => {
     try {
@@ -81,6 +83,17 @@ export const SelectPrestadorCell = ({
 
   const onBlur = async () => {
     if (shouldUpdateValue()) {
+      if (column.columnDef?.confirmAction) {
+        const { action } = await requestConfirmation({
+          title: column.columnDef?.confirmAction?.title,
+          description: column.columnDef?.confirmAction?.description,
+        });
+
+        if (action === "canceled") {
+          return initializeValue(initialValue);
+        }
+      }
+
       await handleUpdate();
     }
   };
@@ -92,11 +105,19 @@ export const SelectPrestadorCell = ({
     });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      initializeValue();
+    }
+  };
+
   useEffect(() => {
     initializeValue();
   }, [initialValue]);
   return (
     <AsyncSelect
+      onKeyDown={handleKeyDown}
       {...rest}
       defaultInputValue={value}
       isClearable={true}

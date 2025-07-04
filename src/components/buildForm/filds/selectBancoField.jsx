@@ -6,6 +6,7 @@ import { api } from "../../../config/api";
 import { useMemo } from "react";
 import { MenuList } from "../../menuList";
 import { createChakraStyles } from "./chakraStyles";
+import { useConfirmation } from "../../../hooks/useConfirmation";
 
 export const SelectBancoField = ({ cod, ...props }) => {
   const { data } = useQuery({
@@ -19,7 +20,32 @@ export const SelectBancoField = ({ cod, ...props }) => {
     [data?.data]
   );
 
-  const getValue = (value) => options?.find((item) => item.value === value);
+  const handleKeyDown = (event) => {
+    if (event.key === "Escape") {
+      event?.preventDefault();
+      props?.setValue(props?.accessorKey, props.initialValue);
+    }
+  };
+
+  const { requestConfirmation } = useConfirmation();
+
+  const onBlur = async (ev) => {
+    if (props?.confirmAction) {
+      props.confirmationRefFn.current = async () => {
+        const { action } = await requestConfirmation({
+          title: props.confirmAction?.title,
+          description: props?.confirmAction?.description,
+        });
+
+        action === "canceled" &&
+          props?.setValue(props?.accessorKey, props.initialValue);
+
+        return action;
+      };
+    }
+
+    props.field.onBlur(ev);
+  };
 
   return (
     <Box>
@@ -30,13 +56,14 @@ export const SelectBancoField = ({ cod, ...props }) => {
           control={props.methods.control}
           render={({ field }) => (
             <Select
+              onKeyDown={handleKeyDown}
               fontSize="sm"
               size="sm"
               disabled={props?.disabled}
               components={{ MenuList }}
               value={options?.find((item) => item?.value == field?.value) ?? ""}
               name={field.name}
-              onBlur={field.onBlur}
+              onBlur={onBlur}
               onChange={(e) => {
                 field.onChange(e?.value ?? "");
               }}

@@ -15,3 +15,22 @@
 .dialog-custom-scrollbar::-webkit-scrollbar-corner {
   background-color: transparent;
 }
+
+.rpv-core__inner-pages.rpv-core__inner-pages--vertical::-webkit-scrollbar {
+  width: 6px;
+  height: 7px;
+}
+
+.rpv-core__inner-pages.rpv-core__inner-pages--vertical::-webkit-scrollbar-thumb {
+  background-color: #cdcdce;
+  border-radius: 8px;
+}
+
+.rpv-core__inner-pages.rpv-core__inner-pages--vertical::-webkit-scrollbar-track {
+  background-color: #f0f2f4;
+  border-radius: 8px;
+}
+
+.rpv-core__inner-pages.rpv-core__inner-pages--vertical::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
