@@ -30,10 +30,6 @@ export const createDynamicFormFields = () => {
             .string()
             .min(3, { message: "Nome precisa ter pelo menos 3 caracteres" }),
           colSpan: 3,
-          confirmAction: {
-            title: "Tem certeza que deseja alterar *nome*?",
-            description: "Algumas informações podem ser perdidas no processo!",
-          },
         },
         {
           accessorKey: "tipo",
@@ -42,6 +38,10 @@ export const createDynamicFormFields = () => {
           validation: z.string({ message: "Tipo é um campo obrigatório" }),
           colSpan: 1,
           options: TIPO_PESSOA_OPTIONS,
+          confirmAction: {
+            title: "Tem certeza que deseja alterar *tipo*?",
+            description: "Algumas informações podem ser perdidas no processo!",
+          },
         },
         {
           accessorKey: "documento",
@@ -52,10 +52,6 @@ export const createDynamicFormFields = () => {
             .nonempty({ message: "Documento é um campo obrigatório" })
             .transform((value) => value.replace(/\D/g, "")),
           colSpan: 1,
-          confirmAction: {
-            title: "Tem certeza que deseja alterar *nome*?",
-            description: "Algumas informações podem ser perdidas no processo!",
-          },
         },
         {
           accessorKey: "grupo",

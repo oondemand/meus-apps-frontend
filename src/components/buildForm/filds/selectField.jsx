@@ -15,21 +15,15 @@ export const SelectField = ({ options, ...props }) => {
   const { requestConfirmation } = useConfirmation();
 
   const onBlur = async (ev) => {
-    if (props?.confirmAction) {
-      props.confirmationRefFn.current = async () => {
-        const { action } = await requestConfirmation({
-          title: props.confirmAction?.title,
-          description: props?.confirmAction?.description,
-        });
+    const { action } = await requestConfirmation({
+      title: props.confirmAction?.title,
+      description: props?.confirmAction?.description,
+    });
 
-        action === "canceled" &&
-          props?.setValue(props?.accessorKey, props.initialValue);
+    action === "canceled" &&
+      props?.setValue(props?.accessorKey, props.initialValue);
 
-        return action;
-      };
-    }
-
-    props.field.onBlur(ev);
+    return action;
   };
 
   return (
@@ -51,9 +45,10 @@ export const SelectField = ({ options, ...props }) => {
                   options?.find((item) => item?.value == field?.value) ?? ""
                 }
                 name={field.name}
-                onBlur={onBlur}
-                onChange={(e) => {
+                onBlur={field.onBlur}
+                onChange={async (e) => {
                   field.onChange(e?.value ?? "");
+                  await onBlur(e);
                 }}
                 cacheOptions
                 isClearable
