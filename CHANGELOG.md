@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 (2025-07-03)
+
+### ✨ Features
+
+* add changelog page and update routing; include new plugins in package.json ([2f97285](https://github.com/oondemand/central-oondemand-frontend/commit/2f97285d5ea3088efbf78be2c55ed2cba763942b))
+
 ## 0.1.13 (2025-07-03)
 
 ### 🔧 Chores
