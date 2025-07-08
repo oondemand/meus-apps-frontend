@@ -1,7 +1,7 @@
 import { Box, Flex, Text, Link, Button } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import { Settings, Filter } from "lucide-react";
+import { Settings, Filter, Trash } from "lucide-react";
 import { AplicativoService } from "../../service/aplicativo";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import {
@@ -13,9 +13,15 @@ import {
 import { useAuth } from "../../hooks/useAuth";
 import { useStateWithStorage } from "../../hooks/useStateStorage";
 import { CadastrarAplicativoDialog } from "./dialog";
+import { useConfirmation } from "../../hooks/useConfirmation";
+import { api } from "../../config/api";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient } from "../../config/react-query";
+import { toaster } from "../../components/ui/toaster";
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useStateWithStorage("searchTerm");
+  const { requestConfirmation } = useConfirmation();
   const { user } = useAuth();
 
   const { data } = useQuery({
@@ -32,6 +38,35 @@ export const Home = () => {
           return aplicativo?.nome?.toLowerCase()?.includes(term);
         })
       : data?.aplicativos;
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async ({ id }) => api.delete(`/aplicativos/${id}`),
+    onSuccess: () => {
+      toaster.create({
+        title: "Aplicativo excluído com sucesso!",
+        type: "success",
+      });
+      queryClient.invalidateQueries(["aplicativos"]);
+    },
+    onError: (error) => {
+      toaster.create({
+        title: "Ouve um erro inesperado ao excluir aplicativo!",
+        description: error?.response?.data?.message,
+        type: "error",
+      }); 
+    },
+  });
+
+  const handleDeleteApp = async ({ id }) => {
+    const { action } = await requestConfirmation({
+      title: "Tem certeza ?",
+      description: "Essa ação não pode ser desfeita!",
+    });
+
+    if (action === "confirmed") {
+      return mutateAsync({ id });
+    }
+  };
 
   return (
     <>
@@ -88,38 +123,52 @@ export const Home = () => {
                 >
                   <Text fontWeight="semibold">{item?.status}</Text>
 
-                  <MenuRoot positioning={{ placement: "bottom-end" }}>
-                    <MenuTrigger
-                      color="brand.500"
-                      focusRing="none"
-                      cursor="pointer"
-                      alignItems="baseline"
-                    >
-                      <Box p="1" rounded="full" bg="brand.50">
-                        <Settings />
-                      </Box>
-                    </MenuTrigger>
-                    <MenuContent cursor="pointer">
-                      <MenuItem
-                        fontWeight="semibold"
-                        onClick={() => {}}
+                  <Flex alignItems="center" gap="3">
+                    {user && user?.tipo === "master" && (
+                      <Box
+                        as="button"
+                        p="1"
+                        rounded="full"
+                        bg="gray.50"
                         cursor="pointer"
+                        onClick={() => handleDeleteApp({ id: item?._id })}
                       >
-                        <a
-                          href={`/aplicativos/${item?._id}/usuarios`}
-                          target="_blank"
-                          rel="noreferrer"
+                        <Trash size={22} />
+                      </Box>
+                    )}
+                    <MenuRoot positioning={{ placement: "bottom-end" }}>
+                      <MenuTrigger
+                        color="brand.500"
+                        focusRing="none"
+                        cursor="pointer"
+                        alignItems="baseline"
+                      >
+                        <Box p="1" rounded="full" bg="brand.50">
+                          <Settings />
+                        </Box>
+                      </MenuTrigger>
+                      <MenuContent cursor="pointer">
+                        <MenuItem
+                          fontWeight="semibold"
+                          onClick={() => {}}
+                          cursor="pointer"
                         >
-                          Cadastrar usuário
-                        </a>
-                      </MenuItem>
-                    </MenuContent>
-                  </MenuRoot>
+                          <a
+                            href={`/aplicativos/${item?._id}/usuarios`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            Cadastrar usuário
+                          </a>
+                        </MenuItem>
+                      </MenuContent>
+                    </MenuRoot>
+                  </Flex>
                 </Flex>
 
                 <Flex p="4" gap="2">
                   <Box rounded="2xl" overflow="hidden" w="50px" h="50px">
-                    <img src={item?.icone} />
+                    {item?.icone && <img src={item?.icone} />}
                   </Box>
                   <Text fontSize="2xl" fontWeight="semibold">
                     {item?.nome}

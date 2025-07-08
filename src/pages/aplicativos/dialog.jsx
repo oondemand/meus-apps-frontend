@@ -20,7 +20,8 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-// import { SistemaService } from "../../service/sistema";
+import { api } from "../../config/api";
+import { queryClient } from "../../config/react-query";
 
 const schema = z.object({
   email: z.string().email("Email inválido!"),
@@ -37,16 +38,15 @@ export const ConvidarUsuarioDialog = ({ aplicativoId }) => {
     resolver: zodResolver(schema),
   });
 
-  const { mutateAsync: onTestEmailMutation, isPending } = useMutation({
-    mutationFn: async ({ body }) => {
-      throw new Error("");
-    },
+  const { mutateAsync: convidarUsuarioMutation, isPending } = useMutation({
+    mutationFn: async ({ body }) =>
+      api.post(`/aplicativos/${aplicativoId}`, body),
     onSuccess: () => {
       toaster.create({
-        title: "Email enviado com sucesso!",
-        description: "O link de convite expira em 24 horas!",
+        title: "Usuário convidado com sucesso!",
         type: "success",
       });
+      queryClient.invalidateQueries(["aplicativos"]);
       setOpen(false);
     },
     onError: (error) => {
@@ -73,7 +73,7 @@ export const ConvidarUsuarioDialog = ({ aplicativoId }) => {
         <DialogContent>
           <form
             onSubmit={handleSubmit(
-              async (values) => await onTestEmailMutation({ body: values })
+              async (values) => await convidarUsuarioMutation({ body: values })
             )}
           >
             <DialogHeader>
