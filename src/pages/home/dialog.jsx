@@ -125,7 +125,7 @@ export const CadastrarAplicativoDialog = () => {
                 variant="surface"
                 colorPalette="blue"
               >
-                Enviar
+                Cadastrar
               </Button>
             </DialogFooter>
             <DialogCloseTrigger>

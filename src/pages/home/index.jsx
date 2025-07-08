@@ -69,7 +69,14 @@ export const Home = () => {
         {aplicativosFiltrados &&
           aplicativosFiltrados?.map((item) => {
             return (
-              <Box h="56" w="80" shadow="md" rounded="2xl" position="relative">
+              <Box
+                h="56"
+                w="80"
+                bg="white"
+                shadow="md"
+                rounded="2xl"
+                position="relative"
+              >
                 <Flex
                   p="3"
                   justifyContent="space-between"
