@@ -32,7 +32,6 @@ export const menuItems = [
   //   title: "Documentos Cadastrais",
   //   href: "/documentos-cadastrais",
   //   icon: Notebook,
-  //   rules: ["admin", "tomador"],
   // },
   // {
   //   title: "Planejamento",
@@ -44,42 +43,44 @@ export const menuItems = [
   //   icon: Users,
   //   href: "/pessoas",
   // },
-  // {
-  //   title: "Configurações",
-  //   icon: Settings,
-  //   subLinks: [
-  //     {
-  //       title: "Usuários",
-  //       href: "/usuarios",
-  //     },
-  //     {
-  //       title: "Listas",
-  //       href: "/listas",
-  //     },
-  //     {
-  //       title: "Registros",
-  //       href: "/registros",
-  //     },
-  //     {
-  //       title: "Sistema",
-  //       href: "/sistema",
-  //     },
-  //     {
-  //       title: "Etapas",
-  //       href: "/etapas",
-  //     },
-  //     {
-  //       title: "Assistentes",
-  //       href: "/assistentes",
-  //     },
-  //     {
-  //       title: "Doc",
-  //       href: "/doc",
-  //     },
-  //     {
-  //       title: "Log de mudanças",
-  //       href: "/changelog",
-  //     },
-  //   ],
-  // },
+  {
+    title: "Configurações",
+    icon: Settings,
+    rules: ["usuario"],
+    subLinks: [
+      {
+        title: "Sistema",
+        href: "/sistema",
+        // rules: ["master"],
+      },
+      // {
+      //   title: "Usuários",
+      //   href: "/usuarios",
+      // },
+      // {
+      //   title: "Listas",
+      //   href: "/listas",
+      // },
+      // {
+      //   title: "Registros",
+      //   href: "/registros",
+      // },
+      // {
+      //   title: "Etapas",
+      //   href: "/etapas",
+      // },
+      // {
+      //   title: "Assistentes",
+      //   href: "/assistentes",
+      // },
+      // {
+      //   title: "Doc",
+      //   href: "/doc",
+      // },
+      // {
+      //   title: "Log de mudanças",
+      //   href: "/changelog",
+      // },
+    ],
+  },
 ];
