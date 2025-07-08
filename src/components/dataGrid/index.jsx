@@ -71,7 +71,7 @@ export const DataGrid = ({
           )}
           {tableProps.globalFilter !== false && (
             <DebouncedInput
-              value={tableProps.filters.searchTerm}
+              value={tableProps?.filters?.searchTerm}
               debounce={700}
               onChange={(value) => {
                 tableProps.setFilters((prev) => ({

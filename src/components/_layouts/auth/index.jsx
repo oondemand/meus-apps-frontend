@@ -142,7 +142,9 @@ export const AuthLayout = () => {
         paddingBottom="0"
         overflow="hidden"
       >
-        <Outlet />
+        <Flex flex="1" flexDir="column" py="8" px="6" bg="#F8F9FA">
+          <Outlet />
+        </Flex>
       </Flex>
     </Flex>
   );

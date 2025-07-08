@@ -12,6 +12,7 @@ import {
 } from "../../components/ui/menu";
 import { useAuth } from "../../hooks/useAuth";
 import { useStateWithStorage } from "../../hooks/useStateStorage";
+import { CadastrarAplicativoDialog } from "./dialog";
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useStateWithStorage("searchTerm");
@@ -33,7 +34,7 @@ export const Home = () => {
       : data?.aplicativos;
 
   return (
-    <Flex flex="1" flexDir="column" py="8" px="6" bg="#F8F9FA">
+    <>
       <Flex justifyContent="space-between" alignItems="flex-start">
         <Box>
           <Text color="gray.400" fontSize="xs">
@@ -60,15 +61,11 @@ export const Home = () => {
             />
           </Flex>
 
-          {user && user?.tipo === "master" && (
-            <Button colorPalette="cyan" size="sm" rounded="md">
-              Cadastrar aplicativo
-            </Button>
-          )}
+          {user && user?.tipo === "master" && <CadastrarAplicativoDialog />}
         </Flex>
       </Flex>
 
-      <Flex mt="8">
+      <Flex mt="8" gap="4">
         {aplicativosFiltrados &&
           aplicativosFiltrados?.map((item) => {
             return (
@@ -142,6 +139,6 @@ export const Home = () => {
             );
           })}
       </Flex>
-    </Flex>
+    </>
   );
 };
