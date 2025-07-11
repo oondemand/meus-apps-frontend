@@ -89,7 +89,7 @@ export const ConvidarUsuarioDialog = ({ aplicativoId }) => {
               )}
             </DialogBody>
             <DialogFooter>
-              <DialogActionTrigger>
+              <DialogActionTrigger asChild>
                 <Button variant="surface">Cancelar</Button>
               </DialogActionTrigger>
 

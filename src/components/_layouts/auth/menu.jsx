@@ -48,7 +48,7 @@ export const menuItems = [
   {
     title: "Configurações",
     icon: Settings,
-    rules: ["usuario"],
+    rules: ["padrao", "admin"],
     subLinks: [
       {
         title: "Sistema",

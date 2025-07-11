@@ -3,22 +3,27 @@ import { DefaultCell } from "../../components/dataGrid/cells/default";
 export const columns = () => {
   return [
     {
-      accessorKey: "nome",
+      accessorKey: "usuario.nome",
       header: "Nome",
       cell: DefaultCell,
     },
     {
-      accessorKey: "tipo",
+      accessorKey: "usuario.tipo",
       header: "Tipo",
       cell: DefaultCell,
     },
     {
-      accessorKey: "email",
+      accessorKey: "usuario.email",
       header: "Email",
       cell: DefaultCell,
     },
     {
-      accessorKey: "status",
+      accessorKey: "usuario.telefone",
+      header: "Telefone",
+      cell: DefaultCell,
+    },
+    {
+      accessorKey: "usuario.status",
       header: "Status",
       cell: DefaultCell,
     },

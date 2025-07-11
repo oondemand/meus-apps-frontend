@@ -10,6 +10,7 @@ import { TableHeader } from "../../components/dataGrid/tableHeader";
 import { useReactTable, getCoreRowModel } from "@tanstack/react-table";
 import { ConvidarUsuarioDialog } from "./dialog";
 import { columns } from "./columns";
+import { useAuth } from "../../hooks/useAuth";
 
 export const Aplicativos = () => {
   const { id } = useParams();
@@ -27,6 +28,9 @@ export const Aplicativos = () => {
     getCoreRowModel: getCoreRowModel(),
   });
 
+  const { user } = useAuth();
+
+  console.log("DATA:", data, user?.tipo);
   return (
     <Box>
       <Flex justifyContent="space-between">
@@ -38,20 +42,13 @@ export const Aplicativos = () => {
             {data?.data?.aplicativo?.nome}
           </Text>
         </Box>
-        {/* <Button size="sm" colorPalette="cyan">
-          Convidar usuário
-        </Button> */}
-        <ConvidarUsuarioDialog aplicativoId={id} />
+        {user && ["master", "admin"].includes(user?.tipo) && (
+          <ConvidarUsuarioDialog aplicativoId={id} />
+        )}
       </Flex>
 
-      {/* {data?.data?.aplicativo?.usuarios && (
-        <Text mt="8" fontSize="20px" color="gray.700" fontWeight="semibold">
-          Usuarios
-        </Text>
-      )} */}
-
       {data?.data?.aplicativo?.usuarios && (
-        <Box w="2xl" bg="white" p="6" shadow="sm" mt="8" rounded="lg">
+        <Box bg="white" p="6" shadow="sm" mt="8" rounded="lg" overflow="auto">
           <Flex gap="4">
             <Text mb="4" fontSize="lg" fontWeight="bold" color="gray.700">
               Usuarios
