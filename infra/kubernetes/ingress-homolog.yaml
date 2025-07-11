@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: auth-frontend-homolog-ingress
+  name: meus-apps-frontend-homolog-ingress
   namespace: central-oondemand-homolog
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-nginx
@@ -23,6 +23,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: auth-frontend-homolog-service
+                name: meus-apps-frontend-homolog-service
                 port:
                   number: 80

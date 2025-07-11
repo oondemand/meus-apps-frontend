@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: auth-frontend-ingress
+  name: meus-apps-frontend-ingress
   namespace: central-oondemand
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-nginx
@@ -23,6 +23,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: auth-frontend-service
+                name: meus-apps-frontend-service
                 port:
                   number: 80

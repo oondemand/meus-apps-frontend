@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-frontend-homolog
+  name: meus-apps-frontend-homolog
   namespace: central-oondemand-homolog
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-frontend-homolog
+      app: meus-apps-frontend-homolog
   template:
     metadata:
       labels:
-        app: auth-frontend-homolog
+        app: meus-apps-frontend-homolog
     spec:
       containers:
-        - name: auth-frontend-homolog-container
-          image: ghcr.io/oondemand/auth-frontend:${IMAGE_TAG}-homolog
+        - name: meus-apps-frontend-homolog-container
+          image: ghcr.io/oondemand/meus-apps-frontend:${IMAGE_TAG}-homolog
           ports:
             - containerPort: 3000
           resources:

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-frontend
+  name: meus-apps-frontend
   namespace: central-oondemand
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth-frontend
+      app: meus-apps-frontend
   template:
     metadata:
       labels:
-        app: auth-frontend
+        app: meus-apps-frontend
     spec:
       containers:
-        - name: auth-frontend-container
-          image: ghcr.io/oondemand/auth-frontend:${IMAGE_TAG}-prod
+        - name: meus-apps-frontend-container
+          image: ghcr.io/oondemand/meus-apps-frontend:${IMAGE_TAG}-prod
           ports:
             - containerPort: 3000
           resources:
