@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -12,17 +12,13 @@ import { Button, Input, Box, VStack, Text } from "@chakra-ui/react";
 import { toaster } from "../../components/ui/toaster";
 import { useEffect } from "react";
 
-const FormSchema = z
-  .object({
-    novaSenha: z
-      .string()
-      .min(6, { message: "A senha precisa ter no mínimo 6 caracteres" }),
-    confirmacao: z.string().nonempty({ message: "Confirmação é obrigatória" }),
-  })
-  .refine((data) => data.confirmacao === data.novaSenha, {
-    message: "As senhas precisam ser iguais",
-    path: ["confirmacao"],
-  });
+const FormSchema = z.object({
+  senha: z
+    .string()
+    .min(6, { message: "A senha precisa ter no mínimo 6 caracteres" }),
+  nome: z.string().nonempty({ message: "Nome é obrigatório" }),
+  telefone: z.string(),
+});
 
 export const LoginForm = () => {
   const { login } = useAuth();
@@ -45,24 +41,16 @@ export const LoginForm = () => {
   } = useForm({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      novaSenha: "",
-      confirmacao: "",
+      senha: "",
+      nome: "",
     },
   });
 
-  const { mutateAsync: LoginMutation } = useMutation({
-    mutationFn: LoginService.criarNovaSenha,
-    onSuccess({ token, usuario: user }) {
-      if (user.tipo === "prestador") {
-        toaster.create({
-          title: "Sem permissões para acessar a esteira de serviços!",
-          type: "error",
-        });
-
-        return;
-      }
-
-      login(token, user);
+  const { mutateAsync: onLoginMutation } = useMutation({
+    mutationFn: async ({ body, code }) =>
+      await LoginService.firstAccess({ body, code }),
+    onSuccess({ data: { usuario, token } }) {
+      login(token, usuario);
       localStorage.removeItem("code");
       return navigate("/");
     },
@@ -76,41 +64,59 @@ export const LoginForm = () => {
     },
   });
 
+  const onSubmit = async (values) => {
+    await onLoginMutation({ body: values, code: localStorage.getItem("code") });
+  };
+
   return (
     <Box w="full">
-      <form onSubmit={handleSubmit(LoginMutation)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spaceY="4">
           <Box w="full">
-            <Text color="brand.500">Nova Senha</Text>
+            <Text color="brand.500">Nome</Text>
             <Input
               focusRingColor="brand.350"
-              placeholder="Sua senha"
-              {...register("novaSenha")}
+              placeholder="Seu nome"
+              {...register("nome")}
             />
-            {errors.novaSenha?.message && (
+            {errors.nome?.message && (
               <Text fontSize="sm" color="red.500">
-                {errors.novaSenha.message}
+                {errors.nome.message}
               </Text>
             )}
           </Box>
 
           <Box w="full">
-            <Text color="brand.500">Confirmação</Text>
+            <Text color="brand.500">Telefone</Text>
             <Input
               focusRingColor="brand.350"
-              type="senha"
-              placeholder="Confirmação"
-              {...register("confirmacao")}
+              placeholder="Seu telefone"
+              {...register("telefone")}
             />
-            {errors.confirmacao?.message && (
+            {errors.telefone?.message && (
               <Text fontSize="sm" color="red.500">
-                {errors.confirmacao.message}
+                {errors.telefone.message}
+              </Text>
+            )}
+          </Box>
+
+          <Box w="full">
+            <Text color="brand.500">Senha</Text>
+            <Input
+              type="password"
+              focusRingColor="brand.350"
+              placeholder="Sua senha"
+              {...register("senha")}
+            />
+            {errors.senha?.message && (
+              <Text fontSize="sm" color="red.500">
+                {errors.senha.message}
               </Text>
             )}
           </Box>
 
           <Button w="full" fontWeight="semibold" type="submit" bg="blue.500">
-            Submit
+            Confirmar
           </Button>
         </VStack>
       </form>

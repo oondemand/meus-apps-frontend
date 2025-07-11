@@ -5,6 +5,7 @@ import { AuthLayout } from "./components/_layouts/auth";
 import { Home } from "./pages/home";
 import { Aplicativos } from "./pages/aplicativos";
 import { SistemaPage } from "./pages/sistema";
+import { AlterarSenha } from "./pages/alterarSenha";
 
 export const router = createBrowserRouter([
   {
@@ -20,6 +21,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
-    children: [{ path: "/login", element: <LoginPage /> }],
+    children: [
+      { path: "/login", element: <LoginPage /> },
+      { path: "/first-login", element: <AlterarSenha /> },
+    ],
   },
 ]);

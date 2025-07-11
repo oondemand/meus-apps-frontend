@@ -53,7 +53,7 @@ export const Home = () => {
         title: "Ouve um erro inesperado ao excluir aplicativo!",
         description: error?.response?.data?.message,
         type: "error",
-      }); 
+      });
     },
   });
 
@@ -111,6 +111,7 @@ export const Home = () => {
                 shadow="md"
                 rounded="2xl"
                 position="relative"
+                key={item?._id}
               >
                 <Flex
                   p="3"
