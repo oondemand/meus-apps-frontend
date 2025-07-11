@@ -1,4 +1,10 @@
-import { Box, Button, Input, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Input,
+  Text,
+  createListCollection,
+} from "@chakra-ui/react";
 import { CloseButton } from "../../components/ui/close-button";
 
 import { useState } from "react";
@@ -22,7 +28,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../config/react-query";
 import { api } from "../../config/api";
-// import { SistemaService } from "../../service/sistema";
+import {
+  SelectRoot,
+  SelectLabel,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValueText,
+} from "../../components/ui/select";
+import { AMBIENTES_MAP } from "../../constants/maps";
 
 const schema = z.object({
   url: z.string().url({ message: "Url inválida" }).optional(),
@@ -30,6 +44,14 @@ const schema = z.object({
   nome: z
     .string({ message: "Nome é um campo obrigatório" })
     .nonempty({ message: "Nome é um campo obrigatório" }),
+  ambiente: z.enum(Object.entries(AMBIENTES_MAP).map(([key, _]) => key)),
+});
+
+const options = createListCollection({
+  items: Object.entries(AMBIENTES_MAP).map(([key, value]) => ({
+    label: value.label,
+    value: key,
+  })),
 });
 
 export const CadastrarAplicativoDialog = () => {
@@ -39,8 +61,13 @@ export const CadastrarAplicativoDialog = () => {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
+    setValue,
   } = useForm({
     resolver: zodResolver(schema),
+    defaultValues: {
+      ambiente: "prod",
+    },
   });
 
   const { mutateAsync: onTestEmailMutation, isPending } = useMutation({
@@ -110,6 +137,32 @@ export const CadastrarAplicativoDialog = () => {
                 {errors?.url?.message && (
                   <Text fontSize="xs" color="red">
                     {errors?.url?.message}
+                  </Text>
+                )}
+              </Box>
+              <Box>
+                <SelectRoot
+                  value={[watch("ambiente")]}
+                  onValueChange={({ value }) => {
+                    setValue("ambiente", ...value);
+                  }}
+                  collection={options}
+                >
+                  <SelectLabel>Ambiente</SelectLabel>
+                  <SelectTrigger>
+                    <SelectValueText />
+                  </SelectTrigger>
+                  <SelectContent zIndex="9999">
+                    {options?.items?.map((item) => (
+                      <SelectItem item={item} key={item?.key}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </SelectRoot>
+                {errors?.ambiente?.message && (
+                  <Text fontSize="xs" color="red">
+                    {errors?.ambiente?.message}
                   </Text>
                 )}
               </Box>

@@ -8,14 +8,16 @@ import {
   NotepadText,
   NotepadTextDashed,
   Notebook,
+  LayoutGrid,
+  LayoutDashboard,
 } from "lucide-react";
 import { Chart } from "../../svg/chart";
 import { invertedChart } from "../../svg/invertedChart";
 
 export const menuItems = [
   {
-    title: "Home",
-    icon: Chart,
+    title: "Meus apps",
+    icon: () => <LayoutDashboard strokeWidth={2.25} size={20} />,
     href: "/",
   },
   // {

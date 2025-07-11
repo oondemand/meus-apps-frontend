@@ -1,7 +1,7 @@
-import { Box, Flex, Text, Link, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Link, Button, Badge } from "@chakra-ui/react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
-import { Settings, Filter, Trash } from "lucide-react";
+import { Settings, Filter, Trash, User } from "lucide-react";
 import { AplicativoService } from "../../service/aplicativo";
 import { DebouncedInput } from "../../components/DebouncedInput";
 import {
@@ -18,6 +18,7 @@ import { api } from "../../config/api";
 import { useMutation } from "@tanstack/react-query";
 import { queryClient } from "../../config/react-query";
 import { toaster } from "../../components/ui/toaster";
+import { AMBIENTES_MAP, APP_STATUS_MAP } from "../../constants/maps";
 
 export const Home = () => {
   const [searchTerm, setSearchTerm] = useStateWithStorage("searchTerm");
@@ -108,7 +109,7 @@ export const Home = () => {
                 h="56"
                 w="80"
                 bg="white"
-                shadow="md"
+                shadow="xs"
                 rounded="2xl"
                 position="relative"
                 key={item?._id}
@@ -120,48 +121,59 @@ export const Home = () => {
                   w="full"
                   color="gray.600"
                   borderBottom="1px solid"
-                  borderColor="gray.200"
+                  borderColor="gray.100"
                 >
-                  <Text fontWeight="semibold">{item?.status}</Text>
+                  <Flex gap="2" alignItems="center">
+                    <Badge
+                      size="md"
+                      rounded="md"
+                      colorPalette={APP_STATUS_MAP[item?.status]?.color}
+                    >
+                      {APP_STATUS_MAP[item?.status]?.label}
+                    </Badge>
+                    <Badge
+                      size="md"
+                      rounded="md"
+                      colorPalette={AMBIENTES_MAP[item?.ambiente]?.color}
+                    >
+                      {AMBIENTES_MAP[item?.ambiente]?.label}
+                    </Badge>
+                  </Flex>
 
                   <Flex alignItems="center" gap="3">
-                    {user && user?.tipo === "master" && (
-                      <Box
-                        as="button"
-                        p="1"
-                        rounded="full"
-                        bg="gray.50"
-                        cursor="pointer"
-                        onClick={() => handleDeleteApp({ id: item?._id })}
-                      >
-                        <Trash size={22} />
-                      </Box>
-                    )}
                     <MenuRoot positioning={{ placement: "bottom-end" }}>
                       <MenuTrigger
-                        color="brand.500"
+                        color="brand.600"
                         focusRing="none"
                         cursor="pointer"
                         alignItems="baseline"
                       >
-                        <Box p="1" rounded="full" bg="brand.50">
-                          <Settings />
-                        </Box>
+                        <Settings />
                       </MenuTrigger>
-                      <MenuContent cursor="pointer">
+                      <MenuContent cursor="pointer" fontWeight="semibold">
                         <MenuItem
-                          fontWeight="semibold"
                           onClick={() => {}}
                           cursor="pointer"
+                          _hover={{ bg: "gray.50" }}
                         >
+                          <User size={14} />
                           <a
                             href={`/aplicativos/${item?._id}/usuarios`}
                             target="_blank"
                             rel="noreferrer"
                           >
-                            Cadastrar usuário
+                            Usuários
                           </a>
                         </MenuItem>
+                        {user && user?.tipo === "master" && (
+                          <MenuItem
+                            onClick={() => handleDeleteApp({ id: item?._id })}
+                            cursor="pointer"
+                            _hover={{ bg: "red.50" }}
+                          >
+                            <Trash size={14} /> Excluir aplicativo
+                          </MenuItem>
+                        )}
                       </MenuContent>
                     </MenuRoot>
                   </Flex>
@@ -169,7 +181,17 @@ export const Home = () => {
 
                 <Flex p="4" gap="2">
                   <Box rounded="2xl" overflow="hidden" w="50px" h="50px">
-                    {item?.icone && <img src={item?.icone} />}
+                    {item?.icone && (
+                      <img
+                        src={item?.icone}
+                        alt="ícone"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    )}
                   </Box>
                   <Text fontSize="2xl" fontWeight="semibold">
                     {item?.nome}
@@ -182,7 +204,7 @@ export const Home = () => {
                   py="2"
                   px="4"
                   bottom="2"
-                  left="2"
+                  right="4"
                   href={item?.url}
                   bg="cyan.500"
                   rounded="2xl"
