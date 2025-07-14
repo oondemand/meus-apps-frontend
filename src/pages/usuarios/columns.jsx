@@ -6,6 +6,7 @@ import { DeleteUsuarioAction } from "../../components/dataGrid/actions/deleteUsu
 // import { RecuperarSenhaUsuarioAction } from "../../components/dataGrid/actions/recuperarSenhaUsuario";
 import { TIPOS_USUARIO } from "../../constants/maps";
 import { PhoneCell } from "../../components/dataGrid/cells/phoneCell";
+import { AplicativosCell } from "../../components/dataGrid/cells/aplicativosCell";
 
 export const makeUsuarioDynamicColumns = () => {
   const tiposDeUsuario = Object.entries(TIPOS_USUARIO).map(([key, value]) => ({
@@ -69,6 +70,13 @@ export const makeUsuarioDynamicColumns = () => {
       cell: PhoneCell,
       enableColumnFilter: true,
       meta: { filterKey: "telefone" },
+    },
+    {
+      accessorKey: "aplicativos",
+      header: "Aplicativos",
+      cell: AplicativosCell,
+      // enableColumnFilter: true,
+      // meta: { filterKey: "aplicativos" },
     },
     {
       accessorKey: "status",
