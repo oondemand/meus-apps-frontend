@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: meus-apps-frontend-homolog
-  namespace: central-oondemand-homolog
+  namespace: meus-apps-homolog
 spec:
   replicas: 1
   selector:
