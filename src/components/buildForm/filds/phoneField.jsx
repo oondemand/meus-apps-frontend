@@ -42,7 +42,7 @@ export const PhoneField = ({ ...props }) => {
         size="sm"
         variant="flushed"
         disabled={props.disabled}
-        {...registerWithMask(props.accessorKey, "(99) 9 9999 9999")}
+        {...registerWithMask(props.accessorKey, "(99) 9 9999-9999")}
         onKeyDown={handleKeyDown}
         onBlur={onBlur}
       />
