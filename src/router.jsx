@@ -6,6 +6,7 @@ import { Home } from "./pages/home";
 import { Aplicativos } from "./pages/aplicativos";
 import { SistemaPage } from "./pages/sistema";
 import { AlterarSenha } from "./pages/alterarSenha";
+import { UsuariosPage } from "./pages/usuarios";
 
 export const router = createBrowserRouter([
   {
@@ -15,9 +16,9 @@ export const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/aplicativos/:id/usuarios", element: <Aplicativos /> },
       { path: "/sistema", element: <SistemaPage /> },
+      { path: "/usuarios", element: <UsuariosPage /> },
     ],
   },
-
   {
     path: "/",
     element: <MainLayout />,

@@ -9,3 +9,9 @@ export const APP_STATUS_MAP = {
   inativo: { label: "Inativo", color: "yellow" },
   suspenso: { label: "Suspenso", color: "Suspenso" },
 };
+
+export const TIPOS_USUARIO = {
+  master: { label: "Master" },
+  "admin-app": { label: "Administrador do aplicativo" },
+  padrao: { label: "Padrão" },
+};

@@ -5,8 +5,21 @@ import { UsuariosDialog } from "./dialog";
 import { TableActionsCell } from "../../components/dataGrid/cells/tableActionsCell";
 import { DeleteUsuarioAction } from "../../components/dataGrid/actions/deleteUsuarioButton";
 import { RecuperarSenhaUsuarioAction } from "../../components/dataGrid/actions/recuperarSenhaUsuario";
+import { TIPOS_USUARIO } from "../../constants/maps";
+import { DefaultCell } from "../../components/dataGrid/cells/default";
 
 export const makeUsuarioDynamicColumns = () => {
+  const tiposDeUsuario = Object.entries(TIPOS_USUARIO).map(([key, value]) => ({
+    label: value.label,
+    value: key,
+  }));
+
+  const status = [
+    { label: "Ativo", value: "ativo" },
+    { label: "Inativo", value: "inativo" },
+    { label: "Pendente", value: "pendente" },
+  ];
+
   return [
     {
       accessorKey: "acoes",
@@ -21,7 +34,7 @@ export const makeUsuarioDynamicColumns = () => {
               ...props.row.original,
             }}
           />
-          <RecuperarSenhaUsuarioAction usuario={props.row.original} />
+          {/* <RecuperarSenhaUsuarioAction usuario={props.row.original} /> */}
         </TableActionsCell>
       ),
     },
@@ -37,23 +50,14 @@ export const makeUsuarioDynamicColumns = () => {
       accessorKey: "tipo",
       header: "Tipo",
       cell: (props) => (
-        <SelectAutoCompleteCell
-          {...props}
-          options={[
-            { label: "Central", value: "central" },
-            { label: "Administrador", value: "admin" },
-          ]}
-        />
+        <SelectAutoCompleteCell {...props} options={tiposDeUsuario} />
       ),
       enableColumnFilter: true,
       enableSorting: false,
       meta: {
         filterKey: "tipo",
         filterVariant: "select",
-        filterOptions: [
-          { label: "Central", value: "central" },
-          { label: "Administrador", value: "admin" },
-        ],
+        filterOptions: tiposDeUsuario,
       },
     },
     {
@@ -65,26 +69,20 @@ export const makeUsuarioDynamicColumns = () => {
       meta: { filterKey: "email" },
     },
     {
+      accessorKey: "telefone",
+      header: "Telefone",
+      cell: DefaultCell,
+    },
+    {
       accessorKey: "status",
       header: "Status",
-      cell: (props) => (
-        <SelectAutoCompleteCell
-          {...props}
-          options={[
-            { label: "Ativo", value: "ativo" },
-            { label: "Inativo", value: "inativo" },
-          ]}
-        />
-      ),
+      cell: (props) => <SelectAutoCompleteCell {...props} options={status} />,
       enableColumnFilter: true,
       enableSorting: false,
       meta: {
         filterKey: "status",
         filterVariant: "select",
-        filterOptions: [
-          { label: "Ativo", value: "ativo" },
-          { label: "Inativo", value: "inativo" },
-        ],
+        filterOptions: status,
       },
     },
   ];
