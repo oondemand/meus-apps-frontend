@@ -39,8 +39,15 @@ import {
 import { AMBIENTES_MAP } from "../../constants/maps";
 
 const schema = z.object({
-  url: z.string().url({ message: "Url inválida" }).optional(),
-  icone: z.string().url({ message: "Url inválida" }).optional(),
+  url: z
+    .string()
+    .url({ message: "Url inválida" })
+    .nonempty({ message: "Url é um campo obrigatório!" }),
+  icone: z.union([
+    z.literal(""), // aceita string vazia
+    z.string().url({ message: "Url inválida" }), // ou uma URL válida
+  ]),
+  urlTiposAcesso: z.string().url().optional(),
   nome: z
     .string({ message: "Nome é um campo obrigatório" })
     .nonempty({ message: "Nome é um campo obrigatório" }),

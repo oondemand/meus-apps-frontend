@@ -179,9 +179,17 @@ export const Home = () => {
                   </Flex>
                 </Flex>
 
-                <Flex p="4" gap="2">
-                  <Box rounded="2xl" overflow="hidden" w="50px" h="50px">
-                    {item?.icone && (
+                <Flex p="4" gap="2.5">
+                  <Flex
+                    rounded="2xl"
+                    bg="purple.100"
+                    justifyContent="center"
+                    alignItems="center"
+                    overflow="hidden"
+                    w="50px"
+                    h="50px"
+                  >
+                    {item?.icone ? (
                       <img
                         src={item?.icone}
                         alt="ícone"
@@ -191,8 +199,12 @@ export const Home = () => {
                           objectFit: "cover",
                         }}
                       />
+                    ) : (
+                      <Text fontWeight="bold" color="gray.500" fontSize="3xl">
+                        {item?.nome?.[0]?.toUpperCase() ?? "?"}
+                      </Text>
                     )}
-                  </Box>
+                  </Flex>
                   <Text fontSize="2xl" fontWeight="semibold">
                     {item?.nome}
                   </Text>
