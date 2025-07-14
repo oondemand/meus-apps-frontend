@@ -37,15 +37,6 @@ export const LoginForm = () => {
   const { mutateAsync: LoginMutation } = useMutation({
     mutationFn: LoginService.logIn,
     onSuccess({ token, usuario: user }) {
-      if (user.tipo === "prestador") {
-        toaster.create({
-          title: "Sem permissões para acessar a esteira de serviços!",
-          type: "error",
-        });
-
-        return;
-      }
-
       login(token, user);
       return navigate("/");
     },

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { LoginService } from "../service/auth";
+import { queryClient } from "../config/react-query";
 
 const AuthContext = createContext();
 
@@ -38,6 +39,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("usuario");
+    queryClient.invalidateQueries();
     setUser(null);
   };
 

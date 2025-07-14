@@ -42,7 +42,7 @@ export const TesteEnvioEmailDialog = () => {
     onSuccess: () => {
       toaster.create({
         title: "Verifique o seu email!",
-        type: "info",
+        type: "success",
       });
       setOpen(false);
     },

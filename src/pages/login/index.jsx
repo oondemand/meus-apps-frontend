@@ -22,9 +22,9 @@ export const LoginPage = () => {
           justifyContent="center"
           alignItems="center"
         >
-          <Flex gap="4" align="center" justify="flex-center">
+          <Flex gap="2" align="baseline" justify="flex-center">
             <Text as="div" fontSize="md" color="white">
-              Central de Serviços
+              Central
             </Text>
 
             <Text fontSize="2xl" fontWeight="700" color="white">
