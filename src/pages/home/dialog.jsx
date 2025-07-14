@@ -47,7 +47,7 @@ const schema = z.object({
     z.literal(""), // aceita string vazia
     z.string().url({ message: "Url inválida" }), // ou uma URL válida
   ]),
-  urlTiposAcesso: z.string().url().optional(),
+  tipoAcessoUrl: z.string().url().optional(),
   nome: z
     .string({ message: "Nome é um campo obrigatório" })
     .nonempty({ message: "Nome é um campo obrigatório" }),
@@ -144,6 +144,15 @@ export const CadastrarAplicativoDialog = () => {
                 {errors?.url?.message && (
                   <Text fontSize="xs" color="red">
                     {errors?.url?.message}
+                  </Text>
+                )}
+              </Box>
+              <Box>
+                <Text>Url tipo de acesso</Text>
+                <Input {...register("tipoAcessoUrl")} />
+                {errors?.tipoAcessoUrl?.message && (
+                  <Text fontSize="xs" color="red">
+                    {errors?.tipoAcessoUrl?.message}
                   </Text>
                 )}
               </Box>

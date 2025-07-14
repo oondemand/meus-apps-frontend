@@ -43,7 +43,7 @@ export const Aplicativos = () => {
           </Text>
         </Box>
         {user && ["master", "admin"].includes(user?.tipo) && (
-          <ConvidarUsuarioDialog aplicativoId={id} />
+          <ConvidarUsuarioDialog aplicativo={data?.data?.aplicativo} />
         )}
       </Flex>
 
