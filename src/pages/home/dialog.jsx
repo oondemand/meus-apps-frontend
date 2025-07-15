@@ -4,13 +4,12 @@ import {
   Input,
   Text,
   createListCollection,
+  Flex,
+  Clipboard,
+  IconButton,
 } from "@chakra-ui/react";
 import { CloseButton } from "../../components/ui/close-button";
-
 import { useState } from "react";
-
-import { toaster } from "../../components/ui/toaster";
-
 import {
   DialogRoot,
   DialogBody,
@@ -25,9 +24,6 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../../config/react-query";
-import { api } from "../../config/api";
 import {
   SelectRoot,
   SelectLabel,
@@ -37,6 +33,12 @@ import {
   SelectValueText,
 } from "../../components/ui/select";
 import { AMBIENTES_MAP } from "../../constants/maps";
+import { nanoid } from "nanoid";
+import { RefreshCcw } from "lucide-react";
+import { useCreateAplicativo } from "../../hooks/api/aplicativos/useCreateAplicativo";
+import { useUpdateAplicativo } from "../../hooks/api/aplicativos/useUpdateAplicativo";
+
+const generateAppKey = () => `oon_${nanoid(10)}`;
 
 const schema = z.object({
   url: z
@@ -52,6 +54,9 @@ const schema = z.object({
     .string({ message: "Nome é um campo obrigatório" })
     .nonempty({ message: "Nome é um campo obrigatório" }),
   ambiente: z.enum(Object.entries(AMBIENTES_MAP).map(([key, _]) => key)),
+  appKey: z.string().regex(/^oon_.{10}$/, {
+    message: "A chave deve começar com prefixo 'oon_'",
+  }),
 });
 
 const options = createListCollection({
@@ -61,8 +66,8 @@ const options = createListCollection({
   })),
 });
 
-export const CadastrarAplicativoDialog = () => {
-  const [open, setOpen] = useState();
+export const CadastrarAplicativoDialog = ({ children, defaultValues }) => {
+  const [open, setOpen] = useState(false);
 
   const {
     register,
@@ -73,30 +78,30 @@ export const CadastrarAplicativoDialog = () => {
   } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
-      ambiente: "prod",
+      ...defaultValues,
+      ambiente: defaultValues?.ambiente ? defaultValues.ambiente : "prod",
+      appKey: defaultValues?.appKey ? defaultValues.appKey : generateAppKey(),
     },
   });
 
-  const { mutateAsync: onTestEmailMutation, isPending } = useMutation({
-    mutationFn: async ({ body }) => {
-      await api.post("aplicativos", body);
-    },
-    onSuccess: () => {
-      toaster.create({
-        title: "Aplicativo cadastrado com sucesso!",
-        type: "success",
-      });
-      queryClient.invalidateQueries(["aplicativos"]);
-      setOpen(false);
-    },
-    onError: (error) => {
-      toaster.create({
-        title: "Ouve um erro inesperado ao enviar email!",
-        description: error?.response?.data?.message,
-        type: "error",
-      });
-    },
+  const onCreateAplicativo = useCreateAplicativo({
+    onSuccess: () => setOpen(false),
   });
+
+  const onUpdateAplicativo = useUpdateAplicativo({
+    onSuccess: () => setOpen(false),
+  });
+
+  const onSubmit = (values) => {
+    if (defaultValues) {
+      return onUpdateAplicativo.mutateAsync({
+        body: values,
+        id: defaultValues?._id,
+      });
+    }
+
+    return onCreateAplicativo.mutateAsync({ body: values });
+  };
 
   return (
     <Box>
@@ -105,17 +110,9 @@ export const CadastrarAplicativoDialog = () => {
         onOpenChange={(e) => setOpen(e.open)}
         placement="center"
       >
-        <DialogTrigger asChild>
-          <Button size="sm" colorPalette="cyan">
-            Cadastrar aplicativo
-          </Button>
-        </DialogTrigger>
+        <DialogTrigger asChild>{children}</DialogTrigger>
         <DialogContent>
-          <form
-            onSubmit={handleSubmit(
-              async (values) => await onTestEmailMutation({ body: values })
-            )}
-          >
+          <form onSubmit={handleSubmit(onSubmit)}>
             <DialogHeader>
               <DialogTitle>Cadastrar aplicativo</DialogTitle>
             </DialogHeader>
@@ -144,6 +141,30 @@ export const CadastrarAplicativoDialog = () => {
                 {errors?.url?.message && (
                   <Text fontSize="xs" color="red">
                     {errors?.url?.message}
+                  </Text>
+                )}
+              </Box>
+              <Box>
+                <Text>AppKey</Text>
+                <Flex gap="2">
+                  <Input {...register("appKey")} />
+                  <Clipboard.Root value={watch("appKey")}>
+                    <Clipboard.Trigger asChild>
+                      <IconButton variant="surface">
+                        <Clipboard.Indicator />
+                      </IconButton>
+                    </Clipboard.Trigger>
+                  </Clipboard.Root>
+                  <IconButton
+                    variant="surface"
+                    onClick={() => setValue("appKey", generateAppKey())}
+                  >
+                    <RefreshCcw />
+                  </IconButton>
+                </Flex>
+                {errors?.appKey?.message && (
+                  <Text fontSize="xs" color="red">
+                    {errors?.appKey?.message}
                   </Text>
                 )}
               </Box>
@@ -189,12 +210,14 @@ export const CadastrarAplicativoDialog = () => {
               </DialogActionTrigger>
 
               <Button
-                disabled={isPending}
+                disabled={
+                  onCreateAplicativo.isPending || onUpdateAplicativo.isPending
+                }
                 type="submit"
                 variant="surface"
                 colorPalette="blue"
               >
-                Cadastrar
+                Salvar
               </Button>
             </DialogFooter>
             <DialogCloseTrigger>
