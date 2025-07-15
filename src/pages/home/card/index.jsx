@@ -12,6 +12,7 @@ import { AMBIENTES_MAP, APP_STATUS_MAP } from "../../../constants/maps";
 import { useAuth } from "../../../hooks/useAuth";
 import { useConfirmation } from "../../../hooks/useConfirmation";
 import { useDeleteAplicativo } from "../../../hooks/api/aplicativos/useDeleteAplicativo";
+import { api } from "../../../config/api";
 
 export const AppCard = ({ aplicativo }) => {
   const { user } = useAuth();
@@ -144,22 +145,31 @@ export const AppCard = ({ aplicativo }) => {
         </Text>
       </Flex>
 
-      <Link
+      <Button
+        onClick={async () => {
+          const response = await api.get(
+            `/aplicativos/acessar-aplicativo?appId=${aplicativo?._id}`
+          );
+
+          window.open(
+            response?.data?.redirect,
+            "_blank",
+            "noopener,noreferrer"
+          );
+        }}
+        unstyled
         position="absolute"
         fontWeight="semibold"
         py="2"
         px="4"
         bottom="2"
         right="4"
-        href={aplicativo?.url}
         bg="cyan.500"
         rounded="2xl"
-        textDecor="none"
-        target="_blank"
         color="white"
       >
         Acessar
-      </Link>
+      </Button>
     </Box>
   );
 };
