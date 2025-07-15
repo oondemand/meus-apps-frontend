@@ -167,6 +167,7 @@ export const AppCard = ({ aplicativo }) => {
         bg="cyan.500"
         rounded="2xl"
         color="white"
+        cursor="pointer"
       >
         Acessar
       </Button>
