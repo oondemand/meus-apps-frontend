@@ -5,7 +5,7 @@ import { api } from "../../../config/api";
 
 export const useCreateAplicativo = ({ onSuccess }) =>
   useMutation({
-    mutationFn: async (body) => {
+    mutationFn: async ({ body }) => {
       await api.post("aplicativos", body);
     },
     onSuccess: (data) => {
