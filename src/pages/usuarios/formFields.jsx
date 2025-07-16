@@ -1,8 +1,8 @@
-import { DefaultField } from "../../components/buildForm/filds/default";
+import { DefaultField } from "../../components/buildForm/fields/default";
 import { z } from "zod";
-import { SelectField } from "../../components/buildForm/filds/selectField";
+import { SelectField } from "../../components/buildForm/fields/selectField";
 import { TIPOS_USUARIO } from "../../constants/maps";
-import { PhoneField } from "../../components/buildForm/filds/phoneField";
+import { PhoneField } from "../../components/buildForm/fields/phoneField";
 
 export const createDynamicFormFields = () => {
   const tiposDeUsuario = Object.entries(TIPOS_USUARIO).map(([key, value]) => ({
