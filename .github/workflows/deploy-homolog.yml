@@ -1,4 +1,4 @@
-name: Deploy meus apps frontend homolog
+name: Deploy meus-apps-frontend homolog
 
 on:
   push:

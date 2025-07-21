@@ -22,6 +22,7 @@ export const autoCompleteSelectInputStyles = {
     ...base,
     scrollbarWidth: "thin",
     fontSize: "12px",
+    cursor: "pointer",
   }),
   placeholder: (base) => ({
     ...base,

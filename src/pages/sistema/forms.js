@@ -1,6 +1,6 @@
-import { DefaultField } from "../../components/buildForm/filds/default";
+import { DefaultField } from "../../components/buildForm/fields/default";
 import { z } from "zod";
-import { PasswordField } from "../../components/buildForm/filds/passwordField";
+import { PasswordField } from "../../components/buildForm/fields/passwordField";
 
 export const FORMS = [
   {

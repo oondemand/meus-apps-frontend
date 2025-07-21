@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.7 (2025-07-21)
+
+### 🐛 Bug Fixes
+
+* correct application name format in deployment workflows ([eee1838](https://github.com/oondemand/meus-apps-frontend/commit/eee183865af3a2f4d20365f6b6ce3692f20b85a2))
+
+## 0.0.6 (2025-07-16)
+
+## 0.0.5 (2025-07-16)
+
 ## 0.0.4 (2025-07-14)
 
 ## 0.0.3 (2025-07-14)
