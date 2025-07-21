@@ -1,4 +1,4 @@
-name: Deploy meus apps frontend
+name: Deploy meus-apps-frontend
 
 on:
   pull_request:
