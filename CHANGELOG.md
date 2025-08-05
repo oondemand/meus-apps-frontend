@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.0 (2025-08-05)
+
+### ✨ Features
+
+* deploy main ([1119664](https://github.com/oondemand/meus-apps-frontend/commit/1119664f0a2da7f3df28d681467e55e7af2701f7))
+
 ## 0.0.8 (2025-07-21)
 
 ## 0.0.7 (2025-07-21)
